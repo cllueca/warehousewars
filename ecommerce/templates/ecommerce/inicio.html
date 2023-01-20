@@ -1,0 +1,11 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<div>
+    {% for dato in datos %}
+    <p>{{dato}}</p>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock content %}
