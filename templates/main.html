@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -14,16 +15,32 @@
     
     <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/navbar.css' %}" />
+   
+    <link rel="stylesheet" href="{% static 'js/navbarJs.js' %}" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+      $(document).ready(function(){
+      $('.owl-carousel').owlCarousel({
+        nav: true,
+        autoplay: true,
+        autoplayTimeout:3000,
+        });
+      });
+    </script>
+
     <title>Warehouse Wars</title>
   </head>
 
-  <body>
+  <body class="pb-5">
     {% include 'navbar.html' %}
 
     {% block content %}
 
     {% endblock content %}
-    
+
     {% include 'footer.html' %}
   </body>
+
 </html>
