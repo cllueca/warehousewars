@@ -64,3 +64,10 @@
   }
   /*Fin Página de Contacto*/
 
+/*Media Query Contacto*/
+@media only screen and (max-width: 770px) {
+    .marginL {
+    margin-left: 300px;
+  }
+}
+
