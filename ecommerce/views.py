@@ -20,6 +20,7 @@ def paginaPrincipal(request):
         user = dictfetchall(cursor)
         cursor.execute('SELECT * FROM "Productos";')
         product = dictfetchall(cursor)
+    
 
     except Exception as e:
         print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
@@ -27,9 +28,24 @@ def paginaPrincipal(request):
         cursor.close()
     
 
-    context = {'datos': user, 'producto' : product}
+    context = {'datos': user, 'producto' : product,}
+
     return render(request, 'ecommerce/inicio.html', context)
 
 def paginaContacto(request):
 
     return render(request, 'ecommerce/contacto.html')
+
+def filtroInicio(request, selectedValue):
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM "Productos" WHERE type_id = %s', [selectedValue])
+        queryType = dictfetchall(cursor)
+    except Exception as e:
+        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+    finally:
+        cursor.close()
+
+    context = {'query' :queryType}
+    return render(request, 'ecommerce/inicio.html', context)
