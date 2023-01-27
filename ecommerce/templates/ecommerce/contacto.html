@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% block content %}
+<section class="color-grey">
+    <div class="container text-center pt-5">
+        <h1>Contacto Con Nosotros</h1>
+        <h4 class="mt-3 mb-5">Slots Solutions (texto aqui)</h4>
+    </div>
+
+    <div class="container bg-light border mt-4">
+        <div class="row mb-5">
+            <div class="col-lg-7 col-md-12 mt-5">
+                <div class="row">
+                    <div class="col-lg-6 col-md-4 col-sm-12" >
+                        <div class="ml-3">
+                            <i class="fas fa-home mb-3 blue-icon"></i> 
+                            <p>Dirección</p>
+                            <p>Carretera Pozuelo, km 1800</p>
+                            <p>28223 Majadahonda, Madrid</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-12 mb-3 marginT ">
+                        <div class="ml-3">
+                            <i class="fas fa-phone mb-3 blue-icon"></i>
+                            <p>Contacto por Teléfono</p>
+                            <p>+34 660142089</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-10 marginT marginT2">
+                        <div class="ml-3">
+                            <i class="fas fa-envelope mb-3 blue-icon"></i> 
+                            <p>Correo</p>
+                            <p>support@SlotsSolutions.com</p>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 mt-5 ">
+                <div class="form-group">
+                    <p class="bold_txt">Correo</p>
+                    <input type="text" class="form-control rounded-input" placeholder="Inserte su correo">
+                    <p class="mt-4 bold_txt">Mensaje</p>
+                    <input type="text" class="form-control rounded-input message-input" placeholder="Inserte su mensaje">
+                    <button type="submit" class="btn btn-primary mt-3">Enviar Mensaje</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="margin-top: 80px;">
+
+</section>
+{% endblock content%}
