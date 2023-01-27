@@ -12,7 +12,7 @@ $(document).ready(function() {
           console.log("valor:" + htmlString)
           // Actualizar el HTML con los nuevos productos
           
-          $("#here").html(" {% for queryType in query %} <div{{ queryType.name }}</div>   {% endfor %}");
+          $("#here").html(data);
           }
       });
     });
