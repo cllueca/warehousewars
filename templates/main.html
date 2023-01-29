@@ -23,11 +23,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
       $(document).ready(function(){
+      var items = 2;
+      $(window).on('resize', function(){
+      if ($(window).width() <= 768) {
+        items = 1;
+      } else {
+        items = 2;
+      }
+      $('.owl-carousel').trigger('destroy.owl.carousel');
       $('.owl-carousel').owlCarousel({
         nav: true,
+        loop: true,
+        items: items,
         autoplay: true,
-        autoplayTimeout:3000,
-        });
+        autoplayTimeout: 6000,
+      });
+      });
+      $('.owl-carousel').owlCarousel({
+        nav: true,
+        loop: true,
+        items: items,
+        autoplay: true,
+        autoplayTimeout: 6000,
+      });
       });
     </script>
 

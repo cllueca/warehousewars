@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+
+{% for productosDesc in productosDesc %}
+    <div class="product-card">
+        <h3>{{ productosDesc.name }}</h3>
+        <p>{{ productosDesc.description }}</p>
+        <p>{{ productosDesc.price }}</p>
+    </div>
+{% endfor %}
+
+{% endblock content %}
