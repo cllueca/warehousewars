@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main">
+	<div class="nav-item col-md-4 col-xs-12">
+		<div class="formularioRegistro">
+			<div class="navbar-brand logo-contenedor" href="#">
+				<img src="{% static 'images/SlotsSolutions.jpg' %}" alt="SlotsSolutions" class="logo">
+			</div>
+			<h2 style="text-align: center;">Registro de Usuario</h2>
+			<ul class="navbar-nav ml-auto distancia">
+				<li class="nav-item"><b>NOMBRE</b></li>
+				<li class="nav-item"><input class="textfields" placeholder="Inserte su nombre"></input></li>
+				<li class="nav-item distancia"><b>APELLIDOS</b></li>
+				<li class="nav-item"><input class="textfields" placeholder="Inserte sus apellidos"></input></li>
+				<li class="nav-item distancia"><b>TELÉFONO</b></li>
+				<li class="nav-item"><input class="textfields" placeholder="Inserte su nº de teléfino"></input></li>
+				<li class="nav-item distancia"><b>CORREO</b></li>
+				<li class="nav-item"><input class="textfields" placeholder="Inserte su correo"></input></li>
+				<li class="nav-item distancia"><b>CONTRASEÑA</b></li>
+				<li class="nav-item"><input class="textfields" type="password" placeholder="Inserte su contraseña"></input></li>
+				<li class="nav-item"><input class="textfields distancia" type="password" placeholder="Repita la contraseña"></input></li>
+				<li class="nav-item distancia"><button class="botoniniciar" href="#">Iniciar Sesión</button></li>
+				<li><p class="textoregistro imagen">Ya tienes cuenta?<a href="{% url 'login' %}">Inicia sesión aqui</a></p></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

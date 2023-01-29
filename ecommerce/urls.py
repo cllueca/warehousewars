@@ -13,4 +13,7 @@ urlpatterns = [
    
    path('descProducto/<int:productId>/', views.descripcionProducto, name='descripcionProducto'),
    #path('', views.filtroInicio, name='filtroInicio'),
+
+   path('login/', views.iniciarSesion, name="login"),
+   path('registro/', views.registrarse, name="registro"),
 ]

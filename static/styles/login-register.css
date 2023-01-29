@@ -1,0 +1,117 @@
+b{
+	font-size: 10px;
+	margin-left: 13%;
+}
+.logo{
+	height: 100px;
+	width: 180px;
+
+}
+
+.signup{
+	border-radius: 20px;
+	border: 3px;
+	border-color: #d7d7d7;
+	border-style: solid;
+}
+
+.main{
+	background-color: #1414A2;
+	height: 50em;
+	display: flex;
+   justify-content: center;
+   margin: 0 auto;
+}
+
+.formularioInicio{
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 10em;
+	background-color: white;
+	border-radius: 30px;
+	border: 3px;
+	border-color: #d7d7d7;
+	border-style: solid;
+	height: 30em;
+}
+.formularioRegistro{
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 2em;
+	background-color: white;
+	border-radius: 30px;
+	border: 3px;
+	border-color: #d7d7d7;
+	border-style: solid;
+	height: 46em;
+}
+.textfields{
+	width: 75%;
+	margin-left: 12%;
+	border-radius: 10px;
+	border: 3px;
+	border-color: #d7d7d7;
+	border-style: solid;
+	max-height: 40px;
+	height: 40px;
+
+}
+
+.textoregistro{
+	font-size: 10px;
+}
+
+.botoniniciar{
+	width: 33%;
+	color: white;
+	margin-left: 33%;
+	border-radius: 30px;
+	border: 3px;
+	border-style: solid;
+	max-height: 50px;
+	height: 50px;
+	background-color: #469DF9;
+}
+
+.logo-contenedor {
+   width: 100%;
+   float:center;
+}
+
+.logo-contenedor>img {
+   display: flex;
+   justify-content: center;
+   margin: 0 auto;
+}
+
+.distancia{
+	margin-top: 1em;
+}
+
+.pie{
+	height: 20em;
+	width: 100%;
+}
+
+.imagen {
+   display: flex;
+   justify-content: center;
+   margin: 0 auto;
+}
+
+.tamanoRedesSociales{
+	height: 30px;
+	width: 30px;
+}
+.espaciadoRedesSocilaes{
+	margin-left: 1em;
+}
+
+.vertical{ 
+ 
+    border: none;
+    border-left: 1px solid hsla(200, 10%, 50%,100);
+    height: 4em;
+    width: 1px;
+    border-color: #D6D6D6;  
+}

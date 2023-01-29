@@ -123,3 +123,11 @@ def filtroProveedor(request, selectedProveedor):
 
     data = json.dumps(queryType)
     return HttpResponse(data, content_type='application/json')
+
+
+def iniciarSesion(request):
+    return render(request, 'ecommerce/login.html')
+
+
+def registrarse(request):
+    return render(request, 'ecommerce/register.html')
