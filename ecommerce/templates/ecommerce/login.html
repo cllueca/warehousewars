@@ -4,20 +4,24 @@
 
 <div class="main">
     <div class="nav-item col-md-4 col-xs-12">
-        <div class="formularioInicio">
+        <form class="formularioInicio" method="POST" action="">
+            {% csrf_token %}
+
             <div class="navbar-brand logo-contenedor" href="#">
                 <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="SlotsSolutions" class="logo">
               </div>
+
               <h2 style="text-align: center;">Inicio de sesión</h2>
+
               <ul class="navbar-nav ml-auto distancia">
                   <li class="nav-item"><b>CORREO</b></li>
-                  <li class="nav-item"><input class="textfields" placeholder="Inserte su correo"></input></li>
+                  <li class="nav-item"><input class="textfields" name="username" placeholder="Inserte su correo"></input></li>
                   <li class="nav-item distancia"><b>CONTRASEÑA</b></li>
-                  <li class="nav-item"><input class="textfields" type="password" placeholder="Inserte su contraseña"></input></li>
+                  <li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Inserte su contraseña"></input></li>
                   <li class="nav-item" style="margin-top: 2em;"><p class="textoregistro distancia imagen"><a href="#">¿Has olvidado la contraseña?</a></p></li>
-                  <li class="nav-item"><button class="botoniniciar" href="#">Iniciar Sesión</button></li>
+                  <li class="nav-item"><input type="submit" class="botoniniciar" value="Iniciar Sesión"/></li>
               </ul>
-        </div>
+            </form>
     </div>
 </div>
 

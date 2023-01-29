@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db import connection, transaction
 import json
 from django.http import JsonResponse
@@ -6,14 +6,10 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 
 
-# Funcion que convierte las querys a la BBDD en diccionarios, para acceder de manera mas facil al valor de cada campo en las templates
-def dictfetchall(cursor):
-    "Return all rows from a cursor as a dict"
-    columns = [col[0] for col in cursor.description]
-    return [
-        dict(zip(columns, row))
-        for row in cursor.fetchall()
-    ]
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from .funciones import *
 
 
 def paginaPrincipal(request):
@@ -39,7 +35,6 @@ def paginaPrincipal(request):
     return render(request, 'ecommerce/inicio.html', context)
 
 
-
 def descripcionProducto(request, productId):
 
     try:
@@ -57,13 +52,9 @@ def descripcionProducto(request, productId):
     return render(request, 'ecommerce/descProducto.html', context)
 
 
-
 def paginaContacto(request):
 
     return render(request, 'ecommerce/contacto.html')
-
-
-
 
 
 def filtroInicio(request, selectedValue):
@@ -82,8 +73,6 @@ def filtroInicio(request, selectedValue):
 
     data = json.dumps(queryType)
     return HttpResponse(data, content_type='application/json')
-
-
 
 
 def filtroPrecio(request, selectedPrize):
@@ -126,8 +115,60 @@ def filtroProveedor(request, selectedProveedor):
 
 
 def iniciarSesion(request):
+
+    if request.user.is_authenticated:
+        return redirect('inicio')
+    
+    if request.method == "POST":
+        username = request.POST.get('username')
+        pwd = request.POST.get("password")
+
+    print(username)
+    print(pwd)
+
+
     return render(request, 'ecommerce/login.html')
 
 
 def registrarse(request):
+
+    """if request.user.is_authenticated:
+        return redirect('inicio')
+    
+    if request.method == "POST":
+        username = request.POST.get('username')
+        pwd = request.POST.get("password")
+
+        print(username)
+        print(pwd)"""
+
+    
+
+    if request.method == 'POST':
+
+        pwd = request.POST.get('password')
+        pwdConf = request.POST.get('password2')
+
+        if(comprobarContraseña(pwd, pwdConf) == 1): # funcion un poco basica, mejorar mas adelante
+
+            user = User.objects.create_user(
+                username=request.POST.get('username'),
+                password=pwd,
+                first_name=request.POST.get('apellidos'),
+                last_name=request.POST.get('telefono'),
+                email=request.POST.get('correo')
+            )
+
+            print(user.username)
+            print(user.first_name)
+            print(user.last_name)
+
+        """
+        user.username = user.username.lower()
+        user.save()
+        login(request, user)
+        return redirect('home')"""
+
+    #return render(request, 'base/login_register.html', {'form': form})
+
     return render(request, 'ecommerce/register.html')
