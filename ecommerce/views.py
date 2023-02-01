@@ -12,25 +12,29 @@ from .funciones import *
 
 def paginaPrincipal(request):
 
-    try:
-        cursor = connection.cursor()
-        cursor.execute('SELECT * FROM "Usuarios";')
-        user= dictfetchall(cursor)
-        cursor.execute('SELECT * FROM "Productos";')
-        product = dictfetchall(cursor)
-        cursor.execute('SELECT * FROM "Tipos";')
-        tipos = dictfetchall(cursor)
-        cursor.execute('SELECT * FROM "Usuarios" WHERE role_id = 2;')
-        proveedor = dictfetchall(cursor)
+    if request.user.is_authenticated and request.user.role_id == 1:
+        return render(request, 'ecommerce/vistaAlmacen.html')
+    else:
+        try:
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM "Usuarios";')
+            user= dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Productos";')
+            product = dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Tipos";')
+            tipos = dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Usuarios" WHERE role_id = 2;')
+            proveedor = dictfetchall(cursor)
 
-        showmore = 3
+            showmore = 3
 
-    except Exception as e:
-        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-    finally:
-        cursor.close()
-    context = {'datos': user, 'producto' : product, 'conectTipo' : tipos,'conectProveedor' : proveedor,}
-    return render(request, 'ecommerce/inicio.html', context)
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+        context = {'datos': user, 'producto' : product, 'conectTipo' : tipos,'conectProveedor' : proveedor}
+        return render(request, 'ecommerce/inicio.html', context)
+
 
 
 def descripcionProducto(request, productId):
