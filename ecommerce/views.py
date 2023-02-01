@@ -4,11 +4,9 @@ import json
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-
-
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from ecommerce.models import User
 from .funciones import *
 
 
@@ -117,32 +115,33 @@ def filtroProveedor(request, selectedProveedor):
 def iniciarSesion(request):
 
     if request.user.is_authenticated:
-        return redirect('inicio')
+        return redirect('home')
     
     if request.method == "POST":
         username = request.POST.get('username')
         pwd = request.POST.get("password")
 
-    print(username)
-    print(pwd)
+        try: # check if the user exists
+            user = User.objects.get(username=username)
+            print("YAY")
+        except:
+            print('User does not exist')
 
+        user = authenticate(request, username=username, password=pwd)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            print('Username or password does not exist')
 
     return render(request, 'ecommerce/login.html')
 
 
 def registrarse(request):
 
-    """if request.user.is_authenticated:
-        return redirect('inicio')
-    
-    if request.method == "POST":
-        username = request.POST.get('username')
-        pwd = request.POST.get("password")
-
-        print(username)
-        print(pwd)"""
-
-    
+    if request.user.is_authenticated:
+        return redirect('home')
 
     if request.method == 'POST':
 
@@ -154,21 +153,20 @@ def registrarse(request):
             user = User.objects.create_user(
                 username=request.POST.get('username'),
                 password=pwd,
-                first_name=request.POST.get('apellidos'),
-                last_name=request.POST.get('telefono'),
-                email=request.POST.get('correo')
+                first_name=request.POST.get('username'),
+                last_name=request.POST.get('apellidos'),
+                email=request.POST.get('correo'),
+                telefono=request.POST.get('telefono'),
+                role_id=2,
             )
 
-            print(user.username)
-            print(user.first_name)
-            print(user.last_name)
-
-        """
-        user.username = user.username.lower()
-        user.save()
-        login(request, user)
-        return redirect('home')"""
-
-    #return render(request, 'base/login_register.html', {'form': form})
+            user.save()
+            login(request, user)
+            return redirect('home')
 
     return render(request, 'ecommerce/register.html')
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')

@@ -1,86 +1,101 @@
 .logo-img{
-    width: 120px;
-    height: auto;
+  width: 120px;
+  height: auto;
 }
 
 .bg-light {
-    background-color: #fff !important;
+  background-color: #fff !important;
 }
 
 .color-grey{
-    margin-bottom: 40px;
-    background-color: #F4F5F6;
+  margin-bottom: 40px;
+  background-color: #F4F5F6;
 }
 
 .border{
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .imageCard{
-    width: 200px;
-    height: auto;
+  width: 200px;
+  height: auto;
 }
 
 .owl-prev {
-    left: 0;
+  left: 0;
 
-  }
-  
+}
+
 .owl-next {
-    right: 0;
+  right: 0;
 }
 
 .owl-prev, .owl-next {
-    position: absolute;
-    top: 50%; /* set the top position of the arrows */
-    line-height: 200px; /* adjust the line-height to align with the other elements */
-    transform: translateY(-50%); /* center the arrows vertically */
-  }
-
+  position: absolute;
+  top: 50%; /* set the top position of the arrows */
+  line-height: 200px; /* adjust the line-height to align with the other elements */
+  transform: translateY(-50%); /* center the arrows vertically */
+}
+.imgCarrousel{
+  width: 250px;
+  height:auto;
+  margin-top: 2em;
+}
 
 /*Pagina de Contacto*/
 .blue-icon {
-    color: #062995;
+  color: #062995;
 }
 
 .bold_txt{
-    font-weight: bold;
-    color: #062995;
-    font-size: 1.15em;
+  font-weight: bold;
+  color: #062995;
+  font-size: 1.15em;
 
 }
 /*Fin Página de Contacto*/
 
 /*Página de Contacto*/
 .rounded-input {
-    background-color: #f2f2f2;
-    border-radius: 5px;
-  }
-  
-  .message-input {
-    height: 130px;
-    line-height: 100px;
-    vertical-align: top;
-  }
-  /*Fin Página de Contacto*/
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+.message-input {
+  height: 130px;
+  line-height: 100px;
+  vertical-align: top;
+}
+/*Fin Página de Contacto*/
+
+
+.title-2{
+  font-size: 16px;
+  font-weight: bold;
+}
 
 /*Media Query Contacto*/
 
 @media only screen and (min-width: 991px) {
 .marginT2{
-  margin-top: 30px;
+margin-top: 30px;
 }
-
+.imgCarrousel{
+  width: 150px;
+  height:auto;
+  margin-top: 2em;
+}
 }
 
 @media only screen and (max-width: 770px) {
-    .container {
-    width: 90%;
-  }
-  .marginT{
-    margin-top: 30px;
-  }
+  .container {
+  width: 90%;
 }
-
-
-
+.imgCarrousel{
+  width: 100px;
+  height:auto;
+}
+.marginT{
+  margin-top: 30px;
+}
+}

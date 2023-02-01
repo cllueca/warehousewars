@@ -132,3 +132,19 @@ $(document).ready(function() {
   });
 });
  //location.href = '/descProducto/' + productId + '/';    onclick="location.href='/descProducto/' + this.dataset.productId + '/'"
+
+ $(document).ready(function() {
+  $('#minus').click(function() {
+let units = document.getElementById("units");
+  if (units.value > 1) {
+    units.value--;
+  }
+  });
+});
+
+$(document).ready(function() {
+  $('#plus').click(function() {
+    let units = document.getElementById("units");
+    units.value++;
+  });
+});

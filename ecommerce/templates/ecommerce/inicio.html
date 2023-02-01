@@ -88,7 +88,7 @@
     <div class="row" id="here">
       {% if selected %}
           {% for queryType in query %}
-              <div class="col-md-4 mt-4">
+              <div class="col-md-4 mt-4 product-info" id="product-{{ product.product_id }}" data-product-id="{{ product.product_id }}">
                   <div class="card">
                       <img src="{{ queryType.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
                       <hr>

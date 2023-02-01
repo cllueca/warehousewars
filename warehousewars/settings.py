@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ecommerce.apps.EcommerceConfig',
+    'phone_field',
 ]
+
+AUTH_USER_MODEL = 'ecommerce.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
