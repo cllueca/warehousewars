@@ -4,4 +4,105 @@
 {% block content %}
 <h1>Vista de almacen</h1>
 <h3>Logueado como: {{request.user.username}}</h3>
+
+
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Stock</th>
+            <th>Stock mínimo</th>
+            <th>Costo por unidad</th>
+            <th>Ubicación</th>
+            <th>URL de imagen</th>
+            <th>Descripción</th>
+            <th>Tipo de ID</th>
+            <th>Fecha de llegada</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in producto %}
+          <tr>
+            <td>{{ product.product_id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.min_stock }}</td>
+            <td>{{ product.cost_per_unit }}</td>
+            <td>{{ product.location }}</td>
+            <td style="max-width: 160px; overflow: auto;">{{ product.image_url }}</td>
+            <td>{{ product.product_description }}</td>
+            <td>{{ product.type_id }}</td>
+            <td>{{ product.fecha_llegada }}</td>
+            <td>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.product_id }}">Editar</button>
+                <a href="#" class="btn btn-danger">Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+           
+</div>
+
+<!-- Modal para editar un producto -->
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editProductForm">
+            <input type="hidden" id="productId" name="productId">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input type="number" class="form-control" id="stock" name="stock">
+            </div>
+            <div class="form-group">
+              <label for="min_stock">Stock mínimo</label>
+              <input type="number" class="form-control" id="min_stock" name="min_stock">
+            </div>
+            <div class="form-group">
+              <label for="cost_per_unit">Costo por unidad</label>
+              <input type="number" class="form-control" id="cost_per_unit" name="cost_per_unit">
+            </div>
+            <div class="form-group">
+              <label for="location">Ubicación</label>
+              <input type="text" class="form-control" id="location" name="location">
+            </div>
+            <div class="form-group">
+              <label for="image_url">URL de imagen</label>
+              <input type="text" class="form-control" id="image_url" name="image_url">
+            </div>
+            <div class="form-group">
+              <label for="product_description">Descripción</label>
+              <textarea class="form-control" id="product_description" name="product_description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="type_id">Tipo de ID</label>
+              <input type="number" class="form-control" id="type_id" name="type_id">
+            </div>
+            <div class="form-group">
+              <label for="fecha_llegada">Fecha de llegada</label>
+              <input type="date" class="form-control" id="fecha_llegada" name="fecha_llegada">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" onclick="updateProduct()" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+        </div>
+    </div>
+</div>
+    
 {% endblock content %}

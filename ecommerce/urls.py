@@ -6,6 +6,8 @@ urlpatterns = [
    path('showmore/',  views.showmoreView, name='show_more'),
    path('contacto/', views.paginaContacto, name="contacto"),
 
+   path('update/', views.update_product, name='update_product'),
+
    path('producto/<int:selectedValue>/', views.paginaContacto, name="contacto"),
 
    path('filtroInicio/<int:selectedValue>/', views.filtroInicio, name='filtroInicio'),

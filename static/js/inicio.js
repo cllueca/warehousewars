@@ -206,3 +206,25 @@ $(document).ready(function() {
  
 });
 
+const updateProduct = () => {
+  const formData = new FormData(document.getElementById("editProductForm"));
+  const productId = formData.get("productId");
+  const url = `/update/${productId}/`;
+
+  fetch(url, {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.json())
+    .then(data => {
+      // handle response data
+    })
+    .catch(error => {
+      // handle errors
+    });
+};
+
+
+
+
+

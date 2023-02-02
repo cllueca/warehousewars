@@ -14,7 +14,11 @@ from django.contrib import messages
 def paginaPrincipal(request):
 
     if request.user.is_authenticated and request.user.role_id == 1:
-        return render(request, 'ecommerce/vistaAlmacen.html')
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Productos"')
+        product = dictfetchall(cursor)
+        context = {'producto' : product}
+        return render(request, 'ecommerce/vistaAlmacen.html', context)
     else:
         try:
             cursor = connection.cursor()
@@ -35,7 +39,7 @@ def paginaPrincipal(request):
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
         finally:
             cursor.close()
-        context = {'datos': user, 'producto' : product, 'conectTipo' : tipos,'conectProveedor' : proveedor}
+        context = {'datos': user, 'producto' : product, 'productoCarrousel' : productCarrousel, 'conectTipo' : tipos,'conectProveedor' : proveedor}
         return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
@@ -194,3 +198,29 @@ def registrarse(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def update_product(request, product_id):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        stock = request.POST.get('stock')
+        min_stock = request.POST.get('min_stock')
+        cost_per_unit = request.POST.get('cost_per_unit')
+        location = request.POST.get('location')
+        image_url = request.POST.get('image_url')
+        product_description = request.POST.get('product_description')
+        type_id = request.POST.get('type_id')
+        fecha_llegada = request.POST.get('fecha_llegada')
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, cost_per_unit = %s, location = %s, image_url = %s, product_description = %s, type_id = %s, fecha_llegada = %s WHERE product_id = %s',
+                [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada, product_id]
+            )
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+    
+        return HttpResponse("Producto actualizado")
+    return HttpResponse("Metodo no permitido")
