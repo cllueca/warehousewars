@@ -20,25 +20,30 @@
     </div>
       <div class="owl-container pb-5">
         <div class="owl-carousel custom-carousel owl-theme ">
-          {% for product in producto %}
-            <div class="item m-4">
+          {% for productCarrousel in productoCarrousel %}
+            <div class="item m-4" style="background-color: white;">
                 <div class="row border">
-                    <div class="col-md-6" style="background-color:rgb(255, 255, 255); border-radius: 10px;">
-                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 250px;height:auto;">
+                    <div class="col-md-6 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">
+                        <img src="{{ productCarrousel.image_url }}" alt="{{ product.name }}">
                     </div>
                     <div class="col-md-6" style="background-color: #e1e1e6; border-radius: 10px;">
-                        <h4 class="m-3">{{ product.name }}</h4>
-                        <p class="m-3">{{ product.cost_per_unit }}</p>
-                        <button class="btn btn-primary m-3 ">Añadir al Carrito</button>
+                        <h4 class="m-3">{{ productCarrousel.name }}</h4>
+                        <p class="m-3">{{ productCarrousel.cost_per_unit }}</p>
+                       
+                        <div class="text-center mt-3 mb-3" style="width: 100%;">
+                          <button id="show-more-button" class="button-21" role="button">Añadir al Carrito</button>
+                           </div>
                     </div>
                 </div>
             </div>
           {% endfor %}
+          <div class="owl-theme">
+            <div class="owl-controls">
+                <div class="custom-nav owl-nav"></div>
+            </div>
         </div>
-        <div class="owl-nav">
-          <div class="prev"></div>
-          <div class="next"></div>
         </div>
+        
       </div>
     </div>
 </section> 
@@ -67,9 +72,9 @@
       <div class="form-group col-4">
         <label for="product-prize">Precio:</label>
         <select class="form-control" id="product-prize">
-          <option value='0'>No seleccionado</option>
-          <option value="1">De Menos a Mas</option>
-          <option value="2">De Mas a Menos</option>
+          <option class="mt-2" id="option-0" value='0'>No seleccionado</option>
+          <option class="mt-2" id="option-1" value="1">De Menos a Mas</option>
+          <option class="mt-2" id="option-2" value="2">De Mas a Menos</option>
         </select>
       </div>
 
@@ -88,7 +93,7 @@
     <div class="row" id="here">
       {% if selected %}
           {% for queryType in query %}
-              <div class="col-md-4 mt-4 product-info" id="product-{{ product.product_id }}" data-product-id="{{ product.product_id }}">
+              <div class="col-md-4 mt-4 product-info" id="product-{{ queryType.product_id }}" data-product-id="{{ queryType.product_id }}">
                   <div class="card">
                       <img src="{{ queryType.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
                       <hr>
@@ -97,7 +102,7 @@
                               <h5 class="card-title">{{ queryType.name }}</h5>
                           </div>
                           <div class="text-right">
-                              <p class="card-text">{{ queryType.cost_per_unit }}</p>
+                              <p class="card-text borderPrize">{{ queryType.cost_per_unit }}</p>
                           </div>
                       </div>
                   </div>
@@ -106,7 +111,6 @@
       {% else %}
           {% for product in producto %}
               <div class="col-md-4 mt-4 product-info" id="product-{{ product.product_id }}" data-product-id="{{ product.product_id }}">
-                
                   <div class="card">
                       <img src="{{ product.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
                       <hr>
@@ -115,14 +119,19 @@
                               <h5 class="card-title">{{ product.name }}</h5>
                           </div>
                           <div class="text-right">
-                              <p class="card-text">{{ product.cost_per_unit }}</p>
+                              <p class="card-text borderPrize">{{ product.cost_per_unit }}</p>
                           </div>
                       </div>
                   </div>
               </div>
           {% endfor %}
+          <div class="text-center mt-4" style="width: 100%;">
+          <button id="show-more" class="button-38" role="button">Ver Mas</button>
+          </div>
       {% endif %}
     </div>
+
+  
 
   </div>
 </section>

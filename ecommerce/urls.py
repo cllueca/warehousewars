@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
    path('', views.paginaPrincipal, name="home"),
+   path('showmore/',  views.showmoreView, name='show_more'),
    path('contacto/', views.paginaContacto, name="contacto"),
 
    path('producto/<int:selectedValue>/', views.paginaContacto, name="contacto"),
