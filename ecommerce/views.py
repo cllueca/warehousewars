@@ -11,30 +11,31 @@ from .funciones import *
 
 
 def paginaPrincipal(request):
-    #show_more = request.GET.get('show_more', 6)
-    try:
-        cursor = connection.cursor()
-        cursor.execute('SELECT * FROM "Usuarios";')
-        user= dictfetchall(cursor)
-        cursor.execute(f'SELECT * FROM "Productos" LIMIT 6;')
-        product = dictfetchall(cursor)
-        cursor.execute('SELECT * FROM "Productos" LIMIT 4;')
-        productCarrousel = dictfetchall(cursor)
-        cursor.execute('SELECT * FROM "Tipos";')
-        tipos = dictfetchall(cursor)
-        cursor.execute('SELECT * FROM "Usuarios" WHERE role_id = 2;')
-        proveedor = dictfetchall(cursor)
 
-        showmore = 3
+    if request.user.is_authenticated and request.user.role_id == 1:
+        return render(request, 'ecommerce/vistaAlmacen.html')
+    else:
+        try:
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM "Usuarios";')
+            user= dictfetchall(cursor)
+            cursor.execute(f'SELECT * FROM "Productos" LIMIT 6;')
+            product = dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Productos" LIMIT 4;')
+            productCarrousel = dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Tipos";')
+            tipos = dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Usuarios" WHERE role_id = 2;')
+            proveedor = dictfetchall(cursor)
 
-    except Exception as e:
-        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-    finally:
-        cursor.close()
-    context = {'datos': user, 'producto' : product, 'productoCarrousel' : productCarrousel, 'conectTipo' : tipos,'conectProveedor' : proveedor,}
-    return render(request, 'ecommerce/inicio.html', context)
+           
 
-
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+        context = {'datos': user, 'producto' : product, 'conectTipo' : tipos,'conectProveedor' : proveedor}
+        return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
 
@@ -111,10 +112,10 @@ def showmoreView(request):
 
 def filtroProveedor(request, selectedProveedor):
     try:
-        
         cursor = connection.cursor()
         if(selectedProveedor == 0):
             cursor.execute('SELECT * FROM "Productos";')
+            queryType = dictfetchall(cursor)
         else:
             cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".product_id = "Proveedor-Producto".product_id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
             queryType = dictfetchall(cursor)
