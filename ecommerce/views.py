@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from ecommerce.models import User
 from .funciones import *
+from django.contrib import messages
 
 
 def paginaPrincipal(request):
@@ -149,14 +150,20 @@ def registrarse(request):
 
     if request.method == 'POST':
 
-        pwd = request.POST.get('password')
-        pwdConf = request.POST.get('password2')
+        correcto = camposObligatoriosRellenos(request,
+                                              request.POST.get('username'),
+                                              request.POST.get('apellidos'),
+                                              request.POST.get('telefono'),
+                                              request.POST.get('correo'),
+                                              request.POST.get('password'),
+                                              request.POST.get('password2'))
+        
+        correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else None
 
-        if(comprobarContraseña(pwd, pwdConf) == 1): # funcion un poco basica, mejorar mas adelante
-
+        if(correcto): # funcion un poco basica, mejorar mas adelante
             user = User.objects.create_user(
                 username=request.POST.get('username'),
-                password=pwd,
+                password=request.POST.get('password'),
                 first_name=request.POST.get('username'),
                 last_name=request.POST.get('apellidos'),
                 email=request.POST.get('correo'),
@@ -166,7 +173,7 @@ def registrarse(request):
 
             user.save()
             login(request, user)
-            return redirect('home')
+            return redirect('home') 
 
     return render(request, 'ecommerce/register.html')
 

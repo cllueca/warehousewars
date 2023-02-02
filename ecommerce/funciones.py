@@ -1,4 +1,6 @@
 import datetime
+from django.contrib import messages
+import re
 
 # Funcion que convierte las querys a la BBDD en diccionarios, para acceder de manera mas facil al valor de cada campo en las templates
 def dictfetchall(cursor):
@@ -10,14 +12,20 @@ def dictfetchall(cursor):
     ]
 
 
-def comprobarContraseña(pwd, pwdConf):
+def comprobarContraseña(request, pwd, pwdConf):
     if(len(pwd) < 8):
-        return -2 # longitud corta
+        messages.error(request, "La contraseña debe contener al menos 8 caracteres")
+        return False # longitud corta
 
-    if(len(pwd) != len(pwdConf)):
-        return -1 # false, diferente tamaño
-    
     if(pwd != pwdConf):
-        return 2 # false
+        messages.error(request, "Las contraseñas no coinciden")
+        return False # false
     
-    return 1 # true
+    return True # true
+
+def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo, pwd, pwdConf):
+
+    if len(nombre) == 0: # esto sigue en pruebas
+        messages.error(request, "Hay nombre")
+        return False
+    return True

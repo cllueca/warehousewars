@@ -3,6 +3,14 @@
 {% block content %}
 
 
+{% for msg in messages %}
+{% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<div class="alert alert-danger fade show" role="alert">
+	<strong>{{msg}}</strong>
+</div>
+{% endif %}
+{% endfor %}
+
 <div class="main">
 	<div class="nav-item col-md-4 col-xs-12">
 		<form class="formularioRegistro" method="POST" action="">
@@ -26,7 +34,7 @@
 				<li class="nav-item distancia"><b>CONTRASEÑA</b></li>
 				<li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Inserte su contraseña"></input></li>
 				<li class="nav-item"><input class="textfields distancia" type="password" name="password2" placeholder="Repita la contraseña"></input></li>
-				<li class="nav-item distancia"><input type="submit" class="botoniniciar" value="Iniciar Sesión"/></li>
+				<li class="nav-item distancia"><input type="submit" class="botoniniciar" value="Registarse"/></li>
 				<li><p class="textoregistro imagen">Ya tienes cuenta?<a href="{% url 'login' %}">Inicia sesión aqui</a></p></li>
 			</ul>
 		</form>
