@@ -8,8 +8,8 @@
       <div class="col-4">
         <h2>{{ productosDesc.name }}</h2>
       </div>
-      <div class="col-1 text-right border">
-        <p class="mt-3 mr-2">{{ productosDesc.cost_per_unit }}</p>
+      <div class="col-1 text-right">
+        <p class="borderPrize mt-2 mr-2">{{ productosDesc.cost_per_unit }}</p>
       </div>
     </div>
     <div class="row mb-3">
@@ -27,7 +27,7 @@
         <p>{{ productosDesc.product_description }}</p>
         <div class="form-group">
             <label class="title-2" for="units">Unidades: </label>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3" style="width: 35%;">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary" type="button" id="minus">-</button>
               </div>
@@ -37,7 +37,9 @@
               </div>
             </div>
           </div>
-        <button class="btn btn-primary">Buy</button>
+          <div class="text-center mt-4" style="width: 100%; margin: 0 auto;">
+            <button class="button-21 m-3" role="button">Añadir al Carrito</button>
+          </div>
       </div>
     </div>
   </div>

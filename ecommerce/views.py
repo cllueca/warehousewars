@@ -20,14 +20,16 @@ def paginaPrincipal(request):
             cursor = connection.cursor()
             cursor.execute('SELECT * FROM "Usuarios";')
             user= dictfetchall(cursor)
-            cursor.execute('SELECT * FROM "Productos";')
+            cursor.execute(f'SELECT * FROM "Productos" LIMIT 6;')
             product = dictfetchall(cursor)
+            cursor.execute('SELECT * FROM "Productos" LIMIT 4;')
+            productCarrousel = dictfetchall(cursor)
             cursor.execute('SELECT * FROM "Tipos";')
             tipos = dictfetchall(cursor)
             cursor.execute('SELECT * FROM "Usuarios" WHERE role_id = 2;')
             proveedor = dictfetchall(cursor)
 
-            showmore = 3
+           
 
         except Exception as e:
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
@@ -35,8 +37,6 @@ def paginaPrincipal(request):
             cursor.close()
         context = {'datos': user, 'producto' : product, 'conectTipo' : tipos,'conectProveedor' : proveedor}
         return render(request, 'ecommerce/inicio.html', context)
-
-
 
 def descripcionProducto(request, productId):
 
@@ -97,13 +97,26 @@ def filtroPrecio(request, selectedPrize):
     data = json.dumps(queryType)
     return HttpResponse(data, content_type='application/json')
 
+def showmoreView(request):
+    try:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Productos";')
+        product = dictfetchall(cursor)
+    except Exception as e:
+        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+    finally:
+        cursor.close()
+
+    data = json.dumps(product)
+    return HttpResponse(data, content_type='application/json')
+
 
 def filtroProveedor(request, selectedProveedor):
     try:
-        
         cursor = connection.cursor()
         if(selectedProveedor == 0):
             cursor.execute('SELECT * FROM "Productos";')
+            queryType = dictfetchall(cursor)
         else:
             cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".product_id = "Proveedor-Producto".product_id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
             queryType = dictfetchall(cursor)
