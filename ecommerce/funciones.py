@@ -25,7 +25,21 @@ def comprobarContraseña(request, pwd, pwdConf):
 
 def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo, pwd, pwdConf):
 
-    if len(nombre) == 0: # esto sigue en pruebas
-        messages.error(request, "Hay nombre")
+    
+    if re.match(re.compile(r'\b[A-Za-z0-9]+\b'), nombre) is None:
+        messages.error(request, "El campo nombre debe rellenarse")
         return False
+    
+    if re.match(re.compile(r'\b[A-Za-z0-9]+\b'), apellidos) is None:
+        messages.error(request, "El campo apellidos debe rellenarse")
+        return False
+    
+    if re.match(re.compile(r'\b[0-9]{9}\b'), telefono) is None:
+        messages.error(request, "El teléfono introducido no es correcto")
+        return False
+
+    if "@" not in correo:
+        messages.error(request, "Introducir un correo electrónico válido")
+        return False
+    
     return True
