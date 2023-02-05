@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from ecommerce.models import User
 from .funciones import *
 from django.contrib import messages
+from .forms import UserCreationForm
 
 
 def paginaPrincipal(request):
@@ -132,63 +133,63 @@ def filtroProveedor(request, selectedProveedor):
 
 def iniciarSesion(request):
 
+    # si alguien que ya esta logueado intenta acceder a esta vista mediante la URL se le redirige a la pagina principal
     if request.user.is_authenticated:
         return redirect('home')
     
+    # si la informacion que se manda por el formulario va en una peticion de tipo POST
     if request.method == "POST":
-        username = request.POST.get('username')
-        pwd = request.POST.get("password")
+        email = request.POST.get('email') # se obtiene el valor del correo dado por el usuario
+        pwd = request.POST.get("password") # se obtiene el valor de la contraseña dada por el usuario
+        userFound = False # para saber si el correo esta dado de alta en la BBDD
 
-        try: # check if the user exists
-            user = User.objects.get(username=username)
-            print("YAY")
+        try: # Comprueba si el correo del usuario esta registrado en la base de datos
+            user = User.objects.get(email=email)
+            userFound = True
         except:
-            print('User does not exist')
+            messages.error(request, 'Este correo no esta registrado como usuario')
 
-        user = authenticate(request, username=username, password=pwd)
+        if userFound: # si el correo esta dado de alta intenta hacer el login con la contraseña
+            user = authenticate(request, username=email, password=pwd)
 
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            print('Username or password does not exist')
+            if user is not None: # login correcto
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.error(request, 'Contraseña incorrecta')
 
     return render(request, 'ecommerce/login.html')
 
 
-def registrarse(request):
+def registrarse(request): # falta mucho curro por hacer aqui
 
+    # si alguien que ya esta logueado intenta acceder a esta vista mediante la URL se le redirige a la pagina principal
     if request.user.is_authenticated:
         return redirect('home')
-
+    
+    form = UserCreationForm()
+    
     if request.method == 'POST':
+        form = UserCreationForm(request.POST)
 
-        correcto = camposObligatoriosRellenos(request,
-                                              request.POST.get('username'),
-                                              request.POST.get('apellidos'),
-                                              request.POST.get('telefono'),
-                                              request.POST.get('correo'),
-                                              request.POST.get('password'),
-                                              request.POST.get('password2'))
-        
-        correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else None
+        if form.is_valid():
+            request.session['form_data'] = form.cleaned_data
+            pwdConf = request.POST.get('password2')
 
-        if(correcto): # funcion un poco basica, mejorar mas adelante
-            user = User.objects.create_user(
-                username=request.POST.get('username'),
-                password=request.POST.get('password'),
-                first_name=request.POST.get('username'),
-                last_name=request.POST.get('apellidos'),
-                email=request.POST.get('correo'),
-                telefono=request.POST.get('telefono'),
-                role_id=2,
-            )
+            user = form.save(commit=False)
 
-            user.save()
-            login(request, user)
-            return redirect('home') 
+            if comprobarCampos(request, user, pwdConf):
+                user.role_id = 2
+                user.username = user.first_name
+                user.save()
+                login(request, user)
+                return redirect('home')
+            
+        else:
+            form_data = request.session.get('form_data', {})
+            form = UserCreationForm(initial=form_data)
 
-    return render(request, 'ecommerce/register.html')
+    return render(request, 'ecommerce/register.html', {'form': form})
 
 
 def logoutUser(request):

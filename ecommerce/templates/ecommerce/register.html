@@ -1,5 +1,6 @@
 {% extends 'main.html' %}
 {% load static %}
+{% load filtros %}
 {% block content %}
 
 
@@ -22,17 +23,32 @@
 
 			<h2 style="text-align: center;">Registro de Usuario</h2>
 
-			<ul class="navbar-nav ml-auto distancia">
+			<ul class="navbar-nav ml-auto distancia">  <!-- me sobran cosas -->
 				<li class="nav-item"><b>NOMBRE</b></li>
-				<li class="nav-item"><input class="textfields" name="username" placeholder="Inserte su nombre"></input></li>
+				<li>
+					{{ form.first_name.errors }}
+					{{ form.first_name|addClass:"textfields"}}
+				</li>
 				<li class="nav-item distancia"><b>APELLIDOS</b></li>
-				<li class="nav-item"><input class="textfields" name="apellidos" placeholder="Inserte sus apellidos"></input></li>
+				<li>
+					{{ form.last_name.errors }}
+					{{ form.last_name|addClass:"textfields"}}
+				</li>
 				<li class="nav-item distancia"><b>TELÉFONO</b></li>
-				<li class="nav-item"><input class="textfields" name="telefono" placeholder="Inserte su nº de teléfono"></input></li>
+				<li>
+					{{ form.telefono.errors }}
+					{{ form.telefono|addClass:"textfields"}}
+				</li>
 				<li class="nav-item distancia"><b>CORREO</b></li>
-				<li class="nav-item"><input class="textfields" name="correo" placeholder="Inserte su correo"></input></li>
+				<li>
+					{{ form.email.errors }}
+					{{ form.email|addClass:"textfields"}}
+				</li>
 				<li class="nav-item distancia"><b>CONTRASEÑA</b></li>
-				<li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Inserte su contraseña"></input></li>
+				<li>
+					{{ form.password.errors }}
+					{{ form.password|addClass:"textfields"}}
+				</li>
 				<li class="nav-item"><input class="textfields distancia" type="password" name="password2" placeholder="Repita la contraseña"></input></li>
 				<li class="nav-item distancia"><input type="submit" class="botoniniciar" value="Registarse"/></li>
 				<li><p class="textoregistro imagen">Ya tienes cuenta?<a href="{% url 'login' %}">Inicia sesión aqui</a></p></li>

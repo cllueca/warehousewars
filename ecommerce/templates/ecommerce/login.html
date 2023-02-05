@@ -2,6 +2,14 @@
 {% load static %}
 {% block content %}
 
+{% for msg in messages %}
+{% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<div class="alert alert-danger fade show" role="alert">
+	<strong>{{msg}}</strong>
+</div>
+{% endif %}
+{% endfor %}
+
 <div class="main">
     <div class="nav-item col-md-4 col-xs-12">
         <form class="formularioInicio" method="POST" action="">
@@ -15,7 +23,7 @@
 
               <ul class="navbar-nav ml-auto distancia">
                   <li class="nav-item"><b>CORREO</b></li>
-                  <li class="nav-item"><input class="textfields" name="username" placeholder="Inserte su correo"></input></li>
+                  <li class="nav-item"><input class="textfields" name="email" placeholder="Inserte su correo"></input></li>
                   <li class="nav-item distancia"><b>CONTRASEÑA</b></li>
                   <li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Inserte su contraseña"></input></li>
                   <li class="nav-item" style="margin-top: 2em;"><p class="textoregistro distancia imagen"><a href="#">¿Has olvidado la contraseña?</a></p></li>

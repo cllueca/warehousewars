@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ecommerce.apps.EcommerceConfig',
     'phone_field',
+    'phonenumber_field',
 ]
 
 AUTH_USER_MODEL = 'ecommerce.User'
