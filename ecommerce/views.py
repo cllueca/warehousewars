@@ -9,14 +9,64 @@ from django.contrib.auth import authenticate, login, logout
 from ecommerce.models import User
 from .funciones import *
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 def paginaPrincipal(request):
 
     if request.user.is_authenticated and request.user.role_id == 1:
-        cursor = connection.cursor()
-        cursor.execute(f'SELECT * FROM "Productos"')
+        columna = request.GET.get('columna')
+        direction = request.GET.get('direction')
+        query = request.GET.get("query")
+        query_id = request.GET.get("query_id")
+        query_stock_min = request.GET.get("query_stock_min")
+        query_stock_max = request.GET.get("query_stock_max")
+        query_min_stock_min = request.GET.get("query_min_stock_min")
+        query_min_stock_max = request.GET.get("query_min_stock_max")
+        query_price_min = request.GET.get("query_price_min")
+        query_price_max = request.GET.get("query_price_max")
+        
+        if columna and direction:
+            cursor = connection.cursor()
+            cursor.execute(f'SELECT * FROM "Productos" ORDER BY {columna} {direction}')
+        else: 
+            cursor = connection.cursor()
+            cursor.execute(f'SELECT * FROM "Productos"')
         product = dictfetchall(cursor)
+
+        if query:
+            product = [p for p in product if query in p['name'] or query in p['location']]
+        if query_id:
+            product = [p for p in product if p['product_id'] == int(query_id)]
+        
+        if query_stock_min and query_stock_max:
+            product = [p for p in product if p['stock'] >= int(query_stock_min) and p['stock'] <= int(query_stock_max)]
+
+        if query_stock_min:
+            product = [p for p in product if p['stock'] >= int(query_stock_min)]
+
+        if query_stock_max:
+            product = [p for p in product if p['stock'] <= int(query_stock_max)]    
+
+        if query_min_stock_min and query_min_stock_max:
+            product = [p for p in product if p['min_stock'] >= int(query_min_stock_min) and p['min_stock'] <= int(query_min_stock_max)]
+
+        if query_min_stock_min:
+            product = [p for p in product if p['min_stock'] >= int(query_min_stock_min)]
+
+        if query_min_stock_max:
+            product = [p for p in product if p['min_stock'] <= int(query_min_stock_max)]  
+
+        if query_price_min and query_price_max:
+            product = [p for p in product if float(p['cost_per_unit'].replace("$", "")) >= float(query_price_min) and float((p['cost_per_unit']).replace("$","")) <= float(query_price_max)]
+
+        if query_price_min:
+            product = [p for p in product if float(p['cost_per_unit'].replace("$","")) >= float(query_price_min)]
+
+        if query_price_max:
+            product = [p for p in product if float(p['cost_per_unit'].replace("$","")) <= float(query_price_max)]  
+
         context = {'producto' : product}
         return render(request, 'ecommerce/vistaAlmacen.html', context)
     else:
@@ -199,28 +249,85 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+@csrf_exempt
 def update_product(request, product_id):
+
     if request.method == "POST":
+        product_id = request.POST.get('productId')
         name = request.POST.get('name')
-        stock = request.POST.get('stock')
-        min_stock = request.POST.get('min_stock')
-        cost_per_unit = request.POST.get('cost_per_unit')
+        stock = int(request.POST.get('stock'))
+        min_stock = int(request.POST.get('min_stock'))
+        cost_per_unit = float(request.POST.get('cost_per_unit'))
         location = request.POST.get('location')
         image_url = request.POST.get('image_url')
         product_description = request.POST.get('product_description')
-        type_id = request.POST.get('type_id')
-        fecha_llegada = request.POST.get('fecha_llegada')
-
+        type_id = int(request.POST.get('type_id'))
+        fecha_llegada = datetime.datetime.strptime(request.POST.get('fecha_llegada'), '%Y-%m-%d').date()
+        print(fecha_llegada)
         try:
             cursor = connection.cursor()
-            cursor.execute(
-                'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, cost_per_unit = %s, location = %s, image_url = %s, product_description = %s, type_id = %s, fecha_llegada = %s WHERE product_id = %s',
-                [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada, product_id]
-            )
+          
+            query = 'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, cost_per_unit = %s, location = %s, image_url = %s, product_description = %s, type_id = %s, fecha_llegada = %s WHERE product_id = %s'
+            values = [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada, product_id]
+            #print(cursor.mogrify(query, values))
+            #print("Types: ", [type(v) for v in values])
+            cursor.execute(query, values)
+       
         except Exception as e:
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
         finally:
             cursor.close()
     
-        return HttpResponse("Producto actualizado")
+        return JsonResponse({"message": "Producto actualizado"})
+    return HttpResponse("Metodo no permitido")
+
+
+@csrf_exempt
+def create_product(request):
+    if request.method == "POST":
+        print(request.POST)
+        name = request.POST.get('name')
+        stock = int(request.POST.get('stock'))
+        min_stock = int(request.POST.get('min_stock'))
+        cost_per_unit = float(request.POST.get('cost_per_unit'))
+        location = request.POST.get('location')
+        image_url = request.POST.get('image_url')
+        product_description = request.POST.get('product_description')
+        type_id = int(request.POST.get('type_id'))
+        fecha_llegada = datetime.datetime.strptime(request.POST.get('fecha_llegada'), '%Y-%m-%d').date()
+        print(fecha_llegada)
+        try:
+            cursor = connection.cursor()
+            
+            query = 'INSERT INTO "Productos" (name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
+            values = [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada]
+            print(cursor.mogrify(query, values))
+            cursor.execute(query, values)
+    
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+
+        return JsonResponse({"message": "Producto creado"})
+    return HttpResponse("Metodo no permitido")
+
+
+def delete_product(request, product_id):
+    if request.method == "POST":
+        product_id = request.POST.get('productId')
+        print(product_id)
+        try:
+            cursor = connection.cursor()
+            
+            query = 'DELETE FROM "Productos" WHERE product_id = %s'
+            values = [product_id]
+            cursor.execute(query, values)
+    
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+
+        return JsonResponse({"message": "Producto eliminado"})
     return HttpResponse("Metodo no permitido")

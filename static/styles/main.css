@@ -12,8 +12,12 @@
   background-color: #F4F5F6;
 }
 
-.border{
+.borderDiv{
+  border: 1px solid #062894;
   border-radius: 10px;
+  color: white;
+  background: rgb(12,40,129);
+  background: linear-gradient(168deg, rgba(12,40,129,1) 0%, rgba(6,40,148,1) 35%, rgba(84,115,214,1) 100%);
 }
 
 .imageCard{
@@ -102,9 +106,12 @@ margin-top: 30px;
 
 .card{
   border-radius: 0.75rem!important;
+  border-color: #FEA424;
 }
 
-
+.selectForms{
+border-color: #062894;
+}
 
 
 /* CSS */
@@ -203,14 +210,14 @@ justify-content: center;
 align-items: center;
 padding: 8px 8px 8px;
 gap: 10px;
-color:  #45B36B;
+color:  #0e622b;
 font-weight: bold;
 width: 65px;
 height: 30px;
-
+background-color: #fff;
 /* Primary/4 */
 
-border: 2px solid #45B36B;
+border: 2px solid #0e622b;
 border-radius: 4px;
 
 /* Inside auto layout */
@@ -218,6 +225,57 @@ border-radius: 4px;
 flex: none;
 order: 1;
 flex-grow: 0;
+}
+
+tbody {
+  display: block;
+  height: 400px;
+  overflow: auto;
+}
+tbody::-webkit-scrollbar { 
+  display: auto; 
+}
+thead, tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;/* even columns width , fix width of table too*/
+}
+
+table {
+  width: 100%;
+}
+
+thead th:nth-child(1) {
+  width: 11%;
+}
+
+thead th:nth-child(2) {
+  width: 10.95%;
+}
+
+thead th:nth-child(3) {
+  width: 11%;
+}
+
+thead th:nth-child(4) {
+  width: 10.9%;
+}
+
+thead th:nth-child(5) {
+  width: 11.0%;
+}
+
+thead th:nth-child(6) {
+  width: 10.95%;
+}
+thead th:nth-child(7) {
+  width: 11%;
+}
+thead th:nth-child(8) {
+  width: 11.05%;
+}
+thead th:nth-child(9) {
+  width: 11.85%;
 }
 
 
