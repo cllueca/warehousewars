@@ -153,50 +153,29 @@ def registrarse(request): # falta mucho curro por hacer aqui
     if request.user.is_authenticated:
         return redirect('home')
     
-    #form = UserCreationForm()
+    form = UserCreationForm()
     
     if request.method == 'POST':
-        """form = UserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
 
         if form.is_valid():
             request.session['form_data'] = form.cleaned_data
+            pwdConf = request.POST.get('password2')
 
             user = form.save(commit=False)
 
-
-            # meter aqui comprobaciones que quiera y en el else meter el else de abajo ese se puede quitar
-            # user.save() no hacerlo hasta que el resto funcione
-            # login(request, user) igual que la linea anterior
-            return redirect('home')
+            if comprobarCampos(request, user, pwdConf):
+                user.role_id = 2
+                user.username = user.first_name
+                user.save()
+                login(request, user)
+                return redirect('home')
+            
         else:
             form_data = request.session.get('form_data', {})
-            form = UserCreationForm(initial=form_data)"""
-        correcto = camposObligatoriosRellenos(request,
-                                              request.POST.get('username'),
-                                              request.POST.get('apellidos'),
-                                              request.POST.get('telefono'),
-                                              request.POST.get('correo'),
-                                              request.POST.get('password'),
-                                              request.POST.get('password2'))
-        
-        correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else None
+            form = UserCreationForm(initial=form_data)
 
-        if(correcto): # funcion un poco basica, mejorar mas adelante
-            user = User.objects.create_user(
-                username=request.POST.get('username'),
-                password=request.POST.get('password'),
-                first_name=request.POST.get('username'),
-                last_name=request.POST.get('apellidos'),
-                email=request.POST.get('correo'),
-                telefono=request.POST.get('telefono'),
-                role_id=2,
-            )
-
-            user.save()
-            login(request, user)
-            return redirect('home')
-
-    return render(request, 'ecommerce/register.html')#, {'form': form})
+    return render(request, 'ecommerce/register.html', {'form': form})
 
 
 def logoutUser(request):
