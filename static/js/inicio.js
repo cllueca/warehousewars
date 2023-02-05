@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
           contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].product_id}" data-product-id="${productos[i].product_id}">
             <div class="card">
               <img src="${productos[i].image_url}" class="imageCard card-img-top mx-auto d-block" alt="#">
-              <hr>
+              <hr style="border-color: #FEA424;">
               <div class="card-body d-flex justify-content-between">
                 <div>
                   <h5 class="card-title">${productos[i].name}</h5>
@@ -182,7 +182,7 @@ $(document).ready(function() {
           contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].product_id}" data-product-id="${productos[i].product_id}">
           <div class="card" >
             <img src="${productos[i].image_url}" class="imageCard card-img-top mx-auto d-block"  alt="#" >
-            <hr>
+            <hr style="border-color: #FEA424;">
             <div class="card-body d-flex justify-content-between">
               <div>
                 <h5 class="card-title">${productos[i].name}</h5>
@@ -206,3 +206,137 @@ $(document).ready(function() {
  
 });
 
+$(document).ready(function () {
+  $('.btn-warning').click(function () {
+    var productId = $(this).data('product-id');
+    $('#productId').val(productId);
+
+  });
+});
+
+function updateProduct() {
+  const productId = $('#productId').val();
+
+  const formData = new FormData(document.getElementById("editProductForm"));
+  const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  formData.append("csrfmiddlewaretoken", csrf_token);
+
+  const url = `/update/${productId}/`;
+
+  fetch(url, {
+    method: "POST",
+    body: formData
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      // handle response data
+    })
+    .catch(data => {
+      console.error(data.message);
+    });
+    
+    // Cierra el modal
+    $("#editProductModal").modal("hide");
+
+    // Limpia los parámetros
+    $("#editProductForm")[0].reset();
+};
+
+$(document).ready(function () {
+  $("#createProductForm").on("submit", function(e) {
+    e.preventDefault();
+    createProduct();
+  });
+});
+
+function createProduct() {
+
+  const formData = new FormData(document.getElementById("createProductForm"));
+  const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  formData.append("csrfmiddlewaretoken", csrf_token);
+  
+  const url = `/create/`;
+  
+  fetch(url, {
+    method: "POST",
+    body: formData,
+   
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message);
+    })
+    .catch(data => {
+      console.error(data.message);
+    });
+    
+    // Cierra el modal
+    $("#createProductModal").modal("hide");
+
+    // Limpia los parámetros
+    $("#createProductForm")[0].reset();
+};
+
+$(document).ready(function () {
+  $('.btn-danger').click(function () {
+  var productId = $(this).data('product-id');
+  $('#productId').val(productId);
+  });
+});
+
+function deleteProduct() {
+  const productId = $('#productId').val();
+
+  const url = `/delete/${productId}/`;
+  
+  fetch(url, {
+    method: "POST",
+    body: `productId=${productId}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-CSRFToken": getCookie("csrftoken")
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message + "id:" + productId);
+    })
+    .catch(data => {
+      console.error(data.message);
+    });
+    
+    // Cierra el modal
+    $("#deleteProductModal").modal("hide");
+    
+};
+
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}

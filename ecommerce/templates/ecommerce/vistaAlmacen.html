@@ -2,6 +2,279 @@
 {% load static %}
 
 {% block content %}
-<h1>Vista de almacen</h1>
-<h3>Logueado como: {{request.user.username}}</h3>
+
+<div class="container mt-5" style="max-width: 1700px!important;"> 
+  <table class="table-striped table-bordered">
+      <thead >
+        <tr class="text-center">
+          <th>
+            <div >
+              <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+                ID
+                <a href="{% url 'home' %}?columna=product_id&direction=asc"> &#x25B2; </a>
+                <a href="{% url 'home' %}?columna=product_id&direction=desc">&#x25BC;</a>
+              </div>
+              <form >
+                {% csrf_token %}
+                <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_id">
+                <input style="width: 90%"  type="submit" value="Filtrar">
+              </form>
+            </div>
+          </th>
+
+          <th>
+            <div >
+              <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+                Nombre
+                <a href="{% url 'home' %}?columna=name&direction=asc"> &#x25B2; </a>
+                <a href="{% url 'home' %}?columna=name&direction=desc">&#x25BC;</a>
+              </div>
+              <form >
+                {% csrf_token %}
+                <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_name">
+                <input style="width: 90%"  type="submit" value="Filtrar">
+              </form>
+            </div>
+          </th>
+          
+          <th>
+            <div >
+              <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+                Stock
+                <a href="{% url 'home' %}?columna=stock&direction=asc"> &#x25B2;</a>
+                <a   href="{% url 'home' %}?columna=stock&direction=desc"> &#x25BC;</a>
+              </div>
+              <form action="{% url 'home' %}" method="get">
+                <label for="query_stock_min">min:</label>
+                <input style="width: 25%;" type="number" id="query_stock_min" name="query_stock_min">
+                <label for="query_stock_max">max:</label>
+                <input style="width: 25%;" type="number" id="query_stock_max" name="query_stock_max">
+                <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
+              </form>
+            </div>
+          </th>
+
+          <th>
+            <div >
+              <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+                Stock Minimo
+                <a href="{% url 'home' %}?columna=min_stock&direction=asc"> &#x25B2;</a>
+                <a href="{% url 'home' %}?columna=min_stock&direction=desc"> &#x25BC;</a>
+              </div>
+              <form action="{% url 'home' %}" method="get">
+                <label for="query_min_stock_min">min:</label>
+                <input style="width: 25%;" type="number" id="query_min_stock_min" name="query_min_stock_min">
+                <label for="query_min_stock_max">max:</label>
+                <input style="width: 25%;" type="number" id="query_min_stock_max" name="query_min_stock_max">
+                <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
+              </form>
+            </div>
+          </th>
+
+          <th>
+            <div >
+              <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+                Coste/und
+                <a href="{% url 'home' %}?columna=cost_per_unit&direction=asc"> &#x25B2;</a>
+                <a href="{% url 'home' %}?columna=cost_per_unit&direction=desc"> &#x25BC;</a>
+              </div>
+              <form action="{% url 'home' %}" method="get">
+                <label for="query_price_min">min:</label>
+                <input style="width: 25%;" type="number" id="query_price_min" name="query_price_min">
+                <label for="query_price_max">max:</label>
+                <input style="width: 25%;" type="number" id="query_price_max" name="query_price_max">
+                <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
+              </form>
+            </div>
+          </th>
+
+          <th>
+            <div >
+              <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+                Localización
+                <a href="{% url 'home' %}?columna=location&direction=asc"> &#x25B2; </a>
+                <a href="{% url 'home' %}?columna=location&direction=desc">&#x25BC;</a>
+              </div>
+              <form >
+                {% csrf_token %}
+                <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_locate">
+                <input style="width: 90%"  type="submit" value="Filtrar">
+              </form>
+            </div>
+          </th>
+          <th><a href="{% url 'home' %}?columna=type_id&direction=asc">Tipo de ID &#x25B2;</a><a   href="{% url 'home' %}?columna=type_id&direction=desc"> &#x25BC;</a></th>
+          <th><a href="{% url 'home' %}?columna=fecha_llegada&direction=asc">Llegada Alm &#x25B2;</a><a   href="{% url 'home' %}?columna=fecha_llegada&direction=desc"> &#x25BC;</a></th>
+          <th >Acciones  <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createProductModal">
+            <i class="fas fa-plus"></i>
+          </button></th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        {% for product in producto %}
+        <tr >
+          <td>{{ product.product_id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.min_stock }}</td>
+          <td>{{ product.cost_per_unit }}</td>
+          <td>{{ product.location }}</td>
+          <td>{{ product.type_id }}</td>
+          <td >{{ product.fecha_llegada }}</td>
+          <td >
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.product_id }}" data-name2="{{ product.name }}">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ product.product_id }}">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+         
+</div>
+
+<!-- Modal para editar un producto-->
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editProductForm">
+            {% csrf_token %}
+            <input type="hidden" id="productId" name="productId">
+            <input type="hidden" id="name2" name="name2">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input type="number" class="form-control" id="stock" name="stock">
+            </div>
+            <div class="form-group">
+              <label for="min_stock">Stock mínimo</label>
+              <input type="number" class="form-control" id="min_stock" name="min_stock">
+            </div>
+            <div class="form-group">
+              <label for="cost_per_unit">Costo por unidad</label>
+              <input type="number" class="form-control" id="cost_per_unit" name="cost_per_unit">
+            </div>
+            <div class="form-group">
+              <label for="location">Ubicación</label>
+              <input type="text" class="form-control" id="location" name="location">
+            </div>
+            <div class="form-group">
+              <label for="image_url">URL de imagen</label>
+              <input type="text" class="form-control" id="image_url" name="image_url">
+            </div>
+            <div class="form-group">
+              <label for="product_description">Descripción</label>
+              <textarea class="form-control" id="product_description" name="product_description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="type_id">Tipo de ID</label>
+              <input type="number" class="form-control" id="type_id" name="type_id">
+            </div>
+            <div class="form-group">
+              <label for="fecha_llegada">Fecha de llegada</label>
+              <input type="date" class="form-control" id="fecha_llegada" name="fecha_llegada">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" onclick="updateProduct(this)"  data-product-id="{{ product.product_id }}"  class="btn btn-primary">Actualizar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+        </div>
+    </div>
+</div> 
+
+<!-- Modal para crear un producto-->
+<div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createProductForm">
+          {% csrf_token %}
+          <input type="hidden" id="productId" name="productId">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+          <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock">
+          </div>
+          <div class="form-group">
+            <label for="min_stock">Stock mínimo</label>
+            <input type="number" class="form-control" id="min_stock" name="min_stock">
+          </div>
+          <div class="form-group">
+            <label for="cost_per_unit">Costo por unidad</label>
+            <input type="number" class="form-control" id="cost_per_unit" name="cost_per_unit">
+          </div>
+          <div class="form-group">
+            <label for="location">Ubicación</label>
+            <input type="text" class="form-control" id="location" name="location">
+          </div>
+          <div class="form-group">
+            <label for="image_url">URL de imagen</label>
+            <input type="text" class="form-control" id="image_url" name="image_url">
+          </div>
+          <div class="form-group">
+            <label for="product_description">Descripción</label>
+            <textarea class="form-control" id="product_description" name="product_description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="type_id">Tipo de ID</label>
+            <input type="number" class="form-control" id="type_id" name="type_id">
+          </div>
+          <div class="form-group">
+            <label for="fecha_llegada">Fecha de llegada</label>
+            <input type="date" class="form-control" id="fecha_llegada" name="fecha_llegada">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" onclick="createProduct()"  class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+      </div>
+  </div>
+</div> 
+    
+<!-- Modal para eliminar un producto -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Está seguro de que desea eliminar este producto?
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="deleteProduct(this)" data-product-id="{{ product.product_id }}" class="btn btn-danger">Sí</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}

@@ -53,7 +53,7 @@
 <section class="pt-5">
   <div class="container">
 
-    <div class="border text-center mt-5"  style="background-color: #F4F5F6;">
+    <div class="borderDiv text-center  mt-5">
       <h1 class="pt-5">Nuevos Productos</h1>
       <h4 class="pb-5">Ultimos productos que han llegado al almacen</h4>
     </div>
@@ -61,7 +61,7 @@
     <div class="row mt-5 mb-3" >
       <div class="form-group col-4">
         <label for="product-type">Tipo de Producto:</label>
-        <select class="form-control" id="product-type">
+        <select class="form-control selectForms" id="product-type">
           <option value='0'>No seleccionado</option>
           {% for tipos in conectTipo %}
           <option value="{{ tipos.type_id }}">{{ tipos.name }}</option>
@@ -71,7 +71,7 @@
 
       <div class="form-group col-4">
         <label for="product-prize">Precio:</label>
-        <select class="form-control" id="product-prize">
+        <select class="form-control selectForms" id="product-prize">
           <option class="mt-2" id="option-0" value='0'>No seleccionado</option>
           <option class="mt-2" id="option-1" value="1">De Menos a Mas</option>
           <option class="mt-2" id="option-2" value="2">De Mas a Menos</option>
@@ -80,7 +80,7 @@
 
       <div class="form-group col-4">
         <label for="product-proveedor">Proveedores:</label>
-        <select class="form-control" id="product-proveedor">
+        <select class="form-control selectForms" id="product-proveedor">
           <option value='0'>No seleccionado</option>
           {% for proveedor in conectProveedor %}
           <option value="{{ proveedor.user_id }}">{{ proveedor.name }}</option>
@@ -96,7 +96,7 @@
               <div class="col-md-4 mt-4 product-info" id="product-{{ queryType.product_id }}" data-product-id="{{ queryType.product_id }}">
                   <div class="card">
                       <img src="{{ queryType.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
-                      <hr>
+                      <hr style="border-color: #FEA424;">
                       <div class="card-body d-flex justify-content-between">
                           <div>
                               <h5 class="card-title">{{ queryType.name }}</h5>
@@ -113,7 +113,7 @@
               <div class="col-md-4 mt-4 product-info" id="product-{{ product.product_id }}" data-product-id="{{ product.product_id }}">
                   <div class="card">
                       <img src="{{ product.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
-                      <hr>
+                      <hr style="border-color: #FEA424;">
                       <div class="card-body d-flex justify-content-between">
                           <div>
                               <h5 class="card-title">{{ product.name }}</h5>

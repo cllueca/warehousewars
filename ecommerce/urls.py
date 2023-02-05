@@ -6,6 +6,11 @@ urlpatterns = [
    path('showmore/',  views.showmoreView, name='show_more'),
    path('contacto/', views.paginaContacto, name="contacto"),
 
+
+   path('update/<int:product_id>/' , views.update_product, name='update_product'),
+   path('create/', views.create_product, name='create_product'),
+   path('delete/<int:product_id>/', views.delete_product, name='delete_product'),
+
    path('producto/<int:selectedValue>/', views.paginaContacto, name="contacto"),
 
    path('filtroInicio/<int:selectedValue>/', views.filtroInicio, name='filtroInicio'),
