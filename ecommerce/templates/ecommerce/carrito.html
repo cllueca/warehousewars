@@ -1,0 +1,96 @@
+{% extends "main.html" %}
+{% block content %}
+<div class="container">
+    <div class="row bg-primary">
+        <div class="col">
+            <h5>Shopping cart</h5>
+        </div>
+        <div class="col">
+            <h5>CheckOut Details</h5>
+        </div>
+        <div class="col">
+            <h5>Order Complete</h5>
+        </div>
+        <div class="col my-auto">
+            <button type="button" class="btn btn-secondary rounded">Continue shopping</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8 bg-danger d-flex justify-content-center">
+            <div class="container bg-light ">
+                <h1>Cart</h1>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <img src="..." alt="..." class="img-thumbnail">
+                    </div>
+                    <div class="col">
+                        <h3>Nombre Producto</h3>
+                    </div>
+                    <div class="col">
+                        <h3>Precio</h3>
+                    </div>
+                    <div class="col">
+                        <form>
+                            <input type="number" min="1" max="100">
+                        </form>
+                    </div>
+                    <div class="col">
+                        <h3>Precio total</h3>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="col-4 bg-dark d-flex justify-content-center">
+            <div class="container bg-secondary rounded py-5 px-4">
+                <h1>Cart Totals</h1>
+                <div class="row mt-3">
+                    <div class="col">
+                        <h3>Subtotal</h3>
+                    </div>
+                    <div class="col">
+                        <h3>121.31$</h3>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <h3>Shipping</h3>
+                    </div>
+                    <div class="col pt-2">
+                        <div class="form-check my-1">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                            Free Shipping
+                            </label>
+                        </div>
+                        <div class="form-check  my-1">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                            Flat rate $8.00
+                            </label>
+                        </div>
+                        <div class="form-check  my-1">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                            <label class="form-check-label" for="flexRadioDefault3">
+                            Pickup 21%
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <h3>Total</h3>
+                    </div>
+                    <div class="col">
+                        <h3>121.31$</h3>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                <button type="button" class="btn btn-primary mt-5 px-5 rounded ">CheckOut</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}

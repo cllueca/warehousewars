@@ -114,6 +114,10 @@ def paginaContacto(request):
 
     return render(request, 'ecommerce/contacto.html')
 
+def pagincaCarrito(request):
+
+    return render(request, 'ecommerce/carrito.html')
+
 
 def filtroInicio(request, selectedValue):
     try:

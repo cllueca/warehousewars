@@ -5,6 +5,7 @@ urlpatterns = [
    path('', views.paginaPrincipal, name="home"),
    path('showmore/',  views.showmoreView, name='show_more'),
    path('contacto/', views.paginaContacto, name="contacto"),
+   path('carrito/', views.pagincaCarrito, name="carrito"),
 
 
    path('update/<int:product_id>/' , views.update_product, name='update_product'),

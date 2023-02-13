@@ -10,7 +10,7 @@
                 <a href="{% url 'contacto' %}" class="nav-item nav-link mx-2">Contacto</a>
             </div>
             <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link mx-2">Carrito</a>
+                <a href="{% url 'carrito' %}" class="nav-item nav-link mx-2">Carrito</a>
             </div>
 
             {% if request.user.is_authenticated %}
