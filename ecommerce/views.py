@@ -19,7 +19,8 @@ def paginaPrincipal(request):
     if request.user.is_authenticated and request.user.role_id == 1:
         columna = request.GET.get('columna')
         direction = request.GET.get('direction')
-        query = request.GET.get("query")
+        query_name = request.GET.get("query_name")
+        query_locate = request.GET.get("query_locate")
         query_id = request.GET.get("query_id")
         query_stock_min = request.GET.get("query_stock_min")
         query_stock_max = request.GET.get("query_stock_max")
@@ -36,8 +37,10 @@ def paginaPrincipal(request):
             cursor.execute(f'SELECT * FROM "Productos"')
         product = dictfetchall(cursor)
 
-        if query:
-            product = [p for p in product if query in p['name'] or query in p['location']]
+        if query_name:
+            product = [p for p in product if query_name in p['name']]
+        if query_locate:
+            product = [p for p in product if query_locate in p['location']]
         if query_id:
             product = [p for p in product if p['product_id'] == int(query_id)]
         
