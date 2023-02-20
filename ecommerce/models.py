@@ -17,3 +17,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+class Productos(models.Model):
+    name = models.CharField(max_length=255) 
+    image = models.ImageField(upload_to='Productos/') 
+    price = models.FloatField()

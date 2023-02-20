@@ -1,5 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
+{% load cart_tag %}
 <div class="container">
     <div class="row bg-primary">
         <div class="col">
@@ -17,18 +18,20 @@
     </div>
     <div class="row">
         <div class="col-8 bg-danger d-flex justify-content-center">
+            {% for key,value in request.session.cart.items %}
             <div class="container bg-light ">
                 <h1>Cart</h1>
                 <hr>
                 <div class="row">
                     <div class="col">
-                        <img src="..." alt="..." class="img-thumbnail">
+                        <img src={{value.image}} alt="..." class="img-thumbnail">
+                        <h1>{{value.image}}</h1>
                     </div>
                     <div class="col">
-                        <h3>Nombre Producto</h3>
+                        <h3>{{value.name}}</h3>
                     </div>
                     <div class="col">
-                        <h3>Precio</h3>
+                        <h3>{{value.price}}</h3>
                     </div>
                     <div class="col">
                         <form>
@@ -41,6 +44,7 @@
                 </div>
                 <hr>
             </div>
+            {%endfor%}
         </div>
         <div class="col-4 bg-dark d-flex justify-content-center">
             <div class="container bg-secondary rounded py-5 px-4">
