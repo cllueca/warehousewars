@@ -344,7 +344,6 @@ def delete_product(request, product_id):
 
 #@login_required(login_url="/users/login")
 def cart_add(request, id):
-    print('putooooo')
     cart = Cart(request)
     product = Productos.objects.get(id=id)
     cart.add(product=product)
