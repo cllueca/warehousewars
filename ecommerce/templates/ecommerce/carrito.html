@@ -17,15 +17,14 @@
         </div>
     </div>
     <div class="row">
+        
         <div class="col-8 bg-danger d-flex justify-content-center">
-            {% for key,value in request.session.cart.items %}
             <div class="container bg-light ">
-                <h1>Cart</h1>
-                <hr>
+                {% for key,value in request.session.cart.items %}
                 <div class="row">
                     <div class="col">
                         <img src={{value.image}} alt="..." class="img-thumbnail">
-                        <h1>{{value.image}}</h1>
+                        <h3>{{value.image}}</h3>
                     </div>
                     <div class="col">
                         <h3>{{value.name}}</h3>
@@ -34,18 +33,17 @@
                         <h3>{{value.price}}</h3>
                     </div>
                     <div class="col">
-                        <form>
-                            <input type="number" min="1" max="100">
-                        </form>
+                        <a href="{% url 'item_increment' value.product_id %}">Increament</a>
+                        <a href="{% url 'item_decrement' value.product_id %}">Decrement</a>
                     </div>
                     <div class="col">
-                        <h3>Precio total</h3>
+                        <h3>{{ value.price|multiply:value.quantity }}</h3>
                     </div>
                 </div>
-                <hr>
+                {%endfor%}
             </div>
-            {%endfor%}
         </div>
+     
         <div class="col-4 bg-dark d-flex justify-content-center">
             <div class="container bg-secondary rounded py-5 px-4">
                 <h1>Cart Totals</h1>
