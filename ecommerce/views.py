@@ -386,7 +386,7 @@ def delete_user(request, user_id):
         try:
             cursor = connection.cursor()
             
-            query = 'DELETE FROM "ecommerce_user" WHERE user_id = %s'
+            query = 'DELETE FROM "ecommerce_user" WHERE id = %s'
             values = [user_id]
             cursor.execute(query, values)
     
