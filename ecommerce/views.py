@@ -342,6 +342,21 @@ def create_user(request):
         user.save()
     return HttpResponse("Metodo no permitido")
 
+@csrf_exempt
+def edit_user(request, user_id):
+    if request.method == "POST":
+        user = User.objects.get(id=user_id)
+        user.username = request.POST.get('username')
+        user.password = request.POST.get('password')
+        user.first_name = request.POST.get('nombre')
+        user.last_name = request.POST.get('apellidos')
+        user.email = request.POST.get('correo')
+        user.telefono = request.POST.get('telefono')
+        user.role_id = int(request.POST.get('role_id'))
+        user.save()
+        return HttpResponse("Usuario actualizado exitosamente")
+    return HttpResponse("Método no permitido")
+
 def delete_product(request, product_id):
     if request.method == "POST":
         product_id = request.POST.get('productId')

@@ -329,6 +329,127 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+  $('.btn-warning').click(function () {
+  var userId = $(this).data('user-id');
+  $('#userId').val(userId);
+  var username = $(this).data('username');
+  $('#username').val(username);
+  var nombre = $(this).data('nombre');
+  $('#nombre').val(nombre);
+  var apellidos = $(this).data('apellidos');
+  $('#apellidos').val(apellidos);
+  var direccion = $(this).data('direccion');
+  $('#direccion').val(direccion);
+  var correo = $(this).data('correo');
+  $('#correo').val(correo);
+  var telefono = $(this).data('telefono');
+  $('#telefono').val(telefono);
+  var roleId = $(this).data('role-id');
+  $('#role_id').val(roleId);
+  var password = $(this).data('password');
+  $('#password').val(password);
+  });
+});
+
+function editUser() {
+  const userId = $('#userId').val();
+  const username = $('#username').val();
+  const password = $('#password').val();
+  const nombre = $('#nombre').val();
+  const apellidos = $('#apellidos').val();
+  const direccion = $('#direccion').val();
+  const correo = $('#correo').val();
+  const telefono = $('#telefono').val();
+  const roleId = $('#role_id').val();
+  
+  const NEWusername = $('#NEWusername').val();
+  const NEWpassword = $('#NEWpassword').val();
+  const NEWnombre = $('#NEWnombre').val();
+  const NEWapellidos = $('#NEWapellidos').val();
+  const NEWdireccion = $('#NEWdireccion').val();
+  const NEWcorreo = $('#NEWcorreo').val();
+  const NEWtelefono = $('#NEWtelefono').val();
+  const NEWroleId = $('#NEWrole_id').val();
+  console.log(NEWusername)
+  console.log(NEWpassword)
+  console.log(NEWnombre)
+  console.log(NEWapellidos) 
+  console.log(NEWdireccion)
+  console.log(NEWcorreo)
+  console.log(NEWtelefono)
+  console.log(NEWroleId)
+  const formData = new FormData(document.getElementById("createUserForm"));
+
+  const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  formData.append("csrfmiddlewaretoken", csrf_token);
+  if (NEWusername) {
+    formData.append("username", NEWusername); // Si hay un valor en NEWusername, actualizar la columna correspondiente
+  } else {
+    formData.append("username", username); // Si NEWusername está vacío, mantener el valor anterior
+  }
+  if (NEWpassword !== password || NEWpassword === "") {
+    formData.append("password", NEWpassword); // Si son diferentes, actualizar la columna correspondiente
+  }
+  if (NEWnombre) {
+    formData.append("nombre", NEWnombre); // Si hay un valor en NEWnombre, actualizar la columna correspondiente
+  } else {
+    formData.append("nombre", nombre); // Si NEWnombre está vacío, mantener el valor anterior
+  }
+  if (NEWapellidos) {
+    formData.append("apellidos", NEWapellidos); // Si hay un valor en NEWapellidos, actualizar la columna correspondiente
+  } else {
+    formData.append("apellidos", apellidos); // Si NEWapellidos está vacío, mantener el valor anterior
+  }
+  if (NEWdireccion) {
+    formData.append("direccion", NEWdireccion); // Si hay un valor en NEWdireccion, actualizar la columna correspondiente
+  } else {
+    formData.append("direccion", direccion); // Si NEWdireccion está vacío, mantener el valor anterior
+  }
+  if (NEWcorreo) {
+    formData.append("correo", NEWcorreo); // Si hay un valor en NEWcorreo, actualizar la columna correspondiente
+  } else {
+    formData.append("correo", correo); // Si NEWcorreo está vacío, mantener el valor anterior
+  }
+  if (NEWtelefono) {
+    formData.append("telefono", NEWtelefono); // Si hay un valor en NEWtelefono, actualizar la columna correspondiente
+  } else {
+    formData.append("telefono", telefono); // Si NEWtelefono está vacío, mantener el valor anterior
+  }
+  if (NEWroleId) {
+    formData.append("roleId", NEWroleId); // Si hay un valor en NEWroleId, actualizar la columna correspondiente
+  } else {
+    formData.append("roleId", roleId); // Si NEWroleId está vacío, mantener el valor anterior
+  }
+
+  const url = `/editUser/${userId}/`;
+  
+  fetch(url, {
+    method: "POST",
+    body: formData,
+   
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message);
+    })
+    .catch(data => {
+      console.error(data.message);
+    });
+    
+    // Cierra el modal
+    $("#editUserModal").modal("hide");
+
+    // Limpia los parámetros
+    $("#editUserForm")[0].reset();
+};
+
+
 function deleteProduct() {
   const productId = $('#productId').val();
 
