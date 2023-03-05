@@ -287,10 +287,45 @@ function createProduct() {
     $("#createProductForm")[0].reset();
 };
 
+function createUser() {
+
+  const formData = new FormData(document.getElementById("createUserForm"));
+  const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  formData.append("csrfmiddlewaretoken", csrf_token);
+  
+  const url = `/createUser/`;
+  
+  fetch(url, {
+    method: "POST",
+    body: formData,
+   
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message);
+    })
+    .catch(data => {
+      console.error(data.message);
+    });
+    
+    // Cierra el modal
+    $("#createUserModal").modal("hide");
+
+    // Limpia los parámetros
+    $("#createUserForm")[0].reset();
+};
+
 $(document).ready(function () {
   $('.btn-danger').click(function () {
   var productId = $(this).data('product-id');
   $('#productId').val(productId);
+  var userId = $(this).data('user-id');
+  $('#userId').val(userId);
   });
 });
 
@@ -324,6 +359,41 @@ function deleteProduct() {
     $("#deleteProductModal").modal("hide");
     
 };
+$('#editUserButton').click(function() {
+  const userId = $(this).data('user-id');
+  $('#deleteUserButton').data('user-id', userId);
+});
+
+function deleteUser() {
+  const userId = $('#userId').val();
+  console.log(userId);
+  const url = `/deleteUser/${userId}/`;
+  console.log("url: "+ url);
+  fetch(url, {
+    method: "POST",
+    body: `userId=${userId}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-CSRFToken": getCookie("csrftoken")
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message + "id:" + userId);
+    })
+    .catch(data => {
+      console.error("men: "+ data.message);
+    });
+    
+    // Cierra el modal
+    $("#deleteUserModal").modal("hide");
+    
+};
 
 function getCookie(name) {
   var cookieValue = null;
@@ -340,3 +410,28 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+/*CRUD*/
+$(document).ready(function() {
+  const product_checkbox = $('#producto-checkbox');
+  const CRUDproduct = $('#CRUDproduct');
+
+  const user_checkbox = $('#user-checkbox');
+  const CRUDuser = $('#CRUDuser');
+  
+  product_checkbox.change(function(){
+    if ($(this).is(':checked')) {
+      CRUDproduct.show();
+    } else {
+      CRUDproduct.hide();
+    }
+  });
+
+  user_checkbox.change(function(){
+    if ($(this).is(':checked')) {
+      CRUDuser.show();
+    } else {
+      CRUDuser.hide();
+    }
+  });
+});

@@ -4,7 +4,9 @@
 {% block content %}
 
 <div class="container mt-5" style="max-width: 1700px!important;"> 
-  <table class="table-striped table-bordered">
+  <input type="checkbox" id="producto-checkbox">Productos
+  <input type="checkbox" id="user-checkbox">Usuarios
+  <table id="CRUDproduct" class="table-striped table-bordered">
       <thead >
         <tr class="text-center">
           <th>
@@ -132,7 +134,137 @@
         {% endfor %}
       </tbody>
   </table>
-         
+
+  <table id="CRUDuser" class="table-striped table-bordered mt-5">
+    <thead >
+      <tr class="text-center">
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              ID
+              <a href="{% url 'home' %}?columna=product_id&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=product_id&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_id">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Nombre
+              <a href="{% url 'home' %}?columna=name&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=name&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_name">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Apellido
+              <a href="{% url 'home' %}?columna=name&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=name&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_name">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Correo
+              <a href="{% url 'home' %}?columna=name&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=name&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_name">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Dirección
+              <a href="{% url 'home' %}?columna=name&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=name&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_name">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Teléfono
+              <a href="{% url 'home' %}?columna=name&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=name&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="number" name="query_name">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Role id
+              <a href="{% url 'home' %}?columna=product_id&direction=asc"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columna=product_id&direction=desc">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_id">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th >Acciones  <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createUserModal">
+          <i class="fas fa-plus"></i>
+        </button></th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      {% for user in usuario %}
+      <tr >
+        <td>{{ user.id }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.adress }}</td>
+        <td>{{ user.telefono }}</td>
+        <td>{{ user.role_id }}</td>
+        <td >
+          <button type="button" class="btn btn-warning" id="editUserButton" data-toggle="modal" data-target="#editUserModal" data-user-id="{{ user.id }}" data-name2="{{ user.first_name }}">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" data-user-id="{{ user.id }}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>    
 </div>
 
 <!-- Modal para editar un producto-->
@@ -255,6 +387,62 @@
       </div>
   </div>
 </div> 
+
+<!-- Modal para crear un usuario-->
+<div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="userId" name="userId">
+        <form id="createUserForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="name">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="name">Contraseña</label>
+            <input type="text" class="form-control" id="password" name="password">
+          </div>        
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre">
+          </div>
+          <div class="form-group">
+            <label for="name">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos">
+          </div>
+          <div class="form-group">
+            <label for="name">Direccion</label>
+            <input type="text" class="form-control" id="direccion" name="direccion">
+          </div>
+          <div class="form-group">
+            <label for="name">Correo</label>
+            <input type="text" class="form-control" id="correo" name="correo">
+          </div>
+          <div class="form-group">
+            <label for="name">Telefono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono">
+          </div>
+          <div class="form-group">
+            <label for="stock">Role id</label>
+            <input type="number" class="form-control" id="role_id" name="role_id">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" onclick="createUser()"  class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+      </div>
+  </div>
+</div> 
     
 <!-- Modal para eliminar un producto -->
 <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -271,6 +459,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" onclick="deleteProduct(this)" data-product-id="{{ product.product_id }}" class="btn btn-danger">Sí</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar un usuario -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <input type="hidden" id="userId" name="userId">
+      </div>
+      <div class="modal-body">
+        ¿Está seguro de que desea eliminar este usuario?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="deleteUserButton" onclick="deleteUser(this)" data-user-id="userId" class="btn btn-danger">Sí</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
       </div>
     </div>

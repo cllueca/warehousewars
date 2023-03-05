@@ -10,64 +10,77 @@ from ecommerce.models import User
 from .funciones import *
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
+
+def vistaAlmacen(request):
+    columna = request.GET.get('columna')
+    direction = request.GET.get('direction')
+    query_name = request.GET.get("query_name")
+    query_locate = request.GET.get("query_locate")
+    query_id = request.GET.get("query_id")
+    query_stock_min = request.GET.get("query_stock_min")
+    query_stock_max = request.GET.get("query_stock_max")
+    query_min_stock_min = request.GET.get("query_min_stock_min")
+    query_min_stock_max = request.GET.get("query_min_stock_max")
+    query_price_min = request.GET.get("query_price_min")
+    query_price_max = request.GET.get("query_price_max")
+    
+    if columna and direction:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Productos" ORDER BY {columna} {direction}')
+        product = dictfetchall(cursor)
+    else: 
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Productos"')
+        product = dictfetchall(cursor)
+        cursor.execute(f'SELECT * FROM "ecommerce_user"')
+        user = dictfetchall(cursor)
+    
+
+    if query_name: #chars
+        product = [p for p in product if query_name in p['name']]
+    if query_locate: #chars
+        product = [p for p in product if query_locate in p['location']]
+            
+    if query_id: #Int
+        product = [p for p in product if p['product_id'] == int(query_id)]
+    
+    if query_stock_min and query_stock_max:
+        product = [p for p in product if p['stock'] >= int(query_stock_min) and p['stock'] <= int(query_stock_max)]
+
+    if query_stock_min:
+        product = [p for p in product if p['stock'] >= int(query_stock_min)]
+
+    if query_stock_max:
+        product = [p for p in product if p['stock'] <= int(query_stock_max)]    
+
+    if query_min_stock_min and query_min_stock_max:
+        product = [p for p in product if p['min_stock'] >= int(query_min_stock_min) and p['min_stock'] <= int(query_min_stock_max)]
+
+    if query_min_stock_min:
+        product = [p for p in product if p['min_stock'] >= int(query_min_stock_min)]
+
+    if query_min_stock_max:
+        product = [p for p in product if p['min_stock'] <= int(query_min_stock_max)]  
+
+    if query_price_min and query_price_max:
+        product = [p for p in product if float(p['cost_per_unit'].replace("$", "")) >= float(query_price_min) and float((p['cost_per_unit']).replace("$","")) <= float(query_price_max)]
+
+    if query_price_min:
+        product = [p for p in product if float(p['cost_per_unit'].replace("$","")) >= float(query_price_min)]
+
+    if query_price_max:
+        product = [p for p in product if float(p['cost_per_unit'].replace("$","")) <= float(query_price_max)]  
+
+    context = {'producto' : product, 'usuario' : user}
+    return context
 
 
 def paginaPrincipal(request):
 
     if request.user.is_authenticated and request.user.role_id == 1:
-        columna = request.GET.get('columna')
-        direction = request.GET.get('direction')
-        query = request.GET.get("query")
-        query_id = request.GET.get("query_id")
-        query_stock_min = request.GET.get("query_stock_min")
-        query_stock_max = request.GET.get("query_stock_max")
-        query_min_stock_min = request.GET.get("query_min_stock_min")
-        query_min_stock_max = request.GET.get("query_min_stock_max")
-        query_price_min = request.GET.get("query_price_min")
-        query_price_max = request.GET.get("query_price_max")
-        
-        if columna and direction:
-            cursor = connection.cursor()
-            cursor.execute(f'SELECT * FROM "Productos" ORDER BY {columna} {direction}')
-        else: 
-            cursor = connection.cursor()
-            cursor.execute(f'SELECT * FROM "Productos"')
-        product = dictfetchall(cursor)
-
-        if query:
-            product = [p for p in product if query in p['name'] or query in p['location']]
-        if query_id:
-            product = [p for p in product if p['product_id'] == int(query_id)]
-        
-        if query_stock_min and query_stock_max:
-            product = [p for p in product if p['stock'] >= int(query_stock_min) and p['stock'] <= int(query_stock_max)]
-
-        if query_stock_min:
-            product = [p for p in product if p['stock'] >= int(query_stock_min)]
-
-        if query_stock_max:
-            product = [p for p in product if p['stock'] <= int(query_stock_max)]    
-
-        if query_min_stock_min and query_min_stock_max:
-            product = [p for p in product if p['min_stock'] >= int(query_min_stock_min) and p['min_stock'] <= int(query_min_stock_max)]
-
-        if query_min_stock_min:
-            product = [p for p in product if p['min_stock'] >= int(query_min_stock_min)]
-
-        if query_min_stock_max:
-            product = [p for p in product if p['min_stock'] <= int(query_min_stock_max)]  
-
-        if query_price_min and query_price_max:
-            product = [p for p in product if float(p['cost_per_unit'].replace("$", "")) >= float(query_price_min) and float((p['cost_per_unit']).replace("$","")) <= float(query_price_max)]
-
-        if query_price_min:
-            product = [p for p in product if float(p['cost_per_unit'].replace("$","")) >= float(query_price_min)]
-
-        if query_price_max:
-            product = [p for p in product if float(p['cost_per_unit'].replace("$","")) <= float(query_price_max)]  
-
-        context = {'producto' : product}
+        context = vistaAlmacen(request)
         return render(request, 'ecommerce/vistaAlmacen.html', context)
     else:
         try:
@@ -245,6 +258,7 @@ def registrarse(request):
     return render(request, 'ecommerce/register.html')
 
 
+
 def logoutUser(request):
     logout(request)
     return redirect('home')
@@ -312,6 +326,21 @@ def create_product(request):
         return JsonResponse({"message": "Producto creado"})
     return HttpResponse("Metodo no permitido")
 
+@csrf_exempt
+def create_user(request):
+    if request.method == "POST":
+        user = User.objects.create_user(
+                    username=request.POST.get('username'),
+                    password=request.POST.get('password'),
+                    first_name=request.POST.get('nombre'),
+                    last_name=request.POST.get('apellidos'),
+                    #direccion=request.POST.get('direccion'),
+                    email=request.POST.get('correo'),
+                    telefono=request.POST.get('telefono'),
+                    role_id=int(request.POST.get('role_id')),
+                )
+        user.save()
+    return HttpResponse("Metodo no permitido")
 
 def delete_product(request, product_id):
     if request.method == "POST":
@@ -330,4 +359,41 @@ def delete_product(request, product_id):
             cursor.close()
 
         return JsonResponse({"message": "Producto eliminado"})
+    return HttpResponse("Metodo no permitido")
+
+def delete_product(request, product_id):
+    if request.method == "POST":
+        product_id = request.POST.get('productId')
+        print(product_id)
+        try:
+            cursor = connection.cursor()
+            
+            query = 'DELETE FROM "Productos" WHERE product_id = %s'
+            values = [product_id]
+            cursor.execute(query, values)
+    
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+
+        return JsonResponse({"message": "Producto eliminado"})
+    return HttpResponse("Metodo no permitido")
+
+def delete_user(request, user_id):
+    if request.method == "POST":
+        print(user_id)
+        try:
+            cursor = connection.cursor()
+            
+            query = 'DELETE FROM "ecommerce_user" WHERE user_id = %s'
+            values = [user_id]
+            cursor.execute(query, values)
+    
+        except Exception as e:
+            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+        finally:
+            cursor.close()
+
+        return JsonResponse({"message": "Usuario eliminado"})
     return HttpResponse("Metodo no permitido")
