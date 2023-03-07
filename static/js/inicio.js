@@ -179,16 +179,16 @@ $(document).ready(function() {
         contenedor.innerHTML = "";
         console.log(contenedor);
         for (let i = 0; i < productos.length; i++) {
-          contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].product_id}" data-product-id="${productos[i].product_id}">
+          contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].id}" data-product-id="${productos[i].id}">
           <div class="card" >
-            <img src="${productos[i].image_url}" class="imageCard card-img-top mx-auto d-block"  alt="#" >
+            <img src="${productos[i].image}" class="imageCard card-img-top mx-auto d-block"  alt="#" >
             <hr style="border-color: #FEA424;">
             <div class="card-body d-flex justify-content-between">
               <div>
                 <h5 class="card-title">${productos[i].name}</h5>
               </div>
               <div class="text-right">
-                <p class="card-text">${productos[i].cost_per_unit}</p>
+                <p class="card-text">${productos[i].price}</p>
               </div>
             </div>
           </div>
@@ -214,38 +214,6 @@ $(document).ready(function () {
   });
 });
 
-function updateProduct() {
-  const productId = $('#productId').val();
-
-  const formData = new FormData(document.getElementById("editProductForm"));
-  const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-  formData.append("csrfmiddlewaretoken", csrf_token);
-
-  const url = `/update/${productId}/`;
-
-  fetch(url, {
-    method: "POST",
-    body: formData
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error en la respuesta, estado: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      // handle response data
-    })
-    .catch(data => {
-      console.error(data.message);
-    });
-    
-    // Cierra el modal
-    $("#editProductModal").modal("hide");
-
-    // Limpia los parámetros
-    $("#editProductForm")[0].reset();
-};
 
 $(document).ready(function () {
   $("#createProductForm").on("submit", function(e) {
@@ -285,6 +253,9 @@ function createProduct() {
 
     // Limpia los parámetros
     $("#createProductForm")[0].reset();
+    
+    // Recarga la página
+    location.reload();
 };
 
 function createUser() {
@@ -318,6 +289,10 @@ function createUser() {
 
     // Limpia los parámetros
     $("#createUserForm")[0].reset();
+
+    
+    // Recarga la página
+    location.reload();
 };
 
 $(document).ready(function () {
@@ -331,6 +306,31 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.btn-warning').click(function () {
+  var productId = $(this).data('product-id');
+  $('#productId').val(productId);
+  var productName = $(this).data('product-name');
+  $('#productName').val(productName);
+  var productStock= $(this).data('product-stock');
+  $('#productStock').val(productStock);
+  var productMinStock= $(this).data('product-minstock');
+  $('#productMinStock').val(productMinStock);
+  var productCost= $(this).data('product-cost');
+  $('#productCost').val(productCost);
+  var productLocation= $(this).data('product-location');
+  $('#productTypeid').val(productLocation);
+  var productTypeid = $(this).data('product-typeid');
+  $('#productTypeid').val(productTypeid);
+  var productFecha = $(this).data('product-fecha');
+  $('#productFecha').val(productFecha);
+
+  console.log(productId)
+  console.log(productName)
+  console.log(productStock)
+  console.log(productMinStock) 
+  console.log(productCost)
+  console.log(productLocation)
+  console.log(productTypeid)
+  console.log(productFecha)
   var userId = $(this).data('user-id');
   $('#userId').val(userId);
   var username = $(this).data('username');
@@ -352,6 +352,110 @@ $(document).ready(function () {
   });
 });
 
+
+function updateProduct() {
+  const productId = $('#productId').val();
+ 
+  const productName = $('#productName').val();
+  const productStock = $('#productStock').val();
+  const productMinStock = $('#productMinStock').val();
+  const productCost = $('#productCost').val();
+  const productLocation = $('#productLocation').val();
+  const productTypeid = $('#productTypeid').val();
+  const productFecha = $('#productFecha').val();
+
+  const NEWproductId = $('#NEWproductId').val();
+  const NEWproductName = $('#NEWproductName').val();
+  const NEWproductStock = $('#NEWproductStock').val();
+  const NEWproductMinStock = $('#NEWproductMinStock').val();
+  const NEWproductCost = $('#NEWproductCost').val();
+  const NEWproductLocation = $('#NEWproductLocation').val();
+  const NEWproductTypeid = $('#NEWproductTypeid').val();
+  const NEWproductFecha = $('#NEWproductFecha').val();
+
+  console.log(productId)
+  const formData = new FormData(document.getElementById("editProductForm"));
+  const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  formData.append("csrfmiddlewaretoken", csrf_token);
+
+  if (NEWproductId) {
+    formData.append("product_id", NEWproductId); // If there's a value in NEWproductId, update the corresponding column
+  } else {
+    formData.append("product_id", productId); // If NEWproductId is empty, keep the previous value
+  }
+
+  if (NEWproductName) {
+    formData.append("product_name", NEWproductName); // If there's a value in NEWproductName, update the corresponding column
+  } else {
+    formData.append("product_name", productName); // If NEWproductName is empty, keep the previous value
+  }
+
+  if (NEWproductStock) {
+    formData.append("product_stock", NEWproductStock); // If there's a value in NEWproductStock, update the corresponding column
+  } else {
+    formData.append("product_stock", productStock); // If NEWproductStock is empty, keep the previous value
+  }
+
+  if (NEWproductMinStock) {
+    formData.append("product_min_stock", NEWproductMinStock); // If there's a value in NEWproductMinStock, update the corresponding column
+  } else {
+    formData.append("product_min_stock", productMinStock); // If NEWproductMinStock is empty, keep the previous value
+  }
+
+  if (NEWproductCost) {
+    formData.append("product_cost", NEWproductCost); // If there's a value in NEWproductCost, update the corresponding column
+  } else {
+    formData.append("product_cost", productCost); // If NEWproductCost is empty, keep the previous value
+  }
+
+  if (NEWproductLocation) {
+    formData.append("product_location", NEWproductLocation); // If there's a value in NEWproductLocation, update the corresponding column
+  } else {
+    formData.append("product_location", productLocation); // If NEWproductLocation is empty, keep the previous value
+  }
+
+  if (NEWproductTypeid) {
+    formData.append("product_type_id", NEWproductTypeid); // If there's a value in NEWproductTypeid, update the corresponding column
+  } else {
+    formData.append("product_type_id", productTypeid); // If NEWproductTypeid is empty, keep the previous value
+  }
+
+  if (NEWproductFecha) {
+    formData.append("product_fecha", NEWproductFecha); // If there's a value in NEWproductFecha, update the corresponding column
+  } else {
+    formData.append("product_fecha", productFecha); 
+  }
+  const url = `/update/${productId}/`;
+
+  fetch(url, {
+    method: "POST",
+    body: formData,
+   
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message);
+      
+    })
+    .catch(data => {
+      console.error(data.message);
+    });
+    
+    // Cierra el modal
+    //$("#editProductModal").modal("hide");
+
+    // Limpia los parámetros
+    //$("#editProductForm")[0].reset();
+    
+    // Recarga la página
+    //window.location.reload();
+};
+
 function editUser() {
   const userId = $('#userId').val();
   const username = $('#username').val();
@@ -371,14 +475,14 @@ function editUser() {
   const NEWcorreo = $('#NEWcorreo').val();
   const NEWtelefono = $('#NEWtelefono').val();
   const NEWroleId = $('#NEWrole_id').val();
-  console.log(NEWusername)
+  /*console.log(NEWusername)
   console.log(NEWpassword)
   console.log(NEWnombre)
   console.log(NEWapellidos) 
   console.log(NEWdireccion)
   console.log(NEWcorreo)
   console.log(NEWtelefono)
-  console.log(NEWroleId)
+  console.log(NEWroleId)*/
   const formData = new FormData(document.getElementById("createUserForm"));
 
   const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
@@ -437,6 +541,7 @@ function editUser() {
     })
     .then(data => {
       alert(data.message);
+      
     })
     .catch(data => {
       console.error(data.message);
@@ -447,6 +552,8 @@ function editUser() {
 
     // Limpia los parámetros
     $("#editUserForm")[0].reset();
+
+    window.location.reload();
 };
 
 
@@ -478,6 +585,9 @@ function deleteProduct() {
     
     // Cierra el modal
     $("#deleteProductModal").modal("hide");
+  
+    // Recarga la página
+    location.reload();
     
 };
 $('#editUserButton').click(function() {
@@ -514,6 +624,9 @@ function deleteUser() {
     // Cierra el modal
     $("#deleteUserModal").modal("hide");
     
+    // Recarga la página
+    location.reload();
+    
 };
 
 function getCookie(name) {
@@ -539,6 +652,12 @@ $(document).ready(function() {
 
   const user_checkbox = $('#user-checkbox');
   const CRUDuser = $('#CRUDuser');
+
+  const pedido_checkbox = $('#pedido-checkbox');
+  const CRUDpedido = $('#CRUDpedido');
+
+  const pedidoProv_checkbox = $('#pedidoProv-checkbox');
+  const CRUDpedidoProv = $('#CRUDpedidoProv');
   
   product_checkbox.change(function(){
     if ($(this).is(':checked')) {
@@ -553,6 +672,22 @@ $(document).ready(function() {
       CRUDuser.show();
     } else {
       CRUDuser.hide();
+    }
+  });
+
+  pedido_checkbox.change(function(){
+    if ($(this).is(':checked')) {
+      CRUDpedido.show();
+    } else {
+      CRUDpedido.hide();
+    }
+  });
+
+  pedidoProv_checkbox.change(function(){
+    if ($(this).is(':checked')) {
+      CRUDpedidoProv.show();
+    } else {
+      CRUDpedidoProv.hide();
     }
   });
 });

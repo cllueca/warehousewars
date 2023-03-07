@@ -14,66 +14,167 @@ from django.contrib.auth.decorators import login_required
 
 
 def vistaAlmacen(request):
-    columna = request.GET.get('columna')
-    direction = request.GET.get('direction')
-    query_name = request.GET.get("query_name")
-    query_locate = request.GET.get("query_locate")
-    query_id = request.GET.get("query_id")
-    query_stock_min = request.GET.get("query_stock_min")
-    query_stock_max = request.GET.get("query_stock_max")
-    query_min_stock_min = request.GET.get("query_min_stock_min")
-    query_min_stock_max = request.GET.get("query_min_stock_max")
-    query_price_min = request.GET.get("query_price_min")
-    query_price_max = request.GET.get("query_price_max")
+    columnaProduct = request.GET.get('columna')
+    directionProduct = request.GET.get('direction')
+    query_product_name = request.GET.get("query_product_name")
+    query_product_locate = request.GET.get("query_product_locate")
+    query_product_id = request.GET.get("query_product_id")
+    query_product_stock_min = request.GET.get("query_product_stock_min")
+    query_product_stock_max = request.GET.get("query_product_stock_max")
+    query_product_min_stock_min = request.GET.get("query_product_min_stock_min")
+    query_product_min_stock_max = request.GET.get("query_product_min_stock_max")
+    query_product_price_min = request.GET.get("query_product_price_min")
+    query_product_price_max = request.GET.get("query_product_price_max")
+
+    columnaUser = request.GET.get('columnaUser')
+    directionUser = request.GET.get('directionUser')
+    query_id_user = request.GET.get('query_id_user')
+    query_nombre_user = request.GET.get('query_nombre_user')
+    query_apellido_user = request.GET.get('query_apellido_user')
+    query_correo_user = request.GET.get('query_correo_user')
+    query_direccion_user = request.GET.get('query_direccion_user')
+    query_telefono_user = request.GET.get('query_telefono_user')
+    query_roleId_user = request.GET.get('query_roleId_user')
+
+    columnaPedido = request.GET.get('columnaPedido ')
+    directionPedido  = request.GET.get('directionPedido ')
+    query_pedido_id = request.GET.get('query_pedido_id')
+    query_pedido_statusId = request.GET.get('query_pedido_statusId')
+    query_pedido_price_min = request.GET.get('query_pedido_price_min')
+    query_pedido_price_max = request.GET.get('query_pedido_price_max')
+    query_pedido_userId = request.GET.get('query_pedido_userId')
+    query_pedido_address = request.GET.get('query_pedido_address')
+
+    columnaPedidoProv = request.GET.get('columnaPedidoProv')
+    directionPedidoProv  = request.GET.get('directionPedidoProv')
+    query_orderProv_provProdId = request.GET.get('query_orderProv_provProdId')
+    query_orderProv_userId = request.GET.get('query_orderProv_userId')
+    query_orderProv_productId = request.GET.get('query_orderProv_productId')
+
     
-    if columna and direction:
+    if columnaProduct and directionProduct:
         cursor = connection.cursor()
-        cursor.execute(f'SELECT * FROM "Productos" ORDER BY {columna} {direction}')
+        cursor.execute(f'SELECT * FROM "Productos" ORDER BY {columnaProduct} {directionProduct}')
         product = dictfetchall(cursor)
-    else: 
+    else:
         cursor = connection.cursor()
         cursor.execute(f'SELECT * FROM "Productos"')
         product = dictfetchall(cursor)
+
+    if columnaUser and directionUser:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "ecommerce_user" ORDER BY {columnaUser} {directionUser}')
+        user = dictfetchall(cursor)
+    else:
+        cursor = connection.cursor()
         cursor.execute(f'SELECT * FROM "ecommerce_user"')
         user = dictfetchall(cursor)
-    
 
-    if query_name: #chars
-        product = [p for p in product if query_name in p['name']]
-    if query_locate: #chars
-        product = [p for p in product if query_locate in p['location']]
+    if columnaPedido and directionPedido:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Pedidos" ORDER BY {columnaPedido} {directionPedido}')
+        order = dictfetchall(cursor)
+    else:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Pedidos"')
+        order = dictfetchall(cursor)
+    
+    if columnaPedidoProv and directionPedidoProv:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Proveedor-Producto" ORDER BY {columnaPedidoProv} {directionPedidoProv}')
+        orderProv = dictfetchall(cursor)
+    else:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "Proveedor-Producto"')
+        orderProv = dictfetchall(cursor)
+
+    if query_product_name: #chars
+        product = [p for p in product if query_product_name in p['name']]
+    if query_product_locate: #chars
+        product = [p for p in product if query_product_locate in p['location']]
             
-    if query_id: #Int
-        product = [p for p in product if p['product_id'] == int(query_id)]
+    if query_product_id: #Int
+        product = [p for p in product if p['id'] == int(query_product_id)]
     
-    if query_stock_min and query_stock_max:
-        product = [p for p in product if p['stock'] >= int(query_stock_min) and p['stock'] <= int(query_stock_max)]
+    if query_product_stock_min and query_product_stock_max:
+        product = [p for p in product if p['stock'] >= int(query_product_stock_min) and p['stock'] <= int(query_product_stock_max)]
 
-    if query_stock_min:
-        product = [p for p in product if p['stock'] >= int(query_stock_min)]
+    if query_product_stock_min:
+        product = [p for p in product if p['stock'] >= int(query_product_stock_min)]
 
-    if query_stock_max:
-        product = [p for p in product if p['stock'] <= int(query_stock_max)]    
+    if query_product_stock_max:
+        product = [p for p in product if p['stock'] <= int(query_product_stock_max)]    
 
-    if query_min_stock_min and query_min_stock_max:
-        product = [p for p in product if p['min_stock'] >= int(query_min_stock_min) and p['min_stock'] <= int(query_min_stock_max)]
+    if query_product_min_stock_min and query_product_min_stock_max:
+        product = [p for p in product if p['min_stock'] >= int(query_product_min_stock_min) and p['min_stock'] <= int(query_product_min_stock_max)]
 
-    if query_min_stock_min:
-        product = [p for p in product if p['min_stock'] >= int(query_min_stock_min)]
+    if query_product_min_stock_min:
+        product = [p for p in product if p['min_stock'] >= int(query_product_min_stock_min)]
 
-    if query_min_stock_max:
-        product = [p for p in product if p['min_stock'] <= int(query_min_stock_max)]  
+    if query_product_min_stock_max:
+        product = [p for p in product if p['min_stock'] <= int(query_product_min_stock_max)]  
 
-    if query_price_min and query_price_max:
-        product = [p for p in product if float(p['cost_per_unit'].replace("$", "")) >= float(query_price_min) and float((p['cost_per_unit']).replace("$","")) <= float(query_price_max)]
+    if query_product_price_min and query_product_price_max:
+        product = [p for p in product if float(p['price'].replace("$", "")) >= float(query_product_price_min) and float((p['price']).replace("$","")) <= float(query_product_price_max)]
 
-    if query_price_min:
-        product = [p for p in product if float(p['cost_per_unit'].replace("$","")) >= float(query_price_min)]
+    if query_product_price_min:
+        product = [p for p in product if float(p['price'].replace("$","")) >= float(query_product_price_min)]
 
-    if query_price_max:
-        product = [p for p in product if float(p['cost_per_unit'].replace("$","")) <= float(query_price_max)]  
+    if query_product_price_max:
+        product = [p for p in product if float(p['price'].replace("$","")) <= float(query_product_price_max)]  
 
-    context = {'producto' : product, 'usuario' : user}
+    if query_nombre_user: #chars
+        user = [p for p in user if query_nombre_user in p['first_name']]
+
+    if query_apellido_user: #chars
+        user = [p for p in user if query_apellido_user in p['last_name']]
+
+    if query_correo_user: #chars
+        user = [p for p in user if query_correo_user in p['email']]
+    
+    if query_direccion_user: #chars
+        user = [p for p in user if query_direccion_user in p['adress']]
+
+    if query_telefono_user: #chars
+        user = [p for p in user if query_telefono_user in p['telefono']]
+
+    if query_roleId_user: #chars
+        user = [p for p in user if p['role_id'] == int(query_roleId_user)]
+
+    if query_id_user: #chars
+        user = [p for p in user if p['id'] == int(query_id_user)]
+
+    if query_pedido_id: #chars
+        order = [p for p in order if p['pedido_id'] == int(query_pedido_id)]
+    
+    if query_pedido_statusId: #chars
+        order = [p for p in order if p['status_id'] == int(query_pedido_statusId)]
+
+    if query_pedido_userId: #chars
+        order = [p for p in order if p['user_id'] == int(query_pedido_userId)]
+   
+    if query_pedido_address: #chars
+        order = [p for p in order if query_pedido_address in p['address']]
+    
+    if query_pedido_price_min and query_pedido_price_max:
+        order = [p for p in order if float(p['total_cost'].replace("$", "")) >= float(query_pedido_price_min) and float((p['total_cost']).replace("$","")) <= float(query_pedido_price_max)]
+
+    if query_pedido_price_min:
+        order = [p for p in order if float(p['total_cost'].replace("$","")) >= float(query_pedido_price_min)]
+
+    if query_pedido_price_max:
+        order = [p for p in order if float(p['total_cost'].replace("$","")) <= float(query_pedido_price_max)]  
+    
+    if query_orderProv_userId: #chars
+        orderProv = [p for p in orderProv if p['user_id'] == int(query_orderProv_userId)]
+    
+    if query_orderProv_provProdId: #chars
+        orderProv = [p for p in orderProv if p['provprod_id'] == int(query_orderProv_provProdId)]
+    
+    if query_orderProv_productId: #chars
+        orderProv = [p for p in orderProv if p['product_id'] == int(query_orderProv_productId)]
+     
+    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv}
     return context
 
 
@@ -109,7 +210,7 @@ def descripcionProducto(request, productId):
 
     try:
         cursor = connection.cursor()
-        cursor.execute('SELECT * FROM "Productos" WHERE product_id = %s ',[productId])
+        cursor.execute('SELECT * FROM "Productos" WHERE id = %s ',[productId])
         productosDesc = dictfetchall(cursor)
         print(productosDesc)
 
@@ -151,9 +252,9 @@ def filtroPrecio(request, selectedPrize):
         if(selectedPrize == 0):
             cursor.execute('SELECT * FROM "Productos" ORDER BY name DESC;')
         elif(selectedPrize == 1):
-            cursor.execute('SELECT * FROM "Productos" ORDER BY cost_per_unit ASC;')
+            cursor.execute('SELECT * FROM "Productos" ORDER BY price ASC;')
         else:
-            cursor.execute('SELECT * FROM "Productos" ORDER BY cost_per_unit DESC;')
+            cursor.execute('SELECT * FROM "Productos" ORDER BY price DESC;')
         queryType = dictfetchall(cursor)
 
     except Exception as e:
@@ -185,7 +286,7 @@ def filtroProveedor(request, selectedProveedor):
             cursor.execute('SELECT * FROM "Productos";')
             queryType = dictfetchall(cursor)
         else:
-            cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".product_id = "Proveedor-Producto".product_id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
+            cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".id = "Proveedor-Producto".id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
             queryType = dictfetchall(cursor)
 
     except Exception as e:
@@ -268,21 +369,19 @@ def update_product(request, product_id):
 
     if request.method == "POST":
         product_id = request.POST.get('productId')
-        name = request.POST.get('name')
-        stock = int(request.POST.get('stock'))
-        min_stock = int(request.POST.get('min_stock'))
-        cost_per_unit = float(request.POST.get('cost_per_unit'))
-        location = request.POST.get('location')
-        image_url = request.POST.get('image_url')
-        product_description = request.POST.get('product_description')
+        name = request.POST.get('NEWproductName')
+        stock = int(request.POST.get('NEWproductStock'))
+        min_stock = int(request.POST.get('NEWproductMinStock'))
+        cost_per_unit = float(request.POST.get('NEWproductCost'))
+        location = request.POST.get('NEWproductLocation')
         type_id = int(request.POST.get('type_id'))
         fecha_llegada = datetime.datetime.strptime(request.POST.get('fecha_llegada'), '%Y-%m-%d').date()
         print(fecha_llegada)
         try:
             cursor = connection.cursor()
           
-            query = 'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, cost_per_unit = %s, location = %s, image_url = %s, product_description = %s, type_id = %s, fecha_llegada = %s WHERE product_id = %s'
-            values = [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada, product_id]
+            query = 'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, price = %s, location = %s, type_id = %s, fecha_llegada = %s WHERE id = %s'
+            values = [name, stock, min_stock, cost_per_unit, location, type_id, fecha_llegada, product_id]
             #print(cursor.mogrify(query, values))
             #print("Types: ", [type(v) for v in values])
             cursor.execute(query, values)
@@ -303,7 +402,7 @@ def create_product(request):
         name = request.POST.get('name')
         stock = int(request.POST.get('stock'))
         min_stock = int(request.POST.get('min_stock'))
-        cost_per_unit = float(request.POST.get('cost_per_unit'))
+        cost_per_unit = float(request.POST.get('price'))
         location = request.POST.get('location')
         image_url = request.POST.get('image_url')
         product_description = request.POST.get('product_description')
@@ -313,7 +412,7 @@ def create_product(request):
         try:
             cursor = connection.cursor()
             
-            query = 'INSERT INTO "Productos" (name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
+            query = 'INSERT INTO "Productos" (name, stock, min_stock, price, location, image_url, product_description, type_id, fecha_llegada) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
             values = [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada]
             print(cursor.mogrify(query, values))
             cursor.execute(query, values)
@@ -364,7 +463,7 @@ def delete_product(request, product_id):
         try:
             cursor = connection.cursor()
             
-            query = 'DELETE FROM "Productos" WHERE product_id = %s'
+            query = 'DELETE FROM "Productos" WHERE id = %s'
             values = [product_id]
             cursor.execute(query, values)
     
@@ -376,24 +475,7 @@ def delete_product(request, product_id):
         return JsonResponse({"message": "Producto eliminado"})
     return HttpResponse("Metodo no permitido")
 
-def delete_product(request, product_id):
-    if request.method == "POST":
-        product_id = request.POST.get('productId')
-        print(product_id)
-        try:
-            cursor = connection.cursor()
-            
-            query = 'DELETE FROM "Productos" WHERE product_id = %s'
-            values = [product_id]
-            cursor.execute(query, values)
-    
-        except Exception as e:
-            print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-        finally:
-            cursor.close()
 
-        return JsonResponse({"message": "Producto eliminado"})
-    return HttpResponse("Metodo no permitido")
 
 def delete_user(request, user_id):
     if request.method == "POST":
