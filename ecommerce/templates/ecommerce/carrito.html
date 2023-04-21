@@ -1,94 +1,77 @@
 {% extends "main.html" %}
 {% block content %}
 {% load cart_tag %}
+{% load filtros %}
+
 <div class="container">
-    <div class="row bg-primary">
-        <div class="col">
-            <h5>Shopping cart</h5>
-        </div>
-        <div class="col">
-            <h5>CheckOut Details</h5>
-        </div>
-        <div class="col">
-            <h5>Order Complete</h5>
-        </div>
-        <div class="col my-auto">
-            <button type="button" class="btn btn-secondary rounded">Continue shopping</button>
-        </div>
+    <div class="text-center mt-4 mb-2">
+        <h1 class="pt-4">Carrito</h1>
+        <h4 class="pb-4">Aqui encontraras los productos de tu cesta</h4>
     </div>
-    <div class="row">
-        
-        <div class="col-8 bg-danger d-flex justify-content-center">
-            <div class="container bg-light ">
-                {% for key,value in request.session.cart.items %}
-                <div class="row">
-                    <div class="col">
-                        <img src={{value.image}} alt="..." class="img-thumbnail">
+    <div class="row">        
+        <div class="col-8  d-flex justify-content-center border">
+            <div class="container bg-light " style = "max-height: 650px ; overflow: auto; ">
+                {% for key, value in request.session.cart.items %}
+                    <div class="row py-2">
+                        <div class="col mx-auto my-auto text-center">
+                            <img src={{value.image|slice:'1:'|urldecode}} alt="..." class="img-thumbnail">
+                        </div>
+                        <div class="col mx-auto my-auto text-center">
+                            <p>{{value.name}}</p>
+                        </div>
+                        <div class="col mx-auto my-auto text-center">
+                            <P>unidades</p>
+                            <p>{{value.quantity}}</p>
+                        </div>
+                        <div class="col mx-auto my-auto text-center">
+                            <button type="button" onclick="window.location.href='{% url 'item_increment' value.product_id %}'" class="btn btn-primary rounded ">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button type="button" onclick="window.location.href='{% url 'item_decrement' value.product_id %}'" class="btn btn-primary rounded ">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <div class="col mx-auto my-auto text-center">
+                            <P>€/und.</p>
+                            <p>{{ value.price }} €</p>
+                        </div>
+                        <div class="col mx-auto my-auto text-center">
+                            <button type="button" onclick="window.location.href='{% url 'item_clear' value.product_id %}'" class="btn btn-danger rounded ">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="col">
-                        <h3>{{value.name}}</h3>
-                    </div>
-                    <div class="col">
-                        <h3>{{value.quantity}}</h3>
-                    </div>
-                    <div class="col">
-                        <a href="{% url 'item_increment' value.product_id %}">Increament</a>
-                        <a href="{% url 'item_decrement' value.product_id %}">Decrement</a>
-                    </div>
-                    <div class="col">
-                        <h3>{{ value.price|multiply:value.quantity   }}</h3>
-                    </div>
-                </div>
+                    <hr>
                 {%endfor%}
             </div>
         </div>
-     
-        <div class="col-4 bg-dark d-flex justify-content-center">
-            <div class="container bg-secondary rounded py-5 px-4">
-                <h1>Cart Totals</h1>
+        
+        <div class="col-4 d-flex justify-content-center border">
+            <div class="container rounded py-3 px-4">
                 <div class="row mt-3">
-                    <div class="col">
-                        <h3>Subtotal</h3>
+                    <div class="col-12">
+                        <h3>Productos</h3>
+                        <hr>
                     </div>
-                    <div class="col">
-                        <h3>121.31$</h3>
+                    <div class="col-12 ml-5">
+                        {% for key, value in request.session.cart.items %}
+                        <div class="row py-1">
+                            <p>{{value.quantity}} x {{value.name}} = {{value.price|multiply:value.quantity}}€</p>
+                        </div>
+                        {%endfor%}
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <h3>Shipping</h3>
-                    </div>
-                    <div class="col pt-2">
-                        <div class="form-check my-1">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                            <label class="form-check-label" for="flexRadioDefault1">
-                            Free Shipping
-                            </label>
-                        </div>
-                        <div class="form-check  my-1">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                            Flat rate $8.00
-                            </label>
-                        </div>
-                        <div class="form-check  my-1">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault3">
-                            Pickup 21%
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <hr>
                 <div class="row mt-3">
                     <div class="col">
                         <h3>Total</h3>
                     </div>
                     <div class="col">
-                        <h3>121.31$</h3>
+                        <h3>{{ request.session.cart|total_price }}€</h3>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center">
-                <button type="button" class="btn btn-primary mt-5 px-5 rounded ">CheckOut</button>
+                <button type="button" onclick="window.location.href='{% url 'cart_clear' %}'" class="button-21 mt-5 px-5">Realizar Pedido</button>
                 </div>
             </div>
         </div>

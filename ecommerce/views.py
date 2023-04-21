@@ -507,6 +507,8 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
+
+
 #@login_required(login_url="/users/login")
 def cart_add(request, id):
     cart = Cart(request)
@@ -549,3 +551,4 @@ def cart_clear(request):
 #@login_required(login_url="/users/login")
 def cart_detail(request):
     return render(request, '/carrito')
+
