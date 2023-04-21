@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'phone_field',
     'phonenumber_field',
     'cart',
+    'corsheaders',
+    'rest_framework',
 ]
 
 CART_SESSION_ID = 'cart'
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'warehousewars.urls'
@@ -140,3 +143,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  # Reemplaza con el dominio de tu sitio web
+]

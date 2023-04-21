@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
-from ecommerce.models import User
+from ecommerce.models import User, Albaranes
 from .funciones import *
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -14,6 +14,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from .models import Productos
+
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.http import FileResponse
+from django.http import Http404
+
+from rest_framework.decorators import api_view
 
 
 def vistaAlmacen(request):
@@ -272,6 +280,7 @@ def filtroPrecio(request, selectedPrize):
     data = json.dumps(queryType)
     return HttpResponse(data, content_type='application/json')
 
+@api_view(['GET'])
 def showmoreView(request):
     try:
         cursor = connection.cursor()
@@ -398,7 +407,22 @@ def cambiarPwd(request):
 
 @login_required(login_url='login')
 def perfilUsuario(request):
-    return render(request, 'ecommerce/perfil.html')
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM "Pedidos" WHERE user_id = 1;')
+        queryType = dictfetchall(cursor)
+
+    except Exception as e:
+        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+    finally:
+        cursor.close()
+
+    listaPedidos = []
+    for row in queryType:
+        listaPedidos.append(row)
+        
+    return render(request, 'ecommerce/perfil.html', {"pedidos": listaPedidos})
 
 
 @csrf_exempt
@@ -533,6 +557,8 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
+
+
 #@login_required(login_url="/users/login")
 def cart_add(request, id):
     cart = Cart(request)
@@ -575,3 +601,18 @@ def cart_clear(request):
 #@login_required(login_url="/users/login")
 def cart_detail(request):
     return render(request, '/carrito')
+
+
+
+def generate_albaran_pdf(request, pedido_id):
+    albaran = Albaranes.objects.get(pedido_id=pedido_id)
+    template = get_template('ecommerce/albaranPedido.html')
+    context = {'albaran': albaran}
+    html = template.render(context)
+    buffer = BytesIO()
+    pisa.CreatePDF(html, dest=buffer)
+
+    buffer.seek(0)
+    response = FileResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="albaran{pedido_id}.pdf"'
+    return response

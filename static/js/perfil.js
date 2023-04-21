@@ -13,27 +13,3 @@ document.addEventListener("DOMContentLoaded", function() {
         infoPedidos.classList.toggle("perfilHide");
     });
 });
-
-
-// $(document).ready(function() {
-//     // Mostrar información de datos al cargar la página
-//     $("#datos").show();
-//     $("#pedidos").hide();
-
-//     // Al hacer clic en el botón "Datos"
-//     $("[href='#datos']").click(function() {
-//         alert("Hola");
-//         $("#datos").show();
-//         $("#pedidos").hide();
-//         $("[href='#datos']").addClass("perfilActive");
-//         $("[href='#pedidos']").removeClass("perfilHide");
-//     });
-
-//     // Al hacer clic en el botón "Pedidos"
-//     $("[href='#pedidos']").click(function() {
-//         $("#datos").hide();
-//         $("#pedidos").show();
-//         $("[href='#pedidos']").addClass("perfilHide");
-//         $("[href='#datos']").removeClass("perfilActive");
-//     });
-// });

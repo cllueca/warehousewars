@@ -2,6 +2,14 @@
 {% load static %}
 {% block content %}
 
+<script>
+    function mostrarDatosPedido(id) {
+        var contenido = document.getElementById("datosPedido"+id);
+
+        contenido.classList.toggle('perfilHide');
+    }
+</script>
+
 <section class="container">
     <div class="container-fluid h-100">
         <!-- Parte superior -->
@@ -33,9 +41,14 @@
                 <!-- Información de pedidos -->
                 <div id="infoPedidos" class="perfilHide">
                     <h2>Información de pedidos</h2>
-                    <p>Pedido 1:</p>
-                    <p>Pedido 2:</p>
-                    <p>Pedido 3:</p>
+                    {% for pedido in pedidos %}
+                    <button id="botonPedido{{ pedido.pedido_id }}" style="width:100%;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">Pedido {{ pedido.pedido_id }}</button>
+                    <div id="datosPedido{{ pedido.pedido_id }}" class="perfilHide">
+                        <p>Fecha del pedido: {{ pedido.date_order }}</p>
+                        <p>Estado del pedido: {{ pedido.status_id }} (cambiar el numero por lo que significa)</p>
+                        <p>Precio final: {{ pedido.total_cost }}€</p>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

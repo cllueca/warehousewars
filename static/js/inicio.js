@@ -165,11 +165,11 @@ $(document).ready(function() {
   console.log(button);
   button.click(function() {
 
-    fetch(`http://127.0.0.1:8000/showmore/`)
+    fetch("http://127.0.0.1:8000/showmore/")
     .then(response => response.json())
     .then(data => {
         //aqui recibiras el json y puedes mostrarlo en tu vista
-      
+
         let productos = data;
         let contenedor = document.getElementById("here")
         while (contenedor.firstChild) {
@@ -180,11 +180,9 @@ $(document).ready(function() {
         for (let i = 0; i < productos.length; i++) {
           contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].id}" data-product-id="${productos[i].id}">
           <div class="card" >
-<<<<<<< HEAD
-            <img src="${productos[i].image_url}" class="imageCard card-img-top mx-auto d-block"  alt="#" >
-=======
+          
             <img src="${productos[i].image}" class="imageCard card-img-top mx-auto d-block"  alt="#" >
->>>>>>> origin/branchDiego
+
             <hr style="border-color: #FEA424;">
             <div class="card-body d-flex justify-content-between">
               <div>
@@ -217,7 +215,6 @@ $(document).ready(function () {
   });
 });
 
-
 function updateProduct() {
   const productId = $('#productId').val();
 
@@ -232,7 +229,6 @@ function updateProduct() {
     body: formData
   })
 }
-
 
 $(document).ready(function () {
   $("#createProductForm").on("submit", function(e) {
@@ -262,8 +258,8 @@ function createProduct() {
     })
     .then(data => {
 
-      // handle response data
 
+      // handle response data
       alert(data.message);
     })
     .catch(data => {
@@ -271,6 +267,7 @@ function createProduct() {
     });
     
     // Cierra el modal
+
     $("#editProductModal").modal("hide");
 
     // Limpia los parámetros
@@ -350,11 +347,10 @@ $(document).ready(function () {
   var productId = $(this).data('product-id');
   $('#productId').val(productId);
 
-  });
-});
-
   var userId = $(this).data('user-id');
   $('#userId').val(userId);
+  }
+)});
 
 $(document).ready(function () {
   $('.btn-warning').click(function () {

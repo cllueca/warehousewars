@@ -365,6 +365,9 @@
         <td>{{ order.user_id }}</td>
         <td>{{ order.address }}</td>
         <td >
+          <a href="{% url 'generate_albaran_pdf' order.pedido_id %}" class="btn btn-info" target="_blank">
+            <i class="fas fa-file-pdf"></i>
+          </a> 
           <button type="button" class="btn btn-warning" id="editPedidoButton" data-toggle="modal" data-target="#editPedidoModal"  data-order-id="{{ order.pedido_id }}" >
             <i class="fas fa-pencil-alt"></i>
           </button>

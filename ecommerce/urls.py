@@ -38,4 +38,6 @@ urlpatterns = [
     path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
     path('cart/cart_detail/',views.cart_detail,name='cart_detail'),
 
+    path('albaran/<int:pedido_id>/', views.generate_albaran_pdf, name='generate_albaran_pdf'),
+
 ]

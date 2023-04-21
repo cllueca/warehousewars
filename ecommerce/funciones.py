@@ -1,6 +1,8 @@
 import datetime
 from django.contrib import messages
-import re
+from urllib.parse import unquote
+from django import template
+from urllib.parse import unquote
 
 # Funcion que convierte las querys a la BBDD en diccionarios, para acceder de manera mas facil al valor de cada campo en las templates
 def dictfetchall(cursor):
@@ -41,3 +43,9 @@ def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo):
         messages.error(request, "Introduzca un telefono valido")
         return False
     return True
+
+register = template.Library()
+
+@register.filter
+def urldecode(value):
+    return unquote(value)
