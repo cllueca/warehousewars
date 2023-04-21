@@ -5,6 +5,7 @@ urlpatterns = [
    path('', views.paginaPrincipal, name="home"),
    path('showmore/',  views.showmoreView, name='show_more'),
    path('contacto/', views.paginaContacto, name="contacto"),
+   path('carrito/', views.pagincaCarrito, name="carrito"),
 
    path('update/<int:product_id>/' , views.update_product, name='update_product'),
    path('create/', views.create_product, name='create_product'),
@@ -27,4 +28,13 @@ urlpatterns = [
    path('login/', views.iniciarSesion, name="login"),
    path('registro/', views.registrarse, name="registro"),
    path('logout/', views.logoutUser, name="logout"),
+
+
+    path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
+    path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),
+    path('cart/item_increment/<int:id>/',views.item_increment, name='item_increment'),
+    path('cart/item_decrement/<int:id>/',views.item_decrement, name='item_decrement'),
+    path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
+    path('cart/cart_detail/',views.cart_detail,name='cart_detail'),
+
 ]

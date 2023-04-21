@@ -128,7 +128,7 @@
             data-product-location="{{ product.location }}" data-product-typeid="{{ product.type_id }}" data-product-fecha="{{ product.fecha_llegada }}">
               <i class="fas fa-pencil-alt"></i>
             </button>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ product.product_id }}">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ product.id }}">
               <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -692,7 +692,7 @@
         ¿Está seguro de que desea eliminar este producto?
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="deleteProduct(this)" data-product-id="{{ product.product_id }}" class="btn btn-danger">Sí</button>
+        <button type="button" onclick="deleteProduct(this)" data-product-id="{{ product.id }}" class="btn btn-danger">Sí</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
       </div>
     </div>

@@ -31,8 +31,9 @@
                         <p class="m-3">{{ productCarrousel.price }}</p>
                        
                         <div class="text-center mt-3 mb-3" style="width: 100%;">
-                          <button id="show-more-button" class="button-21" role="button">Añadir al Carrito</button>
-                           </div>
+                          <button onclick="{% url 'cart_add' productCarrousel.id %}" id="show-more-button" class="button-21" role="button">Añadir al Carrito</button>
+                          <a href="{% url 'cart_add' productCarrousel.id %}">Add to cart</a>
+                        </div>
                     </div>
                 </div>
             </div>

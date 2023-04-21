@@ -11,6 +11,8 @@ from .funciones import *
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 
 
 def vistaAlmacen(request):
@@ -227,6 +229,10 @@ def paginaContacto(request):
 
     return render(request, 'ecommerce/contacto.html')
 
+def pagincaCarrito(request):
+
+    return render(request, 'ecommerce/carrito.html')
+
 
 def filtroInicio(request, selectedValue):
     try:
@@ -365,7 +371,7 @@ def logoutUser(request):
     return redirect('home')
 
 @csrf_exempt
-def update_product(request, product_id):
+def update_product(request, id):
 
     if request.method == "POST":
         product_id = request.POST.get('productId')
@@ -456,10 +462,10 @@ def edit_user(request, user_id):
         return HttpResponse("Usuario actualizado exitosamente")
     return HttpResponse("Método no permitido")
 
-def delete_product(request, product_id):
+def delete_product(request, id):
     if request.method == "POST":
-        product_id = request.POST.get('productId')
-        print(product_id)
+        id = request.POST.get('productId')
+        print(id)
         try:
             cursor = connection.cursor()
             
@@ -494,3 +500,47 @@ def delete_user(request, user_id):
 
         return JsonResponse({"message": "Usuario eliminado"})
     return HttpResponse("Metodo no permitido")
+# Funciones Carrito
+
+#@login_required(login_url="/users/login")
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Productos.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("home")
+
+
+#@login_required(login_url="/users/login")
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Productos.objects.get(id=id)
+    cart.remove(product)
+    return redirect("/carrito")
+
+
+#@login_required(login_url="/users/login")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Productos.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("/carrito")
+
+
+#@login_required(login_url="/users/login")
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Productos.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("/carrito")
+
+
+#@login_required(login_url="/users/login")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("/carrito")
+
+
+#@login_required(login_url="/users/login")
+def cart_detail(request):
+    return render(request, '/carrito')

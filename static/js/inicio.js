@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
         contenedor.innerHTML = "";
         let productos = data;
         for (let i = 0; i < productos.length; i++) {
-          contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].product_id}" data-product-id="${productos[i].product_id}">
+          contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].id}" data-product-id="${productos[i].id}">
             <div class="card">
               <img src="${productos[i].image_url}" class="imageCard card-img-top mx-auto d-block" alt="#">
               <hr style="border-color: #FEA424;">

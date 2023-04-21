@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'ecommerce.apps.EcommerceConfig',
     'phone_field',
     'phonenumber_field',
+    'cart',
 ]
+
+CART_SESSION_ID = 'cart'
 
 AUTH_USER_MODEL = 'ecommerce.User'
 
