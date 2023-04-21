@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
+from .models import Productos
 
 
 def vistaAlmacen(request):
@@ -334,35 +335,39 @@ def iniciarSesion(request):
     return render(request, 'ecommerce/login.html')
 
 
-def registrarse(request): # falta mucho curro por hacer aqui
+def registrarse(request):
 
-    # si alguien que ya esta logueado intenta acceder a esta vista mediante la URL se le redirige a la pagina principal
     if request.user.is_authenticated:
         return redirect('home')
-    
-    form = UserCreationForm()
-    
+
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
 
-        if form.is_valid():
-            request.session['form_data'] = form.cleaned_data
-            pwdConf = request.POST.get('password2')
+        correcto = camposObligatoriosRellenos(request,
+                                              request.POST.get('username'),
+                                              request.POST.get('apellidos'),
+                                              request.POST.get('telefono'),
+                                              request.POST.get('correo'),
+                                              request.POST.get('password'),
+                                              request.POST.get('password2'))
+        
+        correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else None
 
-            user = form.save(commit=False)
+        if(correcto): # funcion un poco basica, mejorar mas adelante
+            user = User.objects.create_user(
+                username=request.POST.get('username'),
+                password=request.POST.get('password'),
+                first_name=request.POST.get('username'),
+                last_name=request.POST.get('apellidos'),
+                email=request.POST.get('correo'),
+                telefono=request.POST.get('telefono'),
+                role_id=2,
+            )
 
-            if comprobarCampos(request, user, pwdConf):
-                user.role_id = 2
-                user.username = user.first_name
-                user.save()
-                login(request, user)
-                return redirect('home')
-            
-        else:
-            form_data = request.session.get('form_data', {})
-            form = UserCreationForm(initial=form_data)
+            user.save()
+            login(request, user)
+            return redirect('home') 
 
-    return render(request, 'ecommerce/register.html', {'form': form})
+    return render(request, 'ecommerce/register.html')
 
 
 
@@ -470,7 +475,7 @@ def delete_product(request, id):
             cursor = connection.cursor()
             
             query = 'DELETE FROM "Productos" WHERE id = %s'
-            values = [product_id]
+            values = [id]
             cursor.execute(query, values)
     
         except Exception as e:
