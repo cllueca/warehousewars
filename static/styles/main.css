@@ -229,7 +229,12 @@ flex-grow: 0;
 
 tbody {
   display: block;
+<<<<<<< HEAD
   height: 400px;
+=======
+  height: auto;
+  max-height: 400px;
+>>>>>>> origin/branchDiego
   overflow: auto;
 }
 tbody::-webkit-scrollbar { 

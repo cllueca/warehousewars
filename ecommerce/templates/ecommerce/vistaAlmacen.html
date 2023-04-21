@@ -4,19 +4,35 @@
 {% block content %}
 
 <div class="container mt-5" style="max-width: 1700px!important;"> 
+<<<<<<< HEAD
   <table class="table-striped table-bordered">
       <thead >
+=======
+  <input type="checkbox" id="producto-checkbox">Productos
+ 
+  <table id="CRUDproduct" class="table-striped table-bordered">
+      <thead id="results">
+>>>>>>> origin/branchDiego
         <tr class="text-center">
           <th>
             <div >
               <div style="margin-bottom: 10px; background-color: #F4F5F6;">
                 ID
+<<<<<<< HEAD
                 <a href="{% url 'home' %}?columna=product_id&direction=asc"> &#x25B2; </a>
                 <a href="{% url 'home' %}?columna=product_id&direction=desc">&#x25BC;</a>
               </div>
               <form >
                 {% csrf_token %}
                 <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_id">
+=======
+                <a href="{% url 'home' %}?columna=id&direction=asc"> &#x25B2; </a>
+                <a href="{% url 'home' %}?columna=id&direction=desc">&#x25BC;</a>
+              </div>
+              <form >
+                {% csrf_token %}
+                <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_product_id">
+>>>>>>> origin/branchDiego
                 <input style="width: 90%"  type="submit" value="Filtrar">
               </form>
             </div>
@@ -31,7 +47,11 @@
               </div>
               <form >
                 {% csrf_token %}
+<<<<<<< HEAD
                 <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_name">
+=======
+                <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_product_name">
+>>>>>>> origin/branchDiego
                 <input style="width: 90%"  type="submit" value="Filtrar">
               </form>
             </div>
@@ -46,9 +66,15 @@
               </div>
               <form action="{% url 'home' %}" method="get">
                 <label for="query_stock_min">min:</label>
+<<<<<<< HEAD
                 <input style="width: 25%;" type="number" id="query_stock_min" name="query_stock_min">
                 <label for="query_stock_max">max:</label>
                 <input style="width: 25%;" type="number" id="query_stock_max" name="query_stock_max">
+=======
+                <input style="width: 25%;" type="number" id="query_stock_min" name="query_product_stock_min">
+                <label for="query_stock_max">max:</label>
+                <input style="width: 25%;" type="number" id="query_stock_max" name="query_product_stock_max">
+>>>>>>> origin/branchDiego
                 <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
               </form>
             </div>
@@ -63,9 +89,15 @@
               </div>
               <form action="{% url 'home' %}" method="get">
                 <label for="query_min_stock_min">min:</label>
+<<<<<<< HEAD
                 <input style="width: 25%;" type="number" id="query_min_stock_min" name="query_min_stock_min">
                 <label for="query_min_stock_max">max:</label>
                 <input style="width: 25%;" type="number" id="query_min_stock_max" name="query_min_stock_max">
+=======
+                <input style="width: 25%;" type="number" id="query_product_min_stock_min" name="query_product_min_stock_min">
+                <label for="query_min_stock_max">max:</label>
+                <input style="width: 25%;" type="number" id="query_product_min_stock_max" name="query_product_min_stock_max">
+>>>>>>> origin/branchDiego
                 <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
               </form>
             </div>
@@ -75,6 +107,7 @@
             <div >
               <div style="margin-bottom: 10px; background-color: #F4F5F6;">
                 Coste/und
+<<<<<<< HEAD
                 <a href="{% url 'home' %}?columna=cost_per_unit&direction=asc"> &#x25B2;</a>
                 <a href="{% url 'home' %}?columna=cost_per_unit&direction=desc"> &#x25BC;</a>
               </div>
@@ -83,6 +116,16 @@
                 <input style="width: 25%;" type="number" id="query_price_min" name="query_price_min">
                 <label for="query_price_max">max:</label>
                 <input style="width: 25%;" type="number" id="query_price_max" name="query_price_max">
+=======
+                <a href="{% url 'home' %}?columna=price&direction=asc"> &#x25B2;</a>
+                <a href="{% url 'home' %}?columna=price&direction=desc"> &#x25BC;</a>
+              </div>
+              <form action="{% url 'home' %}" method="get">
+                <label for="query_price_min">min:</label>
+                <input style="width: 25%;" type="number" id="query_product_price_min" name="query_product_price_min">
+                <label for="query_price_max">max:</label>
+                <input style="width: 25%;" type="number" id="query_product_price_max" name="query_product_price_max">
+>>>>>>> origin/branchDiego
                 <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
               </form>
             </div>
@@ -97,7 +140,11 @@
               </div>
               <form >
                 {% csrf_token %}
+<<<<<<< HEAD
                 <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_locate">
+=======
+                <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_product_locate">
+>>>>>>> origin/branchDiego
                 <input style="width: 90%"  type="submit" value="Filtrar">
               </form>
             </div>
@@ -112,16 +159,30 @@
       <tbody class="text-center">
         {% for product in producto %}
         <tr >
+<<<<<<< HEAD
           <td>{{ product.product_id }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.stock }}</td>
           <td>{{ product.min_stock }}</td>
           <td>{{ product.cost_per_unit }}</td>
+=======
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.min_stock }}</td>
+          <td>{{ product.price }}</td>
+>>>>>>> origin/branchDiego
           <td>{{ product.location }}</td>
           <td>{{ product.type_id }}</td>
           <td >{{ product.fecha_llegada }}</td>
           <td >
+<<<<<<< HEAD
             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.product_id }}" data-name2="{{ product.name }}">
+=======
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.product_id }}" data-product-name="{{ product.name }}" 
+            data-product-stock="{{ product.stock }}" data-product-stockmin="{{ product.min_stock }}" data-product-cost="{{ product.price }}" 
+            data-product-location="{{ product.location }}" data-product-typeid="{{ product.type_id }}" data-product-fecha="{{ product.fecha_llegada }}">
+>>>>>>> origin/branchDiego
               <i class="fas fa-pencil-alt"></i>
             </button>
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ product.product_id }}">
@@ -132,9 +193,327 @@
         {% endfor %}
       </tbody>
   </table>
+<<<<<<< HEAD
          
 </div>
 
+=======
+ 
+  <table id="CRUDuser" class="table-striped table-bordered ">
+    <input type="checkbox" class="mt-5" id="user-checkbox">Usuarios
+    <thead id="results">
+      <tr class="text-center">
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              ID
+              <a href="{% url 'home' %}?columnaUser=id&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=id&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_id_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Nombre
+              <a href="{% url 'home' %}?columnaUser=first_name&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=first_name&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_nombre_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Apellido
+              <a href="{% url 'home' %}?columnaUser=last_name&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=last_name&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_apellido_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Correo
+              <a href="{% url 'home' %}?columnaUser=email&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=email&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_correo_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Dirección
+              <a href="{% url 'home' %}?columnaUser=adress&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=adress&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_direccion_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Teléfono
+              <a href="{% url 'home' %}?columnaUser=telefono&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=telefono&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="number" name="query_telefono_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Role id
+              <a href="{% url 'home' %}?columnaUser=rele_id&directionUser=asc#results"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaUser=role_id&directionUser=desc#results">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_roleId_user">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th >Acciones  <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createUserModal">
+          <i class="fas fa-plus"></i>
+        </button></th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      {% for user in usuario %}
+      <tr >
+        <td>{{ user.id }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.adress }}</td>
+        <td>{{ user.telefono }}</td>
+        <td>{{ user.role_id }}</td>
+        <td >
+          <button type="button" class="btn btn-warning" id="editUserButton" data-toggle="modal" data-target="#editUserModal"  data-user-id="{{ user.id }}" data-username="{{ user.username }}" data-nombre="{{ user.first_name }}" 
+          data-apellidos="{{ user.last_name }}" data-direccion="{{ user.adress }}" data-correo="{{ user.email }}" 
+          data-telefono="{{ user.telefono }}" data-role-id="{{ user.role_id }}" data-password="{{ user.password }}">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" data-user-id="{{ user.id }}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>    
+   
+  <table id="CRUDpedido" class="table-striped table-bordered ">
+    <input type="checkbox" class="mt-5" id="pedido-checkbox">Pedidos
+    <thead id="resultsOrder">
+      <tr class="text-center">
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              ID 
+              <a href="{% url 'home' %}?columnaPedido=pedido_id&directionPedido=asc#resultsOrder"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedido=pedido_id&directionPedido=desc#resultsOrder">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_pedido_id">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+
+        <th><a href="{% url 'home' %}?columnaPedido=data_order&directionPedido=asc#resultsOrder">Fecha pedido&#x25B2;</a><a   href="{% url 'home' %}?columnaPedido=date_order&directionPedido=desc#resultsOrder"> &#x25BC;</a></th>
+        
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Status Id
+              <a href="{% url 'home' %}?columnaPedido=status_id&directionPedido=asc#resultsOrder"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedido=status_id&directionPedido=desc#resultsOrder">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_pedido_statusId">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Coste Total
+              <a href="{% url 'home' %}?columnaPedido=total_cost&directionPedido=asc#resultsOrder"> &#x25B2;</a>
+              <a href="{% url 'home' %}?columnaPedido=total_cost&directionPedido=desc#resultsOrder"> &#x25BC;</a>
+            </div>
+            <form action="{% url 'home' %}" method="get">
+              <label for="query_pedido_price_min">min:</label>
+              <input style="width: 25%;" type="number" id="query_pedido_price_min" name="query_pedido_price_min">
+              <label for="query_pedido_price_max">max:</label>
+              <input style="width: 25%;" type="number" id="query_pedido_price_max" name="query_pedido_price_max">
+              <input style="width: 90%; margin-top: 10px;"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              User Id
+              <a href="{% url 'home' %}?columnaPedido=user_id&directionPedido=asc#resultsOrder"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedido=user_id&directionPedido=desc#resultsOrder">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_pedido_userId">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Dirección
+              <a href="{% url 'home' %}?columnaPedido=address&directionPedido=asc#resultsOrder"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedido=address&directionPedido=desc#resultsOrder">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 65%; margin-bottom: 10px;" type="text" name="query_pedido_address">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th >Acciones  <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createPedidoModal">
+          <i class="fas fa-plus"></i>
+        </button></th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      {% for order in pedido %}
+      <tr >
+        <td>{{ order.pedido_id }}</td>
+        <td>{{ order.date_order }}</td>
+        <td>{{ order.status_id }}</td>
+        <td>{{ order.total_cost }}</td>
+        <td>{{ order.user_id }}</td>
+        <td>{{ order.address }}</td>
+        <td >
+          <button type="button" class="btn btn-warning" id="editPedidoButton" data-toggle="modal" data-target="#editPedidoModal"  data-order-id="{{ order.pedido_id }}" >
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePedidoModal" data-order-id="{{ order.pedido_id }}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table id="CRUDpedidoProv" class="table-striped table-bordered ">
+    <input type="checkbox" class="mt-5" id="pedidoProv-checkbox">Proveedor-Producto
+    <thead id="resultsOrderProv">
+      <tr class="text-center">
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Proveedor Id 
+              <a href="{% url 'home' %}?columnaPedidoProv=provprod_id&directionPedidoProv=asc#resultsOrderProv"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProv=provprod_id&directionPedidoProv=desc#resultsOrderProv">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_orderProv_provProdId">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Usuario Id
+              <a href="{% url 'home' %}?columnaPedidoProv=user_id&directionPedidoProv=asc#resultsOrderProv"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProv=user_id&directionPedidoProv=desc#resultsOrderProv">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_orderProv_userId">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Producto Id
+              <a href="{% url 'home' %}?columnaPedidoProv=product_id&directionPedidoProv=asc#resultsOrderProv"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProv=product_id&directionPedidoProv=desc#resultsOrderProv">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_orderProv_productId">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th >Acciones  <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createPedidoModal">
+          <i class="fas fa-plus"></i>
+        </button></th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      {% for orderProv in pedidoProv %}
+      <tr >
+        <td>{{ orderProv.provprod_id }}</td>
+        <td>{{ orderProv.user_id }}</td>
+        <td>{{ orderProv.product_id }}</td>
+        <td >
+          <button type="button" class="btn btn-warning" id="editPedidoProvButton" data-toggle="modal" data-target="#editPedidoProvModal"  data-order-id="{{ orderProv.provprod_id }}" >
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePedidoProvModal" data-order-id="{{ orderProv.provprod_id }}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+>>>>>>> origin/branchDiego
 <!-- Modal para editar un producto-->
 <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -152,6 +531,7 @@
             <input type="hidden" id="name2" name="name2">
             <div class="form-group">
               <label for="name">Nombre</label>
+<<<<<<< HEAD
               <input type="text" class="form-control" id="name" name="name">
             </div>
             <div class="form-group">
@@ -185,11 +565,42 @@
             <div class="form-group">
               <label for="fecha_llegada">Fecha de llegada</label>
               <input type="date" class="form-control" id="fecha_llegada" name="fecha_llegada">
+=======
+              <input type="text" class="form-control" id="NEWproductName" name="NEWproductName">
+            </div>
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input type="number" class="form-control" id="NEWproductStock" name="NEWproductStock">
+            </div>
+            <div class="form-group">
+              <label for="min_stock">Stock mínimo</label>
+              <input type="number" class="form-control" id="NEWproductMinStock" name="NEWproductMinStock">
+            </div>
+            <div class="form-group">
+              <label for="cost_per_unit">Costo por unidad</label>
+              <input type="number" class="form-control" id="NEWproductCost" name="NEWproductCost">
+            </div>
+            <div class="form-group">
+              <label for="location">Ubicación</label>
+              <input type="text" class="form-control" id="NEWproductLocation" name="NEWproductLocation">
+            </div>     
+            <div class="form-group">
+              <label for="type_id">Tipo de ID</label>
+              <input type="number" class="form-control" id="NEWproductTypeid" name="NEWproductTypeid">
+            </div>
+            <div class="form-group">
+              <label for="fecha_llegada">Fecha de llegada</label>
+              <input type="date" class="form-control" id="NEWproductFecha" name="NEWproductFecha">
+>>>>>>> origin/branchDiego
             </div>
           </form>
         </div>
         <div class="modal-footer">
+<<<<<<< HEAD
           <button type="submit" onclick="updateProduct(this)"  data-product-id="{{ product.product_id }}"  class="btn btn-primary">Actualizar</button>
+=======
+          <button type="submit" onclick="updateProduct(this)"  class="btn btn-primary">Actualizar</button>
+>>>>>>> origin/branchDiego
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         </div>
         </div>
@@ -255,7 +666,125 @@
       </div>
   </div>
 </div> 
+<<<<<<< HEAD
     
+=======
+
+<!-- Modal para crear un usuario-->
+<div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="userId" name="userId">
+        <form id="createUserForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="name">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="name">Contraseña</label>
+            <input type="text" class="form-control" id="password" name="password">
+          </div>        
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre">
+          </div>
+          <div class="form-group">
+            <label for="name">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos">
+          </div>
+          <div class="form-group">
+            <label for="name">Direccion</label>
+            <input type="text" class="form-control" id="direccion" name="direccion">
+          </div>
+          <div class="form-group">
+            <label for="name">Correo</label>
+            <input type="text" class="form-control" id="correo" name="correo">
+          </div>
+          <div class="form-group">
+            <label for="name">Telefono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono">
+          </div>
+          <div class="form-group">
+            <label for="stock">Role id</label>
+            <input type="number" class="form-control" id="role_id" name="role_id">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" onclick="createUser()"  class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+      </div>
+  </div>
+</div> 
+    
+<!-- Modal para editar un usuario-->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="userId" name="userId">
+        <form id="editUserForm">
+          {% csrf_token %}
+          <div class="form-group">
+   
+            <label for="name">Username</label>
+            <input type="text" class="form-control" id="NEWusername" name="NEWusername">
+          </div>
+          <div class="form-group">
+            <label for="name">Contraseña</label>
+            <input type="text" class="form-control" id="NEWpassword" name="NEWpassword" >
+          </div>        
+          <div class="form-group">
+            <input type="hidden" id="nombre" name="nombre">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="NEWnombre" name="NEWnombre">
+          </div>
+          <div class="form-group">
+            <label for="name">Apellidos</label>
+            <input type="text" class="form-control" id="NEWapellidos" name="NEWapellidos">
+          </div>
+          <div class="form-group">
+            <label for="name">Direccion</label>
+            <input type="text" class="form-control" id="NEWdireccion" name="NEWdireccion" >
+          </div>
+          <div class="form-group">
+            <label for="name">Correo</label>
+            <input type="text" class="form-control" id="NEWcorreo" name="NEWcorreo" >
+          </div>
+          <div class="form-group">
+            <label for="name">Telefono</label>
+            <input type="text" class="form-control" id="NEWtelefono" name="NEWtelefono">
+          </div>
+          <div class="form-group">
+            <label for="stock">Role id</label>
+            <input type="number" class="form-control" id="NEWrole_id" name="NEWrole_id" >
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" onclick="editUser(this)"  data-nombre="nombre"  class="btn btn-primary">Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+      </div>
+  </div>
+</div> 
+
+>>>>>>> origin/branchDiego
 <!-- Modal para eliminar un producto -->
 <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -277,4 +806,29 @@
   </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- Modal para eliminar un usuario -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <input type="hidden" id="userId" name="userId">
+      </div>
+      <div class="modal-body">
+        ¿Está seguro de que desea eliminar este usuario?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="deleteUserButton" onclick="deleteUser(this)" data-user-id="userId" class="btn btn-danger">Sí</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+>>>>>>> origin/branchDiego
 {% endblock content %}
