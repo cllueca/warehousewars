@@ -396,6 +396,11 @@ def cambiarPwd(request):
         
     return render(request, 'ecommerce/cambiarPwd.html')
 
+@login_required(login_url='login')
+def perfilUsuario(request):
+    return render(request, 'ecommerce/perfil.html')
+
+
 @csrf_exempt
 def update_product(request, id):
 

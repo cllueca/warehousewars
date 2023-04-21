@@ -29,6 +29,7 @@ urlpatterns = [
     path('registro/', views.registrarse, name="registro"),
     path('logout/', views.logoutUser, name="logout"),
     path('pwdRecovery/', views.cambiarPwd, name="passwordRecovery"),
+    path("perfil/", views.perfilUsuario, name="perfil"),
 
     path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
     path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),

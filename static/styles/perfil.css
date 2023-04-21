@@ -1,0 +1,7 @@
+.perfilHide{
+    display: none;
+}
+
+.perfilActive{
+    display: block;
+}

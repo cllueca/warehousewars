@@ -14,11 +14,15 @@
             </div>
 
             {% if request.user.is_authenticated %}
-            <div class="navbar-nav ml-auto">
-                <a href="#" class="nav-item nav-link mx-2">{{user.username}}</a>
-            </div>
-            <div class="navbar-nav ">
-                <a href="{% url 'logout' %}" class="btn mx-2 button-38" style="width: 130px;">Cerrar Sesión</a>
+            <div class="navbar-nav ml-auto dropdown">
+                <button class="btn mx-2 button-38" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="width: 130px;">
+                    {{user.username}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="nav-item nav-link mx-2" href="{% url 'home' %}">Inicio</a>
+                    <a class="nav-item nav-link mx-2" href="{% url 'perfil' %}">Perfil</a>
+                    <a class="nav-item nav-link mx-2" href="{% url 'logout' %}">Cerrar Sesión</a>
+                </div>
             </div>
             {% else %}
             <div class="navbar-nav ml-auto">
