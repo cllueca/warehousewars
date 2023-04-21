@@ -4,13 +4,10 @@ from django.contrib.auth.models import AbstractUser
 from phone_field import PhoneField
 from phonenumber_field.validators import ValidationError, validate_international_phonenumber
 # validate_international_phonenumber por ahora no se usa tengo que ver como hacerlo para poner la extension sin que de error.
-
-
 class User(AbstractUser):
 
     # null true = la BBDD puede tener este campo vacio
     # blank true = se puede dejar vacio en el formulario
-
     email = models.EmailField(unique=True) # con esto se indica que el login sea con email, ya no se pueden repetir
     telefono = models.CharField(max_length=15, validators=[ValidationError], null=True, blank=True)#PhoneField(blank=True, null=True)
     adress = models.CharField(max_length=250, null=True, blank=True)
@@ -66,13 +63,13 @@ class Pedidos(models.Model):
 
 
 class Productos(models.Model):
-    product_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=25)
     stock = models.IntegerField()
     min_stock = models.IntegerField()
-    cost_per_unit = models.FloatField()
+    price = models.FloatField()
     location = models.CharField(max_length=25)
-    image_url = models.CharField(max_length=25, blank=True, null=True)
+    image = models.ImageField(upload_to='products/')
     product_description = models.CharField(max_length=25, blank=True, null=True)
     type = models.ForeignKey('Tipos', models.DO_NOTHING)
     fecha_llegada = models.DateField(blank=True, null=True)

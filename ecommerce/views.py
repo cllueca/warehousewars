@@ -17,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 
 
+
+
 def paginaPrincipal(request):
 
     if request.user.is_authenticated and request.user.role_id == 1:
@@ -42,7 +44,7 @@ def paginaPrincipal(request):
         if query:
             product = [p for p in product if query in p['name'] or query in p['location']]
         if query_id:
-            product = [p for p in product if p['product_id'] == int(query_id)]
+            product = [p for p in product if p['id'] == int(query_id)]
         
         if query_stock_min and query_stock_max:
             product = [p for p in product if p['stock'] >= int(query_stock_min) and p['stock'] <= int(query_stock_max)]
@@ -100,7 +102,7 @@ def descripcionProducto(request, productId):
 
     try:
         cursor = connection.cursor()
-        cursor.execute('SELECT * FROM "Productos" WHERE product_id = %s ',[productId])
+        cursor.execute('SELECT * FROM "Productos" WHERE id = %s ',[productId])
         productosDesc = dictfetchall(cursor)
         print(productosDesc)
 
@@ -180,7 +182,7 @@ def filtroProveedor(request, selectedProveedor):
             cursor.execute('SELECT * FROM "Productos";')
             queryType = dictfetchall(cursor)
         else:
-            cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".product_id = "Proveedor-Producto".product_id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
+            cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".id = "Proveedor-Producto".id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
             queryType = dictfetchall(cursor)
 
     except Exception as e:
@@ -258,10 +260,10 @@ def logoutUser(request):
     return redirect('home')
 
 @csrf_exempt
-def update_product(request, product_id):
+def update_product(request, id):
 
     if request.method == "POST":
-        product_id = request.POST.get('productId')
+        id = request.POST.get('productId')
         name = request.POST.get('name')
         stock = int(request.POST.get('stock'))
         min_stock = int(request.POST.get('min_stock'))
@@ -275,8 +277,8 @@ def update_product(request, product_id):
         try:
             cursor = connection.cursor()
           
-            query = 'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, cost_per_unit = %s, location = %s, image_url = %s, product_description = %s, type_id = %s, fecha_llegada = %s WHERE product_id = %s'
-            values = [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada, product_id]
+            query = 'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, cost_per_unit = %s, location = %s, image_url = %s, product_description = %s, type_id = %s, fecha_llegada = %s WHERE id = %s'
+            values = [name, stock, min_stock, cost_per_unit, location, image_url, product_description, type_id, fecha_llegada, id]
             #print(cursor.mogrify(query, values))
             #print("Types: ", [type(v) for v in values])
             cursor.execute(query, values)
@@ -321,15 +323,15 @@ def create_product(request):
     return HttpResponse("Metodo no permitido")
 
 
-def delete_product(request, product_id):
+def delete_product(request, id):
     if request.method == "POST":
-        product_id = request.POST.get('productId')
-        print(product_id)
+        id = request.POST.get('productId')
+        print(id)
         try:
             cursor = connection.cursor()
             
-            query = 'DELETE FROM "Productos" WHERE product_id = %s'
-            values = [product_id]
+            query = 'DELETE FROM "Productos" WHERE id = %s'
+            values = [id]
             cursor.execute(query, values)
     
         except Exception as e:

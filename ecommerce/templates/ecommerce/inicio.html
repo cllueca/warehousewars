@@ -31,8 +31,8 @@
                         <p class="m-3">{{ productCarrousel.cost_per_unit }}</p>
                        
                         <div class="text-center mt-3 mb-3" style="width: 100%;">
-                          <button onclick="{% url 'cart_add' productCarrousel.product_id %}" id="show-more-button" class="button-21" role="button">Añadir al Carrito</button>
-                          <a href="{% url 'cart_add' productCarrousel.product_id %}">Add to cart</a>
+                          <button onclick="{% url 'cart_add' productCarrousel.id %}" id="show-more-button" class="button-21" role="button">Añadir al Carrito</button>
+                          <a href="{% url 'cart_add' productCarrousel.id %}">Add to cart</a>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
     <div class="row" id="here">
       {% if selected %}
           {% for queryType in query %}
-              <div class="col-md-4 mt-4 product-info" id="product-{{ queryType.product_id }}" data-product-id="{{ queryType.product_id }}">
+              <div class="col-md-4 mt-4 product-info" id="product-{{ queryType.id }}" data-product-id="{{ queryType.id }}">
                   <div class="card">
                       <img src="{{ queryType.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
                       <hr style="border-color: #FEA424;">
@@ -111,7 +111,7 @@
               {% endfor %}
       {% else %}
           {% for product in producto %}
-              <div class="col-md-4 mt-4 product-info" id="product-{{ product.product_id }}" data-product-id="{{ product.product_id }}">
+              <div class="col-md-4 mt-4 product-info" id="product-{{ product.id }}" data-product-id="{{ product.id }}">
                   <div class="card">
                       <img src="{{ product.image_url }}" class="imageCard card-img-top mx-auto d-block" alt="#">
                       <hr style="border-color: #FEA424;">

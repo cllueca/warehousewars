@@ -11,8 +11,8 @@
             <div >
               <div style="margin-bottom: 10px; background-color: #F4F5F6;">
                 ID
-                <a href="{% url 'home' %}?columna=product_id&direction=asc"> &#x25B2; </a>
-                <a href="{% url 'home' %}?columna=product_id&direction=desc">&#x25BC;</a>
+                <a href="{% url 'home' %}?columna=id&direction=asc"> &#x25B2; </a>
+                <a href="{% url 'home' %}?columna=id&direction=desc">&#x25BC;</a>
               </div>
               <form >
                 {% csrf_token %}
@@ -112,7 +112,7 @@
       <tbody class="text-center">
         {% for product in producto %}
         <tr >
-          <td>{{ product.product_id }}</td>
+          <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.stock }}</td>
           <td>{{ product.min_stock }}</td>
@@ -121,10 +121,10 @@
           <td>{{ product.type_id }}</td>
           <td >{{ product.fecha_llegada }}</td>
           <td >
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.product_id }}" data-name2="{{ product.name }}">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.id }}" data-name2="{{ product.name }}">
               <i class="fas fa-pencil-alt"></i>
             </button>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ product.product_id }}">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ product.id }}">
               <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -189,7 +189,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="submit" onclick="updateProduct(this)"  data-product-id="{{ product.product_id }}"  class="btn btn-primary">Actualizar</button>
+          <button type="submit" onclick="updateProduct(this)"  data-product-id="{{ product.id }}"  class="btn btn-primary">Actualizar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         </div>
         </div>
@@ -270,7 +270,7 @@
         ¿Está seguro de que desea eliminar este producto?
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="deleteProduct(this)" data-product-id="{{ product.product_id }}" class="btn btn-danger">Sí</button>
+        <button type="button" onclick="deleteProduct(this)" data-product-id="{{ product.id }}" class="btn btn-danger">Sí</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
       </div>
     </div>
