@@ -23,9 +23,21 @@ def comprobarContraseña(request, pwd, pwdConf):
     
     return True # true
 
-def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo, pwd, pwdConf):
+def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo):
 
-    if len(nombre) == 0: # esto sigue en pruebas
-        messages.error(request, "Hay nombre")
+    if len(nombre) == 0:
+        messages.error(request, "Se debe dar un nombre")
+        return False
+
+    if len(apellidos) == 0:
+        messages.error(request, "Se debe dar un apellido")
+        return False
+    
+    if not re.match("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$", correo):
+        messages.error(request, "Introduzca un correo valido")
+        return False
+    
+    if not re.match("[0-9]{9}", telefono):
+        messages.error(request, "Introduzca un telefono valido")
         return False
     return True

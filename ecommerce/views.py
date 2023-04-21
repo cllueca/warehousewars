@@ -321,7 +321,8 @@ def iniciarSesion(request):
             user = User.objects.get(email=email)
             userFound = True
         except:
-            messages.error(request, 'Este correo no esta registrado como usuario')
+            messages.error(request, 'Este correo no se encuentra en la base de datos')
+            
 
         if userFound: # si el correo esta dado de alta intenta hacer el login con la contraseña
             user = authenticate(request, username=email, password=pwd)
@@ -346,13 +347,12 @@ def registrarse(request):
                                               request.POST.get('username'),
                                               request.POST.get('apellidos'),
                                               request.POST.get('telefono'),
-                                              request.POST.get('correo'),
-                                              request.POST.get('password'),
-                                              request.POST.get('password2'))
+                                              request.POST.get('correo')
+                                              )
         
-        correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else None
+        correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else False
 
-        if(correcto): # funcion un poco basica, mejorar mas adelante
+        if(correcto):
             user = User.objects.create_user(
                 username=request.POST.get('username'),
                 password=request.POST.get('password'),
@@ -374,6 +374,27 @@ def registrarse(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def cambiarPwd(request):
+
+    if request.method == "POST":
+        userFound = False
+
+        try: # Comprueba si el correo del usuario esta registrado en la base de datos
+                usuario = User.objects.get(email=request.POST.get('email'))
+                userFound = True
+        except:
+            messages.error(request, 'Este correo no se encuentra en la base de datos')
+        
+        if userFound:
+            
+            if comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')):
+                usuario.set_password(request.POST.get('password'))
+                usuario.save()
+                messages.success(request, "Contraseña cambiada")
+                return redirect('login')
+        
+    return render(request, 'ecommerce/cambiarPwd.html')
 
 @csrf_exempt
 def update_product(request, id):

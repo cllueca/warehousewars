@@ -8,6 +8,12 @@
 	<strong>{{msg}}</strong>
 </div>
 {% endif %}
+
+{% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+<div class="alert alert-success fade show" role="alert">
+	<strong>{{msg}}</strong>
+</div>
+{% endif %}
 {% endfor %}
 
 <div class="main">
@@ -26,7 +32,7 @@
                   <li class="nav-item"><input class="textfields" name="email" placeholder="Inserte su correo"></input></li>
                   <li class="nav-item distancia"><b>CONTRASEÑA</b></li>
                   <li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Inserte su contraseña"></input></li>
-                  <li class="nav-item" style="margin-top: 2em;"><p class="textoregistro distancia imagen"><a href="#">¿Has olvidado la contraseña?</a></p></li>
+                  <li class="nav-item" style="margin-top: 2em;"><p class="textoregistro distancia imagen"><a href="{% url 'passwordRecovery' %}">¿Has olvidado la contraseña?</a></p></li>
                   <li class="nav-item"><input type="submit" class="botoniniciar" value="Iniciar Sesión"/></li>
               </ul>
             </form>

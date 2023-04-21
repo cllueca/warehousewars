@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+{% for msg in messages %}
+{% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<div class="alert alert-danger fade show" role="alert">
+	<strong>{{msg}}</strong>
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="main">
+    <div class="nav-item col-md-4 col-xs-12">
+        <form class="formularioInicio" method="POST" action="">
+            {% csrf_token %}
+
+            <div class="navbar-brand logo-contenedor" href="#">
+                <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="SlotsSolutions" class="logo">
+              </div>
+
+              <h2 style="text-align: center;">Cambio de contraseña</h2>
+
+              <ul class="navbar-nav ml-auto distancia">
+                    <li class="nav-item"><b>CORREO</b></li>
+                    <li class="nav-item"><input class="textfields" name="email" placeholder="Inserte su correo"></input></li>
+                    <li class="nav-item distancia"><b>NUEVA CONTRASEÑA</b></li>
+                    <li>
+                        <li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Constraseña"></input></li>
+                    </li>
+                    <li class="nav-item"><input class="textfields distancia" type="password" name="password2" placeholder="Repita la contraseña"></input></li>
+                    <li class="nav-item distancia"><input type="submit" class="botoniniciar" value="Restaurar contraseña"/></li>
+              </ul>
+            </form>
+    </div>
+</div>
+
+{% endblock content %}

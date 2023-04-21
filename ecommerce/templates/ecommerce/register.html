@@ -1,6 +1,5 @@
 {% extends 'main.html' %}
 {% load static %}
-{% load filtros %}
 {% block content %}
 
 
@@ -23,31 +22,32 @@
 
 			<h2 style="text-align: center;">Registro de Usuario</h2>
 
-			<ul class="navbar-nav ml-auto distancia">  <!-- me sobran cosas -->
+			<ul class="navbar-nav ml-auto distancia">
 				<li class="nav-item"><b>NOMBRE</b></li>
 				<li>
 					{{ form.first_name.errors }}
-					{{ form.first_name|addClass:"textfields"}}
+					<li class="nav-item"><input class="textfields" type="text" name="username" placeholder="Nombre"></input></li>
+					
 				</li>
 				<li class="nav-item distancia"><b>APELLIDOS</b></li>
 				<li>
 					{{ form.last_name.errors }}
-					{{ form.last_name|addClass:"textfields"}}
+					<li class="nav-item"><input class="textfields" type="text" name="apellidos" placeholder="Apellidos"></input></li>
 				</li>
 				<li class="nav-item distancia"><b>TELÉFONO</b></li>
 				<li>
 					{{ form.telefono.errors }}
-					{{ form.telefono|addClass:"textfields"}}
+					<li class="nav-item"><input class="textfields" type="phone" name="telefono" placeholder="Telefono"></input></li>
 				</li>
 				<li class="nav-item distancia"><b>CORREO</b></li>
 				<li>
 					{{ form.email.errors }}
-					{{ form.email|addClass:"textfields"}}
+					<li class="nav-item"><input class="textfields" type="text" name="correo" placeholder="Correo"></input></li>
 				</li>
-				<li class="nav-item distancia"><b>CONTRASEÑA</b></li>
+				<li class="nav-item"><b>CONTRASEÑA</b></li>
 				<li>
 					{{ form.password.errors }}
-					{{ form.password|addClass:"textfields"}}
+					<li class="nav-item"><input class="textfields" type="password" name="password" placeholder="Constraseña"></input></li>
 				</li>
 				<li class="nav-item"><input class="textfields distancia" type="password" name="password2" placeholder="Repita la contraseña"></input></li>
 				<li class="nav-item distancia"><input type="submit" class="botoniniciar" value="Registarse"/></li>
