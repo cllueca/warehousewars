@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-
 document.addEventListener("DOMContentLoaded", function() {
   const select = document.getElementById("product-prize");
   select.addEventListener("mouseenter", function() {
@@ -218,7 +217,7 @@ $(document).ready(function () {
   });
 });
 
-<<<<<<< HEAD
+
 function updateProduct() {
   const productId = $('#productId').val();
 
@@ -231,7 +230,9 @@ function updateProduct() {
   fetch(url, {
     method: "POST",
     body: formData
-=======
+  })
+}
+
 
 $(document).ready(function () {
   $("#createProductForm").on("submit", function(e) {
@@ -252,7 +253,6 @@ function createProduct() {
     method: "POST",
     body: formData,
    
->>>>>>> origin/branchDiego
   })
     .then(response => {
       if (!response.ok) {
@@ -261,18 +261,16 @@ function createProduct() {
       return response.json();
     })
     .then(data => {
-<<<<<<< HEAD
+
       // handle response data
-=======
+
       alert(data.message);
->>>>>>> origin/branchDiego
     })
     .catch(data => {
       console.error(data.message);
     });
     
     // Cierra el modal
-<<<<<<< HEAD
     $("#editProductModal").modal("hide");
 
     // Limpia los parámetros
@@ -293,7 +291,7 @@ function createProduct() {
   formData.append("csrfmiddlewaretoken", csrf_token);
   
   const url = `/create/`;
-=======
+
     $("#createProductModal").modal("hide");
 
     // Limpia los parámetros
@@ -310,7 +308,6 @@ function createUser() {
   formData.append("csrfmiddlewaretoken", csrf_token);
   
   const url = `/createUser/`;
->>>>>>> origin/branchDiego
   
   fetch(url, {
     method: "POST",
@@ -331,12 +328,12 @@ function createUser() {
     });
     
     // Cierra el modal
-<<<<<<< HEAD
+
     $("#createProductModal").modal("hide");
 
     // Limpia los parámetros
     $("#createProductForm")[0].reset();
-=======
+
     $("#createUserModal").modal("hide");
 
     // Limpia los parámetros
@@ -345,22 +342,19 @@ function createUser() {
     
     // Recarga la página
     location.reload();
->>>>>>> origin/branchDiego
+
 };
 
 $(document).ready(function () {
   $('.btn-danger').click(function () {
   var productId = $(this).data('product-id');
   $('#productId').val(productId);
-<<<<<<< HEAD
+
   });
 });
 
-=======
   var userId = $(this).data('user-id');
   $('#userId').val(userId);
-  });
-});
 
 $(document).ready(function () {
   $('.btn-warning').click(function () {
@@ -615,7 +609,6 @@ function editUser() {
 };
 
 
->>>>>>> origin/branchDiego
 function deleteProduct() {
   const productId = $('#productId').val();
 
@@ -644,8 +637,6 @@ function deleteProduct() {
     
     // Cierra el modal
     $("#deleteProductModal").modal("hide");
-<<<<<<< HEAD
-=======
   
     // Recarga la página
     location.reload();
@@ -687,7 +678,6 @@ function deleteUser() {
     
     // Recarga la página
     location.reload();
->>>>>>> origin/branchDiego
     
 };
 
@@ -706,8 +696,6 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-<<<<<<< HEAD
-=======
 
 /*CRUD*/
 $(document).ready(function() {
@@ -755,4 +743,3 @@ $(document).ready(function() {
     }
   });
 });
->>>>>>> origin/branchDiego

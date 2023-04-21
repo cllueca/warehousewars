@@ -2,46 +2,44 @@
 {% load static %}
 {% block content %}
 
+<section class="container">
+    <div class="container-fluid h-100">
+        <!-- Parte superior -->
+        <div class="row bg-primary text-white py-2">
+            <div class="col-12 text-center"  id="encabezado">
+                <h1>{{ user.username }}</h1>
+                <hr>
+            </div>
+        </div>
 
-<div class="container-fluid h-100">
-    <!-- Parte superior -->
-    <div class="row bg-primary text-white py-2">
-        <div class="col-12 text-center">
-            <h1>Nombre del usuario</h1>
-            <hr class="bg-light">
-            <p>Pequeña decoración</p>
+        <!-- Parte inferior -->
+        <div class="row h-100">
+            <!-- Parte izquierda -->
+            <div class="col-3 bg-light">
+                <div class="list-group">
+                    <a href="#" id="selectDatos" class="list-group-item list-group-item-action active">Datos</a>
+                    <a href="#" id="selectPedidos" class="list-group-item list-group-item-action">Pedidos</a>
+                </div>
+            </div>
+            <!-- Parte derecha -->
+            <div class="col-9">
+                <!-- Información de datos -->
+                <div id="infoDatos">
+                    <h2>Datos del perfil</h2>
+                    <p>Nombre: {{ user.username }}</p>
+                    <p>Correo electrónico: {{ user.email }}</p>
+                    <p>Teléfono: {{ user.telefono }}</p>
+                </div>
+                <!-- Información de pedidos -->
+                <div id="infoPedidos" class="perfilHide">
+                    <h2>Información de pedidos</h2>
+                    <p>Pedido 1:</p>
+                    <p>Pedido 2:</p>
+                    <p>Pedido 3:</p>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Parte inferior -->
-    <div class="row h-100">
-        <!-- Parte izquierda -->
-        <div class="col-3 bg-light">
-            <div class="list-group">
-                <a href="#" id="selectDatos" class="list-group-item list-group-item-action active">Datos</a>
-                <a href="#" id="selectPedidos" class="list-group-item list-group-item-action">Pedidos</a>
-            </div>
-        </div>
-        <!-- Parte derecha -->
-        <div class="col-9">
-            <!-- Información de datos -->
-            <div id="datos" class="perfilActive">
-                <h2>Datos del perfil</h2>
-                <p>Nombre:</p>
-                <p>Correo electrónico:</p>
-                <p>Teléfono:</p>
-            </div>
-            <!-- Información de pedidos -->
-            <div id="pedidos" class="perfilHide" style="display: none;">
-                <h2>Información de pedidos</h2>
-                <p>Pedido 1:</p>
-                <p>Pedido 2:</p>
-                <p>Pedido 3:</p>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 
 {% endblock content %}
-
-

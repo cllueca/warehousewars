@@ -1,17 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
     const datos = document.getElementById("selectDatos");
+    const pedidos = document.getElementById("selectPedidos");
     const infoDatos = document.getElementById("infoDatos");
+    const infoPedidos = document.getElementById("infoPedidos");
     
-    datos.addEventListener("mouseenter", function() {
-        this.size = this.options.length + 2.2;
-        select.style.transform = "scale(1.1)";
-        this.style.color = "black";
+    datos.addEventListener("click", function() {
+        infoDatos.classList.toggle("perfilHide");
+        infoPedidos.classList.toggle("perfilHide");
     });
-    datos.addEventListener("mouseleave", function() {
-        this.size = 1;
-        select.style.transform = "scale(1)";
-        select.style.overflow = "hidden";
-        this.style.color = "black";
+    pedidos.addEventListener("click", function() {
+        infoDatos.classList.toggle("perfilHide");
+        infoPedidos.classList.toggle("perfilHide");
     });
 });
 
@@ -23,17 +22,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //     // Al hacer clic en el botón "Datos"
 //     $("[href='#datos']").click(function() {
+//         alert("Hola");
 //         $("#datos").show();
 //         $("#pedidos").hide();
-//         $("[href='#datos']").addClass("active");
-//         $("[href='#pedidos']").removeClass("active");
+//         $("[href='#datos']").addClass("perfilActive");
+//         $("[href='#pedidos']").removeClass("perfilHide");
 //     });
 
 //     // Al hacer clic en el botón "Pedidos"
 //     $("[href='#pedidos']").click(function() {
 //         $("#datos").hide();
 //         $("#pedidos").show();
-//         $("[href='#pedidos']").addClass("active");
-//         $("[href='#datos']").removeClass("active");
+//         $("[href='#pedidos']").addClass("perfilHide");
+//         $("[href='#datos']").removeClass("perfilActive");
 //     });
 // });
