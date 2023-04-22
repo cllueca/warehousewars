@@ -508,12 +508,14 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
+@login_required(login_url="/users/login")
 def mandarPedido(request):
     # Get the user's cart
     cart = Cart(request)
     today = timezone.now().astimezone(timezone.get_current_timezone()).date()
     estado = Estados.objects.get(pk=5)  # Get the Estados instance with a primary key of 5
-    user = Usuarios.objects.get(pk=1)
+    idUser = request.user.id
+    user = User.objects.get(pk=idUser)
     # Create a new Pedido instance
     pedido = Pedidos(date_order=today, status=estado, total_cost=12, user=user, address='ejemplo5')
     # Save the Pedido instance to the database
@@ -532,7 +534,7 @@ def mandarPedido(request):
     return redirect("home")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_add(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -540,7 +542,7 @@ def cart_add(request, id):
     return redirect("home")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_clear(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -548,7 +550,7 @@ def item_clear(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_increment(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -556,7 +558,7 @@ def item_increment(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_decrement(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -564,14 +566,14 @@ def item_decrement(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_detail(request):
     return render(request, '/carrito')
 
