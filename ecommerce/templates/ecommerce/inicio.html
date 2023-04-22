@@ -4,12 +4,22 @@
 {% block content %}
 
 <section class="text-center mt-5 hero-section pb-5">
+  {% if is_authenticated %}
+    <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
+    <h1 class="pt-5">Gracias por formar parte de nuestra tienda</h1>
+    <h4 class="mb-4">Esperemos que te guste</h4>
+  {%elif is_pedido%}
   <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
-  <h1 class="pt-5">Bienvenido a Nuestra Tienda</h1>
-  <h4 class="mb-4">Descubre los últimos productos y ofertas exclusivas</h4>
-  <button class="btn btn-primary mt-5" onclick="window.location.href={% url 'login' %}">Inicia sesión para más contenido</button>
-  <p class="mb-5">¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+  <h1 class="mt-5">Peido realizado con exito <i class="fas fa-check-circle text-success"></i></h1>
+  {% else %}
+    <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
+    <h1 class="pt-5">Bienvenido a Nuestra Tienda</h1>
+    <h4 class="mb-4">Descubre los últimos productos y ofertas exclusivas</h4>
+    <button class="btn btn-primary mt-5" onclick="window.location.href={% url 'login' %}">Inicia sesión para más contenido</button>
+    <p class="mb-5">¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+  {% endif %}
 </section>
+
 
 <section style="background-color: #F4F5F6;">
   <div class="container">

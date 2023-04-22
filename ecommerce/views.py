@@ -215,7 +215,8 @@ def paginaPrincipal(request):
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
         finally:
             cursor.close()
-        context = {'datos': user, 'producto' : product, 'productoCarrousel' : productCarrousel, 'conectTipo' : tipos,'conectProveedor' : proveedor}
+        is_authenticated = request.user.is_authenticated
+        context = {'datos': user, 'producto' : product, 'productoCarrousel' : productCarrousel, 'conectTipo' : tipos,'conectProveedor' : proveedor,'is_authenticated': is_authenticated}
         return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
@@ -242,10 +243,6 @@ def paginaContacto(request):
 def pagincaCarrito(request):
 
     return render(request, 'ecommerce/carrito.html')
-
-def paginaPeidoInfo(request):
-
-    return render(request, 'ecommerce/InfoPedido.html')
 
 
 def filtroInicio(request, selectedValue):
@@ -347,7 +344,6 @@ def iniciarSesion(request):
                 return redirect('home')
             else:
                 messages.error(request, 'Contraseña incorrecta')
-
     return render(request, 'ecommerce/login.html')
 
 
@@ -380,7 +376,10 @@ def registrarse(request):
 
             user.save()
             login(request, user)
-            return redirect('home') 
+            is_authenticated = request.user.is_authenticated
+            context = {'is_authenticated': is_authenticated}
+            return render(request,"ecommerce/inicio.html", context)
+
 
     return render(request, 'ecommerce/register.html')
 
@@ -572,7 +571,13 @@ def mandarPedido(request):
     idUser = request.user.id
     user = User.objects.get(pk=idUser)
     # Create a new Pedido instance
-    pedido = Pedidos(date_order=today, status=estado, total_cost=12, user=user, address='ejemplo5')
+    total = 0
+    for item in cart.cart:
+        product_id = item
+        quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
+        price = cart.cart.get(str(product_id), {}).get('price', 0)
+        total = total + (float(price) * float(quantity))
+    pedido = Pedidos(date_order=today, status=estado, total_cost=total, user=user, address=user.adress)
     # Save the Pedido instance to the database
     pedido.save()
     idPedido = pedido.pedido_id
@@ -580,13 +585,17 @@ def mandarPedido(request):
     for item in cart.cart:
         product_id = item
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
-        pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = 12)
+        price = cart.cart.get(str(product_id), {}).get('price', 0)
+        total = (float(price) * float(quantity))
+        pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = total)
         pedidoproductos.save()
 
     # Clear the user's cart
     cart.clear()
     # Redirect to a success page
-    return redirect("InfoPedido")
+    is_authenticated = request.user.is_authenticated
+    context = {'is_pedido': True}
+    return render(request,"ecommerce/inicio.html", context)
 
 
 @login_required(login_url="/users/login")
