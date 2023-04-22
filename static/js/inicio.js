@@ -339,14 +339,12 @@ function createUser() {
     
     // Recarga la página
     location.reload();
-
 };
 
 $(document).ready(function () {
   $('.btn-danger').click(function () {
   var productId = $(this).data('product-id');
   $('#productId').val(productId);
-
   var userId = $(this).data('user-id');
   $('#userId').val(userId);
   }

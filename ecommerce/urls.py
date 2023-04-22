@@ -40,4 +40,5 @@ urlpatterns = [
 
     path('albaran/<int:pedido_id>/', views.generate_albaran_pdf, name='generate_albaran_pdf'),
 
+    path('cart/mandarPedido/', views.mandarPedido, name='mandarPedido'),
 ]

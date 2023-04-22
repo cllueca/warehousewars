@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.db import connection, transaction
 import json
@@ -13,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-from .models import Productos
+from .models import Estados, PedidoProductos, Pedidos, Productos, Usuarios
 
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -558,9 +559,33 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
+@login_required(login_url="/users/login")
+def mandarPedido(request):
+    # Get the user's cart
+    cart = Cart(request)
+    today = timezone.now().astimezone(timezone.get_current_timezone()).date()
+    estado = Estados.objects.get(pk=5)  # Get the Estados instance with a primary key of 5
+    idUser = request.user.id
+    user = User.objects.get(pk=idUser)
+    # Create a new Pedido instance
+    pedido = Pedidos(date_order=today, status=estado, total_cost=12, user=user, address='ejemplo5')
+    # Save the Pedido instance to the database
+    pedido.save()
+    idPedido = pedido.pedido_id
+    # Create a PedidoProducto instance for each item in the cart
+    for item in cart.cart:
+        product_id = item
+        quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
+        pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = 12)
+        pedidoproductos.save()
+
+    # Clear the user's cart
+    cart.clear()
+    # Redirect to a success page
+    return redirect("home")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_add(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -568,7 +593,7 @@ def cart_add(request, id):
     return redirect("home")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_clear(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -576,7 +601,7 @@ def item_clear(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_increment(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -584,7 +609,7 @@ def item_increment(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_decrement(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -592,14 +617,14 @@ def item_decrement(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_detail(request):
     return render(request, '/carrito')
 
