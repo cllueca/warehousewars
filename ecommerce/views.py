@@ -243,6 +243,10 @@ def pagincaCarrito(request):
 
     return render(request, 'ecommerce/carrito.html')
 
+def paginaPeidoInfo(request):
+
+    return render(request, 'ecommerce/InfoPedido.html')
+
 
 def filtroInicio(request, selectedValue):
     queryType = []
@@ -582,7 +586,7 @@ def mandarPedido(request):
     # Clear the user's cart
     cart.clear()
     # Redirect to a success page
-    return redirect("home")
+    return redirect("InfoPedido")
 
 
 @login_required(login_url="/users/login")
