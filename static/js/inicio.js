@@ -19,30 +19,30 @@ document.addEventListener("DOMContentLoaded", function() {
   $("#product-type").change(function() {
     selectedValue = this.value;
     if (selectedValue != "0") {
-    selected = true;
-    url = `http://127.0.0.1:8000/filtroInicio/${selectedValue}/`
-    $("#product-prize, #product-proveedor").val("0").change();
-    updateProducts(url);
+      selected = true;
+      url = `/filtroInicio/${selectedValue}/`
+      $("#product-prize, #product-proveedor").val("0").change();
+      updateProducts(url);
     }
   });
 
   $("#product-prize").change(function() {
     selectedPrize = this.value;
     if (selectedPrize != "0") {
-    selected = true;
-    url =`http://127.0.0.1:8000/filtroPrecio/${selectedPrize}/`
-    $("#product-type, #product-proveedor").val("0").change();
-    updateProducts(url);
+      selected = true;
+      url = `/filtroPrecio/${selectedPrize}/`
+      $("#product-type, #product-proveedor").val("0").change();
+      updateProducts(url);
     }
   });
 
   $("#product-proveedor").change(function() {
     selectedProveedor = this.value;
     if (selectedProveedor != "0") {
-    selected = true;
-    url = `http://127.0.0.1:8000/filtroProveedor/${selectedProveedor}/`
-    $("#product-type, #product-prize").val("0").change();
-    updateProducts(url);
+      selected = true;
+      url = `/filtroProveedor/${selectedProveedor}/`
+      $("#product-type, #product-prize").val("0").change();
+      updateProducts(url);
     }
   });
 
@@ -63,14 +63,14 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 0; i < productos.length; i++) {
           contenedor.innerHTML += `<div class="col-md-4 mt-4 product-info" id="product-${productos[i].id}" data-product-id="${productos[i].id}">
             <div class="card">
-              <img src="${productos[i].image_url}" class="imageCard card-img-top mx-auto d-block" alt="#">
+              <img src="${productos[i].image}" class="imageCard card-img-top mx-auto d-block" alt="#">
               <hr style="border-color: #FEA424;">
               <div class="card-body d-flex justify-content-between">
                 <div>
                   <h5 class="card-title">${productos[i].name}</h5>
                 </div>
                 <div class="text-right">
-                  <p class="card-text borderPrize">${productos[i].cost_per_unit}</p>
+                  <p class="card-text borderPrize">${productos[i].price}</p>
                 </div>
               </div>
             </div>

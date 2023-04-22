@@ -201,7 +201,7 @@ def paginaPrincipal(request):
             user= dictfetchall(cursor)
             cursor.execute(f'SELECT * FROM "Productos" LIMIT 6;')
             product = dictfetchall(cursor)
-            cursor.execute('SELECT * FROM "Productos" LIMIT 4;')
+            cursor.execute('SELECT * FROM "Productos" LIMIT 5;')
             productCarrousel = dictfetchall(cursor)
             cursor.execute('SELECT * FROM "Tipos";')
             tipos = dictfetchall(cursor)
@@ -244,6 +244,7 @@ def pagincaCarrito(request):
 
 
 def filtroInicio(request, selectedValue):
+    queryType = []
     try:
         cursor = connection.cursor()
         if(selectedValue == 0):

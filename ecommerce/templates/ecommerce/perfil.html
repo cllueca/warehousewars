@@ -9,50 +9,50 @@
         contenido.classList.toggle('perfilHide');
     }
 </script>
-
-<section class="container">
-    <div class="container-fluid h-100">
-        <!-- Parte superior -->
-        <div class="row bg-primary text-white py-2">
-            <div class="col-12 text-center"  id="encabezado">
-                <h1>{{ user.username }}</h1>
-                <hr>
-            </div>
-        </div>
-
-        <!-- Parte inferior -->
-        <div class="row h-100">
-            <!-- Parte izquierda -->
-            <div class="col-3 bg-light">
-                <div class="list-group">
-                    <a href="#" id="selectDatos" class="list-group-item list-group-item-action active">Datos</a>
-                    <a href="#" id="selectPedidos" class="list-group-item list-group-item-action">Pedidos</a>
+<section class="color-grey">
+    <section class="container"  style="height: 600px;">
+        <div class="container-fluid" style="height: 500px;">
+            <!-- Parte superior -->
+            <div class="row py-5">
+                <div class="col-12 text-center">
+                    <h1>{{ user.username }}</h1>
+                    <hr>
                 </div>
             </div>
-            <!-- Parte derecha -->
-            <div class="col-9">
-                <!-- Información de datos -->
-                <div id="infoDatos">
-                    <h2>Datos del perfil</h2>
-                    <p>Nombre: {{ user.username }}</p>
-                    <p>Correo electrónico: {{ user.email }}</p>
-                    <p>Teléfono: {{ user.telefono }}</p>
-                </div>
-                <!-- Información de pedidos -->
-                <div id="infoPedidos" class="perfilHide">
-                    <h2>Información de pedidos</h2>
-                    {% for pedido in pedidos %}
-                    <button id="botonPedido{{ pedido.pedido_id }}" style="width:100%;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">Pedido {{ pedido.pedido_id }}</button>
-                    <div id="datosPedido{{ pedido.pedido_id }}" class="perfilHide">
-                        <p>Fecha del pedido: {{ pedido.date_order }}</p>
-                        <p>Estado del pedido: {{ pedido.status_id }} (cambiar el numero por lo que significa)</p>
-                        <p>Precio final: {{ pedido.total_cost }}€</p>
+
+            <!-- Parte inferior -->
+            <div class="row" >
+                <!-- Parte izquierda -->
+                <div class="col-lg-3 col-sm-12 bg-light">
+                    <div class="list-group mt-3">
+                        <a href="#" id="selectDatos" class="list-group-item list-group-item-action active">Datos</a>
+                        <a href="#" id="selectPedidos" class="list-group-item list-group-item-action">Pedidos</a>
                     </div>
-                    {% endfor %}
+                </div>
+                <!-- Parte derecha -->
+                <div class="col-lg-9 col-sm-12" style = "height: 400px; max-height: 450px ; overflow: auto; ">
+                    <!-- Información de datos -->
+                    <div id="infoDatos">
+                        <h2>Datos del perfil</h2>
+                        <p>Nombre: {{ user.username }}</p>
+                        <p>Correo electrónico: {{ user.email }}</p>
+                        <p>Teléfono: {{ user.telefono }}</p>
+                    </div>
+                    <!-- Información de pedidos -->
+                    <div id="infoPedidos" class="perfilHide">
+                        <h2>Información de pedidos</h2>
+                        {% for pedido in pedidos %}
+                        <button id="botonPedido{{ pedido.pedido_id }}" style="width:100%;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">Pedido {{ pedido.pedido_id }}</button>
+                        <div id="datosPedido{{ pedido.pedido_id }}" class="perfilHide">
+                            <p>Fecha del pedido: {{ pedido.date_order }}</p>
+                            <p>Estado del pedido: {{ pedido.status_id }} (cambiar el numero por lo que significa)</p>
+                            <p>Precio final: {{ pedido.total_cost }}€</p>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </section>
-
 {% endblock content %}

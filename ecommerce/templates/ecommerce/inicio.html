@@ -3,19 +3,19 @@
 
 {% block content %}
 
-<section class="text-center mt-5">
-  <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img">
-  <h1 class=" pt-5">Nuevos Productos</h1>
-  <h4 class=" ">Ultimos productos que han llegado al almacen</h4>
-  <button class="btn btn-primary mt-5 mb-5 ">Inicia sesión para mas contenido</button>
-
+<section class="text-center mt-5 hero-section pb-5">
+  <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
+  <h1 class="pt-5">Bienvenido a Nuestra Tienda</h1>
+  <h4 class="mb-4">Descubre los últimos productos y ofertas exclusivas</h4>
+  <button class="btn btn-primary mt-5" onclick="window.location.href={% url 'login' %}">Inicia sesión para más contenido</button>
+  <p class="mb-5">¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
 </section>
 
 <section style="background-color: #F4F5F6;">
   <div class="container">
     <div class="text-center">
-    <h1 class=" pt-5">Productos de Cosmética</h1>
-    <h4 class=" pb-5"></h4>
+    <h1 class="pt-5">Nuevos Productos</h1>
+    <h4 class="pb-5">Ultimos productos que han llegado al almacen</h4>
 
     </div>
       <div class="owl-container pb-5">
@@ -28,11 +28,11 @@
                     </div>
                     <div class="col-md-6" style="background-color: #e1e1e6; border-radius: 10px;">
                         <h4 class="m-3">{{ productCarrousel.name }}</h4>
-                        <p class="m-3">{{ productCarrousel.price }}</p>
+                        <p class="m-3 card-text borderPrize">{{ productCarrousel.price }} €</p>
                        
-                        <div class="text-center mt-3 mb-3" style="width: 100%;">
-                          <button onclick="{% url 'cart_add' productCarrousel.id %}" id="show-more-button" class="button-21" role="button">Añadir al Carrito</button>
-                          <a href="{% url 'cart_add' productCarrousel.id %}">Add to cart</a>
+                        <div class="text-center mt-5 mb-3" style="width: 100%;">
+                          <a href="{% url 'cart_add' productCarrousel.id %}"><button class="button-21" role="button">Añadir al Carrito</button></a>
+                          
                         </div>
                     </div>
                 </div>
@@ -55,8 +55,7 @@
   <div class="container">
 
     <div class="borderDiv text-center  mt-5">
-      <h1 class="pt-5">Nuevos Productos</h1>
-      <h4 class="pb-5">Ultimos productos que han llegado al almacen</h4>
+      <h1 class="pb-5 pt-5">Productos de Cosmética</h1>
     </div>
 
     <div class="row mt-5 mb-3" >
@@ -104,7 +103,7 @@
                               <h5 class="card-title">{{ queryType.name }}</h5>
                           </div>
                           <div class="text-right">
-                              <p class="card-text borderPrize">{{ queryType.price }}</p>
+                              <p class="card-text borderPrize">{{ queryType.price }} €</p>
                           </div>
                       </div>
                   </div>
@@ -123,7 +122,7 @@
                               <h5 class="card-title">{{ product.name }}</h5>
                           </div>
                           <div class="text-right">
-                              <p class="card-text borderPrize">{{ product.price }}</p>
+                              <p class="card-text borderPrize">{{ product.price }} €</p>
                           </div>
                       </div>
                   </div>

@@ -8,3 +8,4 @@ Librerias a instalarse:
     - python -m pip install Pillow (no se que hace pero me lo ha pedido)
     - pip install xhtml2pdf (para el albaran)
     - pip install djangorestframework (para llamadas de CORS headers)
+    - pip install django-cors-headers

@@ -9,7 +9,7 @@
         <h2>{{ productosDesc.name }}</h2>
       </div>
       <div class="col-1 text-right">
-        <p class="borderPrize mt-2 mr-2">{{ productosDesc.price }}</p>
+        <p class="borderPrize mt-2 mr-2">{{ productosDesc.price }} €</p>
       </div>
     </div>
     <div class="row mb-3">
@@ -38,8 +38,7 @@
             </div>
           </div>
           <div class="text-center mt-4" style="width: 100%; margin: 0 auto;">
-            <button class="button-21 m-3" role="button">Añadir al Carrito</button>
-            <a href="{% url 'cart_add' productosDesc.id %}">Add to cart</a>
+            <a href="{% url 'cart_add' productosDesc.id %}"><button class="button-21 m-3" role="button" >Añadir al Carrito</button></a>
           </div>
       </div>
     </div>
