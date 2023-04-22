@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+{% for productosDesc in productosDesc %}
+<div class="container">
+    <div class="row mb-3">
+      <div class="col-4">
+        <h2>{{ productosDesc.name }}</h2>
+      </div>
+      <div class="col-1 text-right">
+        <p class="borderPrize mt-2 mr-2">{{ productosDesc.price }} €</p>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-12">
+        <p>Brand</p>
+      </div>
+    </div>
+    
+    <div class="row card" style="flex-direction: inherit!important;">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <img src="{{ productosDesc.image }}" class="img-fluid"  alt="{{ product.name }}">
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 pt-4" style="background-color: #e1e1e6; border-radius: 10px;">
+        <p class="title-2">Descripción: </p>
+        <p>{{ productosDesc.product_description }}</p>
+        <div class="form-group">
+            <label class="title-2" for="units">Unidades: </label>
+            <div class="input-group mb-3" style="width: 35%;">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" type="button" id="minus">-</button>
+              </div>
+              <input type="number" class="form-control" id="units" value="1">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="plus">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4" style="width: 100%; margin: 0 auto;">
+            <a href="{% url 'cart_add' productosDesc.id %}"><button class="button-21 m-3" role="button" >Añadir al Carrito</button></a>
+          </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+
+{% endblock content %}

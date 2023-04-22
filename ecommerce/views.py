@@ -590,6 +590,11 @@ def mandarPedido(request):
         pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = total)
         pedidoproductos.save()
 
+        # Update the Producto stock
+        producto = Productos.objects.get(pk=product_id)
+        producto.stock -= quantity
+        producto.save()
+
     # Clear the user's cart
     cart.clear()
     # Redirect to a success page

@@ -4,13 +4,13 @@
 {% block content %}
 
 <section class="text-center mt-5 hero-section pb-5">
-  {% if is_authenticated %}
+  {%if is_pedido%}
+  <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
+  <h1 class="mt-5">Peido realizado con exito <i class="fas fa-check-circle text-success"></i></h1>
+  {% elif is_authenticated %}
     <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
     <h1 class="pt-5">Gracias por formar parte de nuestra tienda</h1>
     <h4 class="mb-4">Esperemos que te guste</h4>
-  {%elif is_pedido%}
-  <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
-  <h1 class="mt-5">Peido realizado con exito <i class="fas fa-check-circle text-success"></i></h1>
   {% else %}
     <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
     <h1 class="pt-5">Bienvenido a Nuestra Tienda</h1>
