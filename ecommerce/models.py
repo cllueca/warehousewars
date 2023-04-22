@@ -46,7 +46,7 @@ class PedidoProductos(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Pedido-Productos'
+        db_table = 'PedidoProductos'
 
 
 class Pedidos(models.Model):
@@ -54,7 +54,7 @@ class Pedidos(models.Model):
     date_order = models.DateField()
     status = models.ForeignKey(Estados, models.DO_NOTHING)
     total_cost = models.FloatField()
-    user = models.ForeignKey('Usuarios', models.DO_NOTHING)
+    user = models.ForeignKey('User', models.DO_NOTHING)
     address = models.CharField(max_length=25)
 
     class Meta:
@@ -82,7 +82,7 @@ class Productos(models.Model):
 
 class ProveedorProducto(models.Model):
     provprod_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('Usuarios', models.DO_NOTHING)
+    user = models.ForeignKey('User', models.DO_NOTHING)
     product_id = models.IntegerField()
 
     class Meta:
