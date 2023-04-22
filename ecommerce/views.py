@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.db import connection, transaction
 import json
@@ -13,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-from .models import Productos
+from .models import Estados, PedidoProductos, Pedidos, Productos, Usuarios
 
 
 def vistaAlmacen(request):
@@ -507,6 +508,28 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
+def mandarPedido(request):
+    # Get the user's cart
+    cart = Cart(request)
+    today = timezone.now().astimezone(timezone.get_current_timezone()).date()
+    estado = Estados.objects.get(pk=5)  # Get the Estados instance with a primary key of 5
+    user = Usuarios.objects.get(pk=1)
+    # Create a new Pedido instance
+    pedido = Pedidos(date_order=today, status=estado, total_cost=12, user=user, address='ejemplo5')
+    # Save the Pedido instance to the database
+    pedido.save()
+    idPedido = pedido.pedido_id
+    # Create a PedidoProducto instance for each item in the cart
+    for item in cart.cart:
+        product_id = item
+        quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
+        pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = 12)
+        pedidoproductos.save()
+
+    # Clear the user's cart
+    cart.clear()
+    # Redirect to a success page
+    return redirect("home")
 
 
 #@login_required(login_url="/users/login")

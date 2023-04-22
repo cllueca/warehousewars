@@ -40,13 +40,13 @@ class Estados(models.Model):
 
 class PedidoProductos(models.Model):
     product_id = models.IntegerField()
-    pedido = models.ForeignKey('Pedidos', models.DO_NOTHING)
+    pedido_id = models.IntegerField()
     quantity = models.IntegerField()
     total_cost = models.FloatField()
 
     class Meta:
         managed = False
-        db_table = 'Pedido-Productos'
+        db_table = 'PedidoProductos'
 
 
 class Pedidos(models.Model):
