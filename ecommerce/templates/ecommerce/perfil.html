@@ -41,15 +41,39 @@
                     <!-- Información de pedidos -->
                     <div id="infoPedidos" class="perfilHide">
                         <h2>Información de pedidos</h2>
+                        
                         {% for pedido in pedidos %}
-                        <button id="botonPedido{{ pedido.pedido_id }}" style="width:100%;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">Pedido {{ pedido.pedido_id }}</button>
-                        <div id="datosPedido{{ pedido.pedido_id }}" class="perfilHide">
-                            <p>Fecha del pedido: {{ pedido.date_order }}</p>
-                            <p>Estado del pedido: {{ pedido.status_id }} (cambiar el numero por lo que significa)</p>
-                            <p>Precio final: {{ pedido.total_cost }}€</p>
+                        <div class="border pedidos mt-3">
+                            <div id="pedidoInfo{{ pedido.pedido_id }}" class="pedidos boreder p-2 mb-2" style="cursor: pointer;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">
+                                <div class="row">
+                                <div class="col-md-4">
+                                    <p>Fecha del pedido: {{ pedido.date_order }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p>ID del pedido: {{ pedido.pedido_id }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p>Precio final: {{ pedido.total_cost }}€</p>
+                                </div>
+                            </div>
+                            </div>
+                            <div id="datosPedido{{ pedido.pedido_id }}" class="pedidos-detail perfilHide">
+                                <p>Estado del pedido: {{ pedido.status_id }} (cambiar el numero por lo que significa)</p>
+                                
+                                <!-- Información de los productos del pedido -->
+                                <h4>Productos del pedido:</h4>
+                                {% for item in pedido.items %}
+                                    <p>{{ item.quantity }} x {{ item.product_name }} = {{ item.total_price }}€</p>
+                                {% endfor %}
+                                
+                                <!-- Información de la dirección -->
+                                <h4>Dirección de envío:</h4>
+                                <p>{{ pedido.address }}</p>
+                            </div>
                         </div>
                         {% endfor %}
-                    </div>
+                   
+                    </div>                                   
                 </div>
             </div>
         </div>

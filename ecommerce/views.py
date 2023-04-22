@@ -126,13 +126,13 @@ def vistaAlmacen(request):
         product = [p for p in product if p['min_stock'] <= int(query_product_min_stock_max)]  
 
     if query_product_price_min and query_product_price_max:
-        product = [p for p in product if float(p['price'].replace("$", "")) >= float(query_product_price_min) and float((p['price']).replace("$","")) <= float(query_product_price_max)]
+        product = [p for p in product if p['price'] >= float(query_product_price_min) and (p['price']) <= float(query_product_price_max)]
 
     if query_product_price_min:
-        product = [p for p in product if float(p['price'].replace("$","")) >= float(query_product_price_min)]
+        product = [p for p in product if p['price'] >= float(query_product_price_min)]
 
     if query_product_price_max:
-        product = [p for p in product if float(p['price'].replace("$","")) <= float(query_product_price_max)]  
+        product = [p for p in product if p['price'].replace("$","") <= float(query_product_price_max)]  
 
     if query_nombre_user: #chars
         user = [p for p in user if query_nombre_user in p['first_name']]
