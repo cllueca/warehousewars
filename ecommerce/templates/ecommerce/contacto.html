@@ -36,13 +36,26 @@
                 </div>
             </div>
             <div class="col-lg-5 col-md-12 mt-5 ">
+                <form method="post" action="{% url 'contacto' %}">
+                {% csrf_token %}
                 <div class="form-group">
                     <p class="bold_txt">Correo</p>
-                    <input type="text" class="form-control rounded-input" placeholder="Inserte su correo">
+                    <input type="email" name="email" class="form-control rounded-input" placeholder="Inserte su correo" required>
                     <p class="mt-4 bold_txt">Mensaje</p>
-                    <input type="text" class="form-control rounded-input message-input" placeholder="Inserte su mensaje">
+                    <textarea name="message" class="form-control rounded-input message-input" placeholder="Inserte su mensaje" required></textarea>
                     <button type="submit" class="button-21 mt-3">Enviar Mensaje</button>
                 </div>
+                </form>
+                {% if 'ok' in request.GET %}
+                <div class="alert alert-success mt-3" role="alert">
+                    <p>Mensaje recibido</p>
+                </div>
+                {% endif %}
+                {% if 'error' in request.GET %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    <p>Error al enviar</p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

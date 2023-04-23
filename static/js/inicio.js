@@ -339,14 +339,12 @@ function createUser() {
     
     // Recarga la página
     location.reload();
-
 };
 
 $(document).ready(function () {
   $('.btn-danger').click(function () {
   var productId = $(this).data('product-id');
   $('#productId').val(productId);
-
   var userId = $(this).data('user-id');
   $('#userId').val(userId);
   }
@@ -739,3 +737,54 @@ $(document).ready(function() {
     }
   });
 });
+
+function showDeleteOrderModal(button) {
+  var orderId = button.getAttribute("data-order-id");
+  var deleteButton = document.querySelector("#deletePedidoModal .btn-danger");
+  deleteButton.setAttribute("data-order-id", orderId);
+}
+
+function deleteOrder(button) {
+  var orderId = button.getAttribute("data-order-id");
+  var url = `/delete_order/${orderId}/`; // Asegúrate de que esta ruta coincida con la ruta en tus urlpatterns
+
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+      },
+  })
+  .then((response) => {
+      if (response.status === 200) {
+          location.reload();
+      } else {
+          console.error("Error al eliminar el pedido");
+      }
+  })
+  .catch((error) => {
+      console.error("Error al eliminar el pedido:", error);
+  });
+}
+
+function updateOrderStatus(orderId, statusId) {
+  var url = `/update_order_status/${orderId}/${statusId}/`;
+
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+      },
+  })
+  .then((response) => {
+      if (response.status === 200) {
+          console.log("Estado del pedido actualizado");
+      } else {
+          console.error("Error al actualizar el estado del pedido");
+      }
+  })
+  .catch((error) => {
+      console.error("Error al actualizar el estado del pedido:", error);
+  });
+}

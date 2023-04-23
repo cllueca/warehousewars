@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const infoPedidos = document.getElementById("infoPedidos");
     
     datos.addEventListener("click", function() {
-        infoDatos.classList.toggle("perfilHide");
-        infoPedidos.classList.toggle("perfilHide");
+        infoDatos.classList.remove("perfilHide");
+        infoPedidos.classList.add("perfilHide");
     });
     pedidos.addEventListener("click", function() {
-        infoDatos.classList.toggle("perfilHide");
-        infoPedidos.classList.toggle("perfilHide");
+        infoDatos.classList.add("perfilHide");
+        infoPedidos.classList.remove("perfilHide");
     });
 });

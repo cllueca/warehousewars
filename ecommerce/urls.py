@@ -40,4 +40,8 @@ urlpatterns = [
 
     path('albaran/<int:pedido_id>/', views.generate_albaran_pdf, name='generate_albaran_pdf'),
 
-]
+    path('cart/mandarPedido/', views.mandarPedido, name='mandarPedido'),
+    path("delete_order/<int:order_id>/", views.delete_order, name="delete_order"),
+    path('update_order_status/<int:order_id>/<int:status_id>/', views.update_order_status, name='update_order_status'),
+
+    ]

@@ -1,10 +1,10 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
-
+{% load filtros %}
 <script>
     function mostrarDatosPedido(id) {
-        var contenido = document.getElementById("datosPedido"+id);
+        var contenido = document.getElementById("detallePedido"+id);
 
         contenido.classList.toggle('perfilHide');
     }
@@ -44,31 +44,48 @@
                         
                         {% for pedido in pedidos %}
                         <div class="border pedidos mt-3">
-                            <div id="pedidoInfo{{ pedido.pedido_id }}" class="pedidos boreder p-2 mb-2" style="cursor: pointer;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">
+                            <div id="datosPedido{{ pedido.pedido_id }}" class="pedidos boreder p-2 mb-2" style="cursor: pointer;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">
                                 <div class="row">
-                                <div class="col-md-4">
-                                    <p>Fecha del pedido: {{ pedido.date_order }}</p>
+                                <div class="col-lg-3 ">
+                                    <p>Fecha del pedido:</p>
+                                    <p style="margin-top: -15px;">{{ pedido.date_order }}</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <p>ID del pedido: {{ pedido.pedido_id }}</p>
+                                <div class="col-lg-3">
+                                    <p>ID del pedido:</p>
+                                    <p style="margin-top: -15px;">{{ pedido.pedido_id }}</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <p>Precio final: {{ pedido.total_cost }}€</p>
+                                <div class="col-lg-3 text-center">
+                                    <p>Precio final: </p>
+                                    <p style="margin-top: -15px;">{{ pedido.total_cost }}€</p>
+                                </div>
+                                <div class="col-lg-3 text-center">
+                                    <p>Estado del pedido: </p>
+                                    <p style="margin-top: -15px; font-weight: bold;">{{ pedido.status.name }}</p>
                                 </div>
                             </div>
                             </div>
-                            <div id="datosPedido{{ pedido.pedido_id }}" class="pedidos-detail perfilHide">
-                                <p>Estado del pedido: {{ pedido.status_id }} (cambiar el numero por lo que significa)</p>
-                                
+                            <div id="detallePedido{{ pedido.pedido_id }}" class="pedidos-detail perfilHide">                                
                                 <!-- Información de los productos del pedido -->
-                                <h4>Productos del pedido:</h4>
-                                {% for item in pedido.items %}
-                                    <p>{{ item.quantity }} x {{ item.product_name }} = {{ item.total_price }}€</p>
+                                <h5 class="pl-3">Productos del pedido:</h5>
+                                {%  for item in pedido.pedidoproductos_set.all %}
+                                    <div class="row p-3">
+                                        <div class="col-lg-3 col-sm-12">
+                                            <img src={{ item.product_id.image.url|slice:'1:'|urldecode }} alt="{{ item.producto.name }}" style="width: 100px; height: 100px;">
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <p style="font-weight: bold;"> {{ item.product_id.name }}</p>
+                                            <p style="margin-top: -10px;">{{ item.quantity }} x {{ item.product_id.price }} € = {{ item.total_cost }}€</p>
+                                            <p>Dirección de envío: {{ pedido.address }}</p>
+                                        </div>
+                                        <div class="col-lg-1 col-sm-12">
+                                            <button class="btn btn-danger">Cancelar</button>
+                                        </div>
+                                       
+                                    </div>
+                                <hr style="width: 85%; margin-top: -5px;">
                                 {% endfor %}
-                                
-                                <!-- Información de la dirección -->
-                                <h4>Dirección de envío:</h4>
-                                <p>{{ pedido.address }}</p>
+                               
+
                             </div>
                         </div>
                         {% endfor %}

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.db import connection, transaction
 import json
@@ -13,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-from .models import Productos
+from .models import Estados, PedidoProductos, Pedidos, Productos, Usuarios
 
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -22,6 +23,9 @@ from django.http import FileResponse
 from django.http import Http404
 
 from rest_framework.decorators import api_view
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def vistaAlmacen(request):
@@ -184,8 +188,8 @@ def vistaAlmacen(request):
     
     if query_orderProv_productId: #chars
         orderProv = [p for p in orderProv if p['product_id'] == int(query_orderProv_productId)]
-     
-    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv}
+    estados = Estados.objects.all()
+    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv, 'estados': estados}
     return context
 
 
@@ -233,10 +237,6 @@ def descripcionProducto(request, productId):
     context = {'productosDesc' : productosDesc}
     return render(request, 'ecommerce/descProducto.html', context)
 
-
-def paginaContacto(request):
-
-    return render(request, 'ecommerce/contacto.html')
 
 def pagincaCarrito(request):
 
@@ -405,25 +405,25 @@ def cambiarPwd(request):
                 return redirect('login')
         
     return render(request, 'ecommerce/cambiarPwd.html')
-
+from django.db.models import F
+from django.db.models import Prefetch
 @login_required(login_url='login')
 def perfilUsuario(request):
+    idUser = request.user.id
 
     try:
-        cursor = connection.cursor()
-        cursor.execute('SELECT * FROM "Pedidos" WHERE user_id = 1;')
-        queryType = dictfetchall(cursor)
+        pedidos = Pedidos.objects.filter(user_id=idUser).prefetch_related(
+            Prefetch('pedidoproductos_set', queryset=PedidoProductos.objects.select_related('product_id'))
+        )
 
     except Exception as e:
         print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-    finally:
-        cursor.close()
 
-    listaPedidos = []
-    for row in queryType:
-        listaPedidos.append(row)
-        
-    return render(request, 'ecommerce/perfil.html', {"pedidos": listaPedidos})
+    return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos})
+
+
+
+
 
 
 @csrf_exempt
@@ -558,9 +558,49 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
+@login_required(login_url="/users/login")
+def mandarPedido(request):
+    # Get the user's cart
+    cart = Cart(request)
+    today = timezone.now().astimezone(timezone.get_current_timezone()).date()
+    estado = Estados.objects.get(pk=5)  # Get the Estados instance with a primary key of 5
+    idUser = request.user.id
+    user = User.objects.get(pk=idUser)
+    # Create a new Pedido instance
+    pedido = Pedidos(date_order=today, status=estado, total_cost=12, user=user, address='ejemplo5')
+    # Save the Pedido instance to the database
+    pedido.save()
+    idPedido = pedido.pedido_id
+    # Create a PedidoProducto instance for each item in the cart
+    for item in cart.cart:
+        product_id = item
+        quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
+        pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = 12)
+        pedidoproductos.save()
+
+    # Clear the user's cart
+    cart.clear()
+
+        # Send email
+    email_subject = "Pedido recibido"
+    email_body = "Hola {},\n\nTu pedido con ID {} ha sido recibido. Estamos procesando tu pedido y te notificaremos cuando esté listo para ser enviado.\n\nGracias por comprar con nosotros.".format(user.username, idPedido)
+    email = EmailMessage(
+        email_subject,
+        email_body,
+        "d38df7490e64e7@inbox.mailtrap.com",  # Cambia esto por la dirección de correo electrónico de tu tienda
+        [user.email],
+    )
+
+    try:
+        email.send()
+    except Exception as e:
+        print("Error al enviar el correo electrónico:", e)
+
+    # Redirect to a success page
+    return redirect("home")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_add(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -568,7 +608,7 @@ def cart_add(request, id):
     return redirect("home")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_clear(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -576,7 +616,7 @@ def item_clear(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_increment(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -584,7 +624,7 @@ def item_increment(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def item_decrement(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -592,14 +632,14 @@ def item_decrement(request, id):
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
     return redirect("/carrito")
 
 
-#@login_required(login_url="/users/login")
+@login_required(login_url="/users/login")
 def cart_detail(request):
     return render(request, '/carrito')
 
@@ -617,3 +657,67 @@ def generate_albaran_pdf(request, pedido_id):
     response = FileResponse(buffer, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="albaran{pedido_id}.pdf"'
     return response
+
+@csrf_exempt
+def delete_order(request, order_id):
+    if request.method == "POST":
+        try:
+            order = Pedidos.objects.get(pedido_id=order_id)
+            print(f"Pedido encontrado: {order.pedido_id}")
+
+            PedidoProductos.objects.filter(pedido=order).delete()
+            print("Productos del pedido eliminados")
+
+            order.delete()
+            print("Pedido eliminado")
+
+            return JsonResponse({"status": "success"}, status=200)
+        except Pedidos.DoesNotExist:
+            print(f"Pedido no encontrado: {order_id}")
+            return JsonResponse({"status": "error"}, status=404)
+    else:
+        print("Solicitud no válida")
+        return JsonResponse({"status": "error"}, status=400)
+
+def success_page(request):
+    return render(request, 'ecommerce/inicio.html')
+
+from django.core.mail import EmailMessage
+
+def paginaContacto(request):
+    idUser = request.user.id
+    user = User.objects.get(pk=idUser)
+    if request.method == 'POST':
+        sender_email = request.POST['email']
+        message = request.POST['message']
+
+        email = EmailMessage(
+            'Incidencias web SlotsSolutions',
+            "Mesaje enviado por: <{}>: \n\n {}".format(sender_email, message),
+            from_email=user.email,  # Reemplaza esto con la dirección de correo electrónico de tu tienda
+            to=['d38df7490e64e7@inbox.mailtrap.com'],  # Asegúrate de utilizar tu correo personalizado aquí
+        )
+        try:
+            email.send()
+            return HttpResponseRedirect(reverse('contacto') + '?ok')
+        except Exception as e:
+            print("Error al enviar el correo electrónico:", e)
+            return HttpResponseRedirect(reverse('contacto') + '?error')
+    else:
+        return render(request, 'ecommerce/contacto.html')  # Cambia 'contact.html' por la plantilla de la página de contacto
+
+@csrf_exempt
+def update_order_status(request, order_id, status_id):
+    if request.method == "POST":
+        try:
+            order = Pedidos.objects.get(pedido_id=order_id)
+            new_status = Estados.objects.get(status_id=status_id)
+            # Asegúrate de convertir el valor de `total_cost` en un float antes de guardarlo
+            order.total_cost = float(order.total_cost.replace('$', ''))
+            order.status = new_status
+            order.save()
+            return JsonResponse({"status": "success"}, status=200)
+        except (Pedidos.DoesNotExist, Estados.DoesNotExist, ValueError):
+            return JsonResponse({"status": "error"}, status=404)
+    else:
+        return JsonResponse({"status": "error"}, status=400)
