@@ -55,7 +55,7 @@ body {
 }
 
 #infoPedidos {
-    background-color: #ddd;
+    background-color: #f9f9f9;
     width: 100%;
 }
 
@@ -71,6 +71,16 @@ body {
 }
 
 .btn-pedidos {
-    background-color: #ddd;
-    color: #333;
+    background-color: #f9f9f9;
+    color: #f9f9f9;
+}
+
+.pedidos {
+    background-color: #F0F2F2;
+    color: rgb(94, 94, 94);
+}
+
+.pedidos-detail {
+    background-color: #eeecec;
+    color: rgb(94, 94, 94);
 }

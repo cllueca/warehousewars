@@ -20,7 +20,7 @@ class User(AbstractUser):
 
 class Albaranes(models.Model):
     albaran_id = models.AutoField(primary_key=True)
-    pedido = models.ForeignKey('Pedidos', models.DO_NOTHING)
+    pedido = models.ForeignKey('Pedidos', on_delete=models.CASCADE)
     data = models.DateField()
     id_seguimiento = models.CharField(max_length=25)
 
@@ -38,28 +38,24 @@ class Estados(models.Model):
         db_table = 'Estados'
 
 
-class PedidoProductos(models.Model):
-    product_id = models.IntegerField()
-    pedido_id = models.IntegerField()
-    quantity = models.IntegerField()
-    total_cost = models.FloatField()
-
-    class Meta:
-        managed = False
-        db_table = 'PedidoProductos'
 
 
 class Pedidos(models.Model):
     pedido_id = models.AutoField(primary_key=True)
     date_order = models.DateField()
-    status = models.ForeignKey(Estados, models.DO_NOTHING)
+    status = models.ForeignKey(Estados,on_delete=models.CASCADE)
     total_cost = models.FloatField()
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey('User',on_delete=models.CASCADE)
     address = models.CharField(max_length=25)
 
     class Meta:
         managed = False
         db_table = 'Pedidos'
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.total_cost, str):
+            self.total_cost = float(self.total_cost.replace('$', ''))
+            super().save(*args, **kwargs)
 
 
 class Productos(models.Model):
@@ -71,7 +67,7 @@ class Productos(models.Model):
     location = models.CharField(max_length=25)
     image = models.ImageField(upload_to='products/')
     product_description = models.CharField(max_length=25, blank=True, null=True)
-    type = models.ForeignKey('Tipos', models.DO_NOTHING)
+    type = models.ForeignKey('Tipos',on_delete=models.CASCADE)
     fecha_llegada = models.DateField(blank=True, null=True)
     arrayphotos = ArrayField(models.CharField(max_length=200), blank=True, null=True)
 
@@ -79,10 +75,19 @@ class Productos(models.Model):
         managed = False
         db_table = 'Productos'
 
+class PedidoProductos(models.Model):
+    product_id = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='product_id') 
+    pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, db_column='pedido_id')
+    quantity = models.IntegerField()
+    total_cost = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'PedidoProductos'
 
 class ProveedorProducto(models.Model):
     provprod_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     product_id = models.IntegerField()
 
     class Meta:
@@ -110,7 +115,7 @@ class Tipos(models.Model):
 
 class Usuarios(models.Model):
     user_id = models.AutoField(primary_key=True)
-    role = models.ForeignKey(Roles, models.DO_NOTHING)
+    role = models.ForeignKey(Roles,on_delete=models.CASCADE)
     name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25, blank=True, null=True)
     email = models.CharField(max_length=25)
@@ -120,16 +125,4 @@ class Usuarios(models.Model):
     class Meta:
         managed = False
         db_table = 'Usuarios'
-
-
-
-
-
-
-
-
-
-
-
-
 
