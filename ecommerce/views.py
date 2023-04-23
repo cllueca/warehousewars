@@ -576,17 +576,22 @@ def mandarPedido(request):
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
         price = cart.cart.get(str(product_id), {}).get('price', 0)
         total = total + (float(price) * float(quantity))
-    pedido = Pedidos(date_order=today, status=estado, total_cost=total, user=user, address=user.adress)
+        print(today,estado,total,user,user.adress)
+    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress)
+    print(pedido)
     # Save the Pedido instance to the database
     pedido.save()
     idPedido = pedido.pedido_id
+   
+    print(idPedido)
     # Create a PedidoProducto instance for each item in the cart
     for item in cart.cart:
         product_id = item
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
         price = cart.cart.get(str(product_id), {}).get('price', 0)
         total = (float(price) * float(quantity))
-        pedidoproductos = PedidoProductos(product_id = product_id,pedido_id = idPedido,quantity = quantity,total_cost = total)
+        producto = Productos.objects.get(pk=product_id)
+        pedidoproductos = PedidoProductos(product_id = producto, pedido_id = pedido   , quantity = quantity, total_cost = total)
         pedidoproductos.save()
 
         # Update the Producto stock
@@ -683,7 +688,7 @@ def delete_order(request, order_id):
             order = Pedidos.objects.get(pedido_id=order_id)
             print(f"Pedido encontrado: {order.pedido_id}")
 
-            PedidoProductos.objects.filter(pedido=order).delete()
+            PedidoProductos.objects.filter(pedido_id=order).delete()
             print("Productos del pedido eliminados")
 
             order.delete()

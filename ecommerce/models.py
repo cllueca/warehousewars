@@ -45,17 +45,12 @@ class Pedidos(models.Model):
     date_order = models.DateField()
     status = models.ForeignKey(Estados,on_delete=models.CASCADE)
     total_cost = models.FloatField()
-    user = models.ForeignKey('User',on_delete=models.CASCADE)
+    user= models.ForeignKey('User',on_delete=models.CASCADE)
     address = models.CharField(max_length=25)
 
     class Meta:
         managed = False
-        db_table = 'Pedidos'
-
-    def save(self, *args, **kwargs):
-        if isinstance(self.total_cost, str):
-            self.total_cost = float(self.total_cost.replace('$', ''))
-            super().save(*args, **kwargs)
+        db_table = 'Pedidos' 
 
 
 class Productos(models.Model):
@@ -76,8 +71,8 @@ class Productos(models.Model):
         db_table = 'Productos'
 
 class PedidoProductos(models.Model):
-    product_id = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='product_id') 
-    pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, db_column='pedido_id')
+    product_id = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='product_id')  
+    pedido_id = models.ForeignKey(Pedidos, on_delete=models.CASCADE, db_column='pedido_id')
     quantity = models.IntegerField()
     total_cost = models.FloatField()
 
