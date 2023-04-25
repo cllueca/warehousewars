@@ -83,7 +83,7 @@
                                 
                                 {% if pedido.transportista.name == "SEUR" %}
                                     <div class="row">
-                                        <p class="col-lg-6">D&iacute;a de entrega: </p>
+                                        <p class="col-lg-6">D&iacute;a de entrega: {{ pedido.arrival_date }}</p>
                                         <p class="col-lg-6">Peso pedido (gramos): <strong>{{ pedido.total_weight }}</strong></p>
                                     </div>
                                 {% endif %}
