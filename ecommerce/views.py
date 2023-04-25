@@ -561,7 +561,7 @@ def delete_user(request, user_id):
     return HttpResponse("Metodo no permitido")
 # Funciones Carrito
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def mandarPedido(request):
     # Get the user's cart
     cart = Cart(request)
@@ -571,6 +571,8 @@ def mandarPedido(request):
     user = User.objects.get(pk=idUser)
     # Create a new Pedido instance
     total = 0
+
+    
     for item in cart.cart:
         product_id = item
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
@@ -580,50 +582,53 @@ def mandarPedido(request):
     pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress)
     print(pedido)
     # Save the Pedido instance to the database
-    pedido.save()
-    idPedido = pedido.pedido_id
-   
-    print(idPedido)
-    # Create a PedidoProducto instance for each item in the cart
-    for item in cart.cart:
-        product_id = item
-        quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
-        price = cart.cart.get(str(product_id), {}).get('price', 0)
-        total = (float(price) * float(quantity))
-        producto = Productos.objects.get(pk=product_id)
-        pedidoproductos = PedidoProductos(product_id = producto, pedido_id = pedido   , quantity = quantity, total_cost = total)
-        pedidoproductos.save()
+    if len(cart.cart) != 0:
+        pedido.save()
+        idPedido = pedido.pedido_id
+    
+        print(idPedido)
+        # Create a PedidoProducto instance for each item in the cart
+        for item in cart.cart:
+            product_id = item
+            quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
+            price = cart.cart.get(str(product_id), {}).get('price', 0)
+            total = (float(price) * float(quantity))
+            producto = Productos.objects.get(pk=product_id)
+            pedidoproductos = PedidoProductos(product_id = producto, pedido_id = pedido   , quantity = quantity, total_cost = total)
+            pedidoproductos.save()
 
-        # Update the Producto stock
-        producto = Productos.objects.get(pk=product_id)
-        producto.stock -= quantity
-        producto.save()
+            # Update the Producto stock
+            producto = Productos.objects.get(pk=product_id)
+            producto.stock -= quantity
+            producto.save()
 
-    # Clear the user's cart
-    cart.clear()
+        # Clear the user's cart
+        cart.clear()
 
-        # Send email
-    email_subject = "Pedido recibido"
-    email_body = "Hola {},\n\nTu pedido con ID {} ha sido recibido. Estamos procesando tu pedido y te notificaremos cuando esté listo para ser enviado.\n\nGracias por comprar con nosotros.".format(user.username, idPedido)
-    email = EmailMessage(
-        email_subject,
-        email_body,
-        "d38df7490e64e7@inbox.mailtrap.com",  # Cambia esto por la dirección de correo electrónico de tu tienda
-        [user.email],
-    )
+            # Send email
+        email_subject = "Pedido recibido"
+        email_body = "Hola {},\n\nTu pedido con ID {} ha sido recibido. Estamos procesando tu pedido y te notificaremos cuando esté listo para ser enviado.\n\nGracias por comprar con nosotros.".format(user.username, idPedido)
+        email = EmailMessage(
+            email_subject,
+            email_body,
+            "d38df7490e64e7@inbox.mailtrap.com",  # Cambia esto por la dirección de correo electrónico de tu tienda
+            [user.email],
+        )
 
-    try:
-        email.send()
-    except Exception as e:
-        print("Error al enviar el correo electrónico:", e)
+        try:
+            email.send()
+        except Exception as e:
+            print("Error al enviar el correo electrónico:", e)
 
-    # Redirect to a success page
-    is_authenticated = request.user.is_authenticated
-    context = {'is_pedido': True}
-    return render(request,"ecommerce/inicio.html", context)
+        # Redirect to a success page
+        is_authenticated = request.user.is_authenticated
+        context = {'is_pedido': True}
+        return render(request,"ecommerce/inicio.html", context)
+    else:
+        return redirect("carrito")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def cart_add(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -631,7 +636,7 @@ def cart_add(request, id):
     return redirect("home")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def item_clear(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -639,7 +644,7 @@ def item_clear(request, id):
     return redirect("/carrito")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def item_increment(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -647,7 +652,7 @@ def item_increment(request, id):
     return redirect("/carrito")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def item_decrement(request, id):
     cart = Cart(request)
     product = Productos.objects.get(id=id)
@@ -655,14 +660,14 @@ def item_decrement(request, id):
     return redirect("/carrito")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
     return redirect("/carrito")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="login")
 def cart_detail(request):
     return render(request, '/carrito')
 

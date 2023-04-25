@@ -2,13 +2,14 @@
 {% load static %}
 {% block content %}
 {% load filtros %}
+
 <script>
     function mostrarDatosPedido(id) {
         var contenido = document.getElementById("detallePedido"+id);
-
         contenido.classList.toggle('perfilHide');
     }
 </script>
+
 <section class="color-grey">
     <section class="container"  style="height: 600px;">
         <div class="container-fluid" style="height: 500px;">
