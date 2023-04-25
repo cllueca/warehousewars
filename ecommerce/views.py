@@ -359,7 +359,7 @@ def registrarse(request):
                 adress=request.POST.get('adress'),
                 email=request.POST.get('correo'),
                 telefono=request.POST.get('telefono'),
-                role_id=2,
+                role_id=3,
             )
 
             user.save()
