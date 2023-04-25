@@ -281,6 +281,28 @@ $(document).ready(function () {
   });
 });
 
+// $(document).on("click", "#botonEditProductos", function (event) {
+//   var boton = document.getElementById('botonEditProductos');
+//   var cosas = boton.dataset;
+//   // for (var i = 0; i < cosas.length; i++){
+//   //   console.log(i + " ---> " + cosas[i]);
+//   // }
+//   var modalNombre = document.getElementById('NEWproductName');
+//   var modalStock = document.getElementById('NEWproductStock');
+//   var modalMinStock = document.getElementById('NEWproductMinStock');
+//   var modalCost = document.getElementById('NEWproductCost');
+//   var modalLocation = document.getElementById('NEWproductLocation');
+//   var modalTypeId = document.getElementById('NEWproductTypeid');
+//   var modalFecha = document.getElementById('NEWproductFecha');
+//   modalNombre.value = cosas[0];
+//   modalStock.value = int(cosas[1]);
+//   modalMinStock.value = int(cosas[2]);
+//   modalCost.value = float(cosas[3]);
+//   modalLocation.value = cosas[4];
+//   modalTypeId.value = cosas[5];
+//   modalFecha.value = cosas[6];
+// });
+
 function createProduct() {
 
   const formData = new FormData(document.getElementById("createProductForm"));
@@ -351,50 +373,62 @@ $(document).ready(function () {
 )});
 
 $(document).ready(function () {
-  $('.btn-warning').click(function () {
-  var productId = $(this).data('product-id');
-  $('#productId').val(productId);
-  var productName = $(this).data('product-name');
-  $('#productName').val(productName);
-  var productStock= $(this).data('product-stock');
-  $('#productStock').val(productStock);
-  var productMinStock= $(this).data('product-minstock');
-  $('#productMinStock').val(productMinStock);
-  var productCost= $(this).data('product-cost');
-  $('#productCost').val(productCost);
-  var productLocation= $(this).data('product-location');
-  $('#productTypeid').val(productLocation);
-  var productTypeid = $(this).data('product-typeid');
-  $('#productTypeid').val(productTypeid);
-  var productFecha = $(this).data('product-fecha');
-  $('#productFecha').val(productFecha);
+    $('.btn-warning').click(function () {
 
-  console.log(productId)
-  console.log(productName)
-  console.log(productStock)
-  console.log(productMinStock) 
-  console.log(productCost)
-  console.log(productLocation)
-  console.log(productTypeid)
-  console.log(productFecha)
-  var userId = $(this).data('user-id');
-  $('#userId').val(userId);
-  var username = $(this).data('username');
-  $('#username').val(username);
-  var nombre = $(this).data('nombre');
-  $('#nombre').val(nombre);
-  var apellidos = $(this).data('apellidos');
-  $('#apellidos').val(apellidos);
-  var direccion = $(this).data('direccion');
-  $('#direccion').val(direccion);
-  var correo = $(this).data('correo');
-  $('#correo').val(correo);
-  var telefono = $(this).data('telefono');
-  $('#telefono').val(telefono);
-  var roleId = $(this).data('role-id');
-  $('#role_id').val(roleId);
-  var password = $(this).data('password');
-  $('#password').val(password);
+    var modalID = document.getElementById('NEWproductId')
+    var modalNombre = document.getElementById('NEWproductName');
+    var modalStock = document.getElementById('NEWproductStock');
+    var modalMinStock = document.getElementById('NEWproductMinStock');
+    var modalCost = document.getElementById('NEWproductCost');
+    var modalLocation = document.getElementById('NEWproductLocation');
+    var modalTypeId = document.getElementById('NEWproductTypeid');
+    var modalFecha = document.getElementById('NEWproductFecha');
+      
+    var productId = $(this).data('product-id');
+    modalID.value = productId;
+    var productName = $(this).data('product-name');
+    modalNombre.value = productName;
+    var productStock = $(this).data('product-stock');
+    modalStock.value = productStock;
+    var productMinStock = $(this).data('product-stockmin');
+    modalMinStock.value = productMinStock;
+    var productCost= $(this).data('product-cost');
+    modalCost.value = productCost;
+    var productLocation= $(this).data('product-location');
+    modalLocation.value = productLocation;
+    var productTypeid = $(this).data('product-typeid');
+    modalTypeId.value = productTypeid;
+    var productFecha = $(this).data('product-fecha');
+    modalFecha.value = productFecha;
+
+
+
+    var modaleUserId = document.getElementById('NEWuserId');
+    var modalUsername = document.getElementById('NEWusername');
+    var modalUserNombre = document.getElementById('NEWnombre');
+    var modalUserApe = document.getElementById('NEWapellidos');
+    var modalUserDir = document.getElementById('NEWdireccion');
+    var modalUserCorreo = document.getElementById('NEWcorreo');
+    var modalUserTelefono = document.getElementById('NEWtelefono');
+    var modalUserRole = document.getElementById('NEWrole_id');
+
+    var userId = $(this).data('user-id');
+    modaleUserId.value = userId;
+    var username = $(this).data('username');
+    modalUsername.value = username;
+    var nombre = $(this).data('nombre');
+    modalUserNombre.value = nombre;
+    var apellidos = $(this).data('apellidos');
+    modalUserApe.value = apellidos;
+    var direccion = $(this).data('direccion');
+    modalUserDir.value = direccion;
+    var correo = $(this).data('correo');
+    modalUserCorreo.value = correo;
+    var telefono = $(this).data('telefono');
+    modalUserTelefono.value = telefono;
+    var roleId = $(this).data('role-id');
+    modalUserRole.value = roleId;
+    
   });
 });
 
@@ -419,7 +453,6 @@ function updateProduct() {
   const NEWproductTypeid = $('#NEWproductTypeid').val();
   const NEWproductFecha = $('#NEWproductFecha').val();
 
-  console.log(productId)
   const formData = new FormData(document.getElementById("editProductForm"));
   const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
   formData.append("csrfmiddlewaretoken", csrf_token);
@@ -493,19 +526,18 @@ function updateProduct() {
     });
     
     // Cierra el modal
-    //$("#editProductModal").modal("hide");
+    $("#editProductModal").modal("hide");
 
     // Limpia los parámetros
-    //$("#editProductForm")[0].reset();
+    $("#editProductForm")[0].reset();
     
     // Recarga la página
-    //window.location.reload();
+    window.location.reload();
 };
 
 function editUser() {
-  const userId = $('#userId').val();
+  const userId = $('#NEWuserId').val();
   const username = $('#username').val();
-  const password = $('#password').val();
   const nombre = $('#nombre').val();
   const apellidos = $('#apellidos').val();
   const direccion = $('#direccion').val();
@@ -514,21 +546,13 @@ function editUser() {
   const roleId = $('#role_id').val();
   
   const NEWusername = $('#NEWusername').val();
-  const NEWpassword = $('#NEWpassword').val();
   const NEWnombre = $('#NEWnombre').val();
   const NEWapellidos = $('#NEWapellidos').val();
   const NEWdireccion = $('#NEWdireccion').val();
   const NEWcorreo = $('#NEWcorreo').val();
   const NEWtelefono = $('#NEWtelefono').val();
   const NEWroleId = $('#NEWrole_id').val();
-  /*console.log(NEWusername)
-  console.log(NEWpassword)
-  console.log(NEWnombre)
-  console.log(NEWapellidos) 
-  console.log(NEWdireccion)
-  console.log(NEWcorreo)
-  console.log(NEWtelefono)
-  console.log(NEWroleId)*/
+
   const formData = new FormData(document.getElementById("createUserForm"));
 
   const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
@@ -537,9 +561,6 @@ function editUser() {
     formData.append("username", NEWusername); // Si hay un valor en NEWusername, actualizar la columna correspondiente
   } else {
     formData.append("username", username); // Si NEWusername está vacío, mantener el valor anterior
-  }
-  if (NEWpassword !== password || NEWpassword === "") {
-    formData.append("password", NEWpassword); // Si son diferentes, actualizar la columna correspondiente
   }
   if (NEWnombre) {
     formData.append("nombre", NEWnombre); // Si hay un valor en NEWnombre, actualizar la columna correspondiente
@@ -572,7 +593,7 @@ function editUser() {
     formData.append("roleId", roleId); // Si NEWroleId está vacío, mantener el valor anterior
   }
 
-  const url = `/editUser/${userId}/`;
+  const url = `editUser/${userId}/`;
   
   fetch(url, {
     method: "POST",

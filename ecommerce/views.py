@@ -425,22 +425,18 @@ def perfilUsuario(request):
     return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos})
 
 
-
-
-
-
 @csrf_exempt
-def update_product(request, id):
+def update_product(request, product_id):
 
     if request.method == "POST":
-        product_id = request.POST.get('productId')
-        name = request.POST.get('NEWproductName')
-        stock = int(request.POST.get('NEWproductStock'))
-        min_stock = int(request.POST.get('NEWproductMinStock'))
-        cost_per_unit = float(request.POST.get('NEWproductCost'))
-        location = request.POST.get('NEWproductLocation')
-        type_id = int(request.POST.get('type_id'))
-        fecha_llegada = datetime.datetime.strptime(request.POST.get('fecha_llegada'), '%Y-%m-%d').date()
+        product_id = int(request.POST.get('product_id'))
+        name = request.POST.get('product_name')
+        stock = int(request.POST.get('product_stock'))
+        min_stock = int(request.POST.get('product_min_stock'))
+        cost_per_unit = float(request.POST.get('product_cost'))
+        location = request.POST.get('product_location')
+        type_id = int(request.POST.get('product_type_id'))
+        fecha_llegada = datetime.datetime.strptime(request.POST.get('product_fecha'), '%Y-%m-%d').date()
         print(fecha_llegada)
         try:
             cursor = connection.cursor()
@@ -511,12 +507,11 @@ def edit_user(request, user_id):
     if request.method == "POST":
         user = User.objects.get(id=user_id)
         user.username = request.POST.get('username')
-        user.password = request.POST.get('password')
         user.first_name = request.POST.get('nombre')
         user.last_name = request.POST.get('apellidos')
         user.email = request.POST.get('correo')
         user.telefono = request.POST.get('telefono')
-        user.role_id = int(request.POST.get('role_id'))
+        user.role_id = int(request.POST.get('roleId'))
         user.save()
         return HttpResponse("Usuario actualizado exitosamente")
     return HttpResponse("Método no permitido")

@@ -123,7 +123,7 @@
           <td>{{ product.type_id }}</td>
           <td >{{ product.fecha_llegada }}</td>
           <td >
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.product_id }}" data-product-name="{{ product.name }}" 
+            <button id="botonEditProductos" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProductModal" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" 
             data-product-stock="{{ product.stock }}" data-product-stockmin="{{ product.min_stock }}" data-product-cost="{{ product.price }}" 
             data-product-location="{{ product.location }}" data-product-typeid="{{ product.type_id }}" data-product-fecha="{{ product.fecha_llegada }}">
               <i class="fas fa-pencil-alt"></i>
@@ -259,7 +259,7 @@
         <td >
           <button type="button" class="btn btn-warning" id="editUserButton" data-toggle="modal" data-target="#editUserModal"  data-user-id="{{ user.id }}" data-username="{{ user.username }}" data-nombre="{{ user.first_name }}" 
           data-apellidos="{{ user.last_name }}" data-direccion="{{ user.adress }}" data-correo="{{ user.email }}" 
-          data-telefono="{{ user.telefono }}" data-role-id="{{ user.role_id }}" data-password="{{ user.password }}">
+          data-telefono="{{ user.telefono }}" data-role-id="{{ user.role_id }}">
             <i class="fas fa-pencil-alt"></i>
           </button>
           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" data-user-id="{{ user.id }}">
@@ -491,7 +491,7 @@
         <div class="modal-body">
           <form id="editProductForm">
             {% csrf_token %}
-            <input type="hidden" id="productId" name="productId">
+            <input type="hidden" id="NEWproductId" name="NEWproductId">
             <input type="hidden" id="name2" name="name2">
             <div class="form-group">
               <label for="name">Nombre</label>
@@ -658,18 +658,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <input type="hidden" id="userId" name="userId">
+        <input type="hidden" id="NEWuserId" name="NEWuserId">
         <form id="editUserForm">
           {% csrf_token %}
           <div class="form-group">
    
             <label for="name">Username</label>
             <input type="text" class="form-control" id="NEWusername" name="NEWusername">
-          </div>
-          <div class="form-group">
-            <label for="name">Contraseña</label>
-            <input type="text" class="form-control" id="NEWpassword" name="NEWpassword" >
-          </div>        
+          </div>     
           <div class="form-group">
             <input type="hidden" id="nombre" name="nombre">
             <label for="name">Nombre</label>
