@@ -29,12 +29,24 @@
                       <p>{{value.quantity}}</p>
                     </div>
                     <div class="col-6 col-lg mx-auto my-auto text-center">
+                      {% if value.quantity < value.product_id|get_stock %}
                       <button type="button" onclick="window.location.href='{% url 'item_increment' value.product_id %}'" class="btn btn-primary rounded">
                         <i class="fas fa-plus"></i>
                       </button>
+                      {% else %}
+                      <button type="button" onclick="window.location.href='{% url 'item_increment' value.product_id %}'" class="btn btn-primary rounded" disabled>
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      {%endif%}
+                      {% if value.quantity > 1 %}
                       <button type="button" onclick="window.location.href='{% url 'item_decrement' value.product_id %}'" class="btn btn-primary rounded">
                         <i class="fas fa-minus"></i>
                       </button>
+                      {% else %}
+                      <button type="button" onclick="window.location.href='{% url 'item_decrement' value.product_id %}'" class="btn btn-primary rounded" disabled>
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      {%endif%}
                     </div>
                     <div class="col-6 col-lg mx-auto my-auto text-center">
                       <p class="bold_txt">€/und.</p>
@@ -62,7 +74,7 @@
                         <div class="col-12" style = "max-height: 200px ; overflow: auto;">
                             {% for key, value in request.session.cart.items %}
                             <div class="row py-1 ml-3" >
-                                <p>{{value.quantity}} x {{value.name}} = {{value.price|multiply:value.quantity}}€</p>
+                              <p>{{value.quantity}} x {{value.name}} = {{value.price|multiply:value.quantity|floatformat:2}}€</p>
                             </div>
                             {%endfor%}
                         </div>
