@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-from .models import Estados, PedidoProductos, Pedidos, Productos, Usuarios
+from .models import Estados, PedidoProductos, Pedidos, Productos, Transportistas, Usuarios
 
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -562,31 +562,38 @@ def delete_user(request, user_id):
 # Funciones Carrito
 
 @login_required(login_url="login")
-def mandarPedido(request):
+def mandarPedido(request,tipo_envio, transportista ):
     # Get the user's cart
     cart = Cart(request)
     today = timezone.now().astimezone(timezone.get_current_timezone()).date()
     estado = Estados.objects.get(pk=5)  # Get the Estados instance with a primary key of 5
+    transportista = Transportistas.objects.get(pk=transportista)
     idUser = request.user.id
     user = User.objects.get(pk=idUser)
     # Create a new Pedido instance
     total = 0
+    total_weight = 0
 
-    
+    if(tipo_envio):
+        total = 5.75
+    else:
+        total = 0
+
+    print(total)
     for item in cart.cart:
         product_id = item
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
         price = cart.cart.get(str(product_id), {}).get('price', 0)
+        product = Productos.objects.get(pk=product_id)
+        weight = product.weight
         total = total + (float(price) * float(quantity))
-        print(today,estado,total,user,user.adress)
-    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress)
-    print(pedido)
+        total_weight = total_weight  + (float(weight) * float(quantity))
+
+    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress , total_weight=total_weight  , isUrgent=tipo_envio , transportista= transportista)
     # Save the Pedido instance to the database
     if len(cart.cart) != 0:
         pedido.save()
         idPedido = pedido.pedido_id
-    
-        print(idPedido)
         # Create a PedidoProducto instance for each item in the cart
         for item in cart.cart:
             product_id = item

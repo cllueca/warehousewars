@@ -788,3 +788,20 @@ function updateOrderStatus(orderId, statusId) {
       console.error("Error al actualizar el estado del pedido:", error);
   });
 }
+
+function redirectToPedido() {
+  var tipo_envio = document.querySelector('input[name="flexRadioDefault"]:checked').value;
+  var transportista = document.querySelector('input[name="flexRadioDefault2"]:checked').value;
+  
+  // Check if either variable is null or empty and replace it with a default value if necessary
+  if (!tipo_envio || tipo_envio.trim() === '') {
+    tipo_envio = '1';
+  }
+  if (!transportista || transportista.trim() === '') {
+    transportista = '1';
+  }
+  console.log(tipo_envio)
+  console.log(transportista)
+  var url = "/cart/mandarPedido/tipo_envio/transportista";
+  window.location.href = url.replace('tipo_envio', tipo_envio).replace('transportista', transportista);
+}

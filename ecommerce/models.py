@@ -18,6 +18,14 @@ class User(AbstractUser):
 
 ### PRUEBAS NAZIS EN HARVARD 
 
+class Transportistas(models.Model):
+    id_trans = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=25)
+
+    class Meta:
+        managed = False
+        db_table = 'Transportistas'
+
 class Albaranes(models.Model):
     albaran_id = models.AutoField(primary_key=True)
     pedido = models.ForeignKey('Pedidos', on_delete=models.CASCADE)
@@ -38,8 +46,6 @@ class Estados(models.Model):
         db_table = 'Estados'
 
 
-
-
 class Pedidos(models.Model):
     pedido_id = models.AutoField(primary_key=True)
     date_order = models.DateField()
@@ -47,6 +53,9 @@ class Pedidos(models.Model):
     total_cost = models.FloatField()
     user= models.ForeignKey('User',on_delete=models.CASCADE)
     address = models.CharField(max_length=25)
+    total_weight =  models.FloatField()
+    isUrgent = models.BooleanField()
+    transportista = models.ForeignKey(Transportistas,on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -64,7 +73,9 @@ class Productos(models.Model):
     product_description = models.CharField(max_length=25, blank=True, null=True)
     type = models.ForeignKey('Tipos',on_delete=models.CASCADE)
     fecha_llegada = models.DateField(blank=True, null=True)
-    arrayphotos = ArrayField(models.CharField(max_length=200), blank=True, null=True)
+    weight = models.FloatField()
+    isRestock = models.BooleanField()
+
 
     class Meta:
         managed = False
