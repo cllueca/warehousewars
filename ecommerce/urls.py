@@ -39,6 +39,7 @@ urlpatterns = [
     path('cart/cart_detail/',views.cart_detail,name='cart_detail'),
 
     path('albaran/<int:pedido_id>/', views.generate_albaran_pdf, name='generate_albaran_pdf'),
+    path('update_order_status/<int:order_id>/<int:status_id>/', views.update_order_status, name='update_order_status'),
 
     path('cart/mandarPedido/<str:tipo_envio>/<str:transportista>/', views.mandarPedido, name='mandarPedido'),
     #path('cart/mandarPedido/', views.mandarPedido, name='mandarPedido'),
