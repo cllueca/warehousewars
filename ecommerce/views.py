@@ -413,6 +413,9 @@ def perfilUsuario(request):
                     pedido.arrival_date = pedido.date_order + timedelta(days=1)
                 else:
                     pedido.arrival_date = pedido.date_order + timedelta(days=3)
+            
+            # pedido.total_products = pedido.pedidoproductos_set.all
+
     except Exception as e:
         print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
 
@@ -569,6 +572,7 @@ def mandarPedido(request,tipo_envio, transportista ):
     else:
         total = 0
 
+    cantidadTotal = 0
     for item in cart.cart:
         product_id = item
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
@@ -577,8 +581,9 @@ def mandarPedido(request,tipo_envio, transportista ):
         weight = product.weight
         total = total + (float(price) * float(quantity))
         total_weight = total_weight  + (float(weight) * float(quantity))
+        cantidadTotal += quantity
 
-    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress , total_weight=total_weight  , isUrgent=tipo_envio , transportista= transportista)
+    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress , total_weight=total_weight  , isUrgent=tipo_envio , transportista= transportista, total_products=cantidadTotal)
     # Save the Pedido instance to the database
     if len(cart.cart) != 0:
         pedido.save()
@@ -607,19 +612,20 @@ def mandarPedido(request,tipo_envio, transportista ):
                 user_ids = [user_product.user_id for user_product in user_products]
                 # Get the first User instance from user_ids
                 proveedor = User.objects.filter(id__in=user_ids).first()
-                email_stock = EmailMessage(
-                    email_subject_stock,
-                    email_body_stock,
-                     "d38df7490e64e7@inbox.mailtrap.com",  # Replace with your store's email address
-                    [proveedor.email],  # Replace with the admin's email address who should receive the stock alert
-                )
-                try:
-                    email_stock.send()
-                    producto.isRestock = True
-                    producto.save()
-                    print('Exitoso cabron')
-                except Exception as e:
-                    print("Error sending stock alert email:", e)
+                if proveedor is not None:
+                    email_stock = EmailMessage(
+                        email_subject_stock,
+                        email_body_stock,
+                        "d38df7490e64e7@inbox.mailtrap.com",  # Replace with your store's email address
+                        [proveedor.email],  # Replace with the admin's email address who should receive the stock alert
+                    )
+                    try:
+                        email_stock.send()
+                        producto.isRestock = True
+                        producto.save()
+                        print('Exito')
+                    except Exception as e:
+                        print("Error sending stock alert email:", e)
 
         # Clear the user's cart
         cart.clear()

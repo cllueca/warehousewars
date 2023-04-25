@@ -56,6 +56,7 @@ class Pedidos(models.Model):
     isUrgent = models.BooleanField()
     transportista = models.ForeignKey(Transportistas,on_delete=models.CASCADE)
     arrival_date = models.DateField()
+    total_products = models.IntegerField()
 
     class Meta:
         managed = False

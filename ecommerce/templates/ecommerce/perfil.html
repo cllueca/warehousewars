@@ -48,8 +48,8 @@
                             <div id="datosPedido{{ pedido.pedido_id }}" class="pedidos boreder p-2 mb-2" style="cursor: pointer;" onclick="mostrarDatosPedido('{{ pedido.pedido_id }}')">
                                 <div class="row">
                                 <div class="col-lg-3 ">
-                                    <p>Fecha del pedido:</p>
-                                    <p style="margin-top: -15px;">{{ pedido.date_order }}</p>
+                                    <p>Direcci&oacute;n de env&iacute;o:</p>
+                                    <p style="margin-top: -15px;">{{ pedido.address }}</p>
                                 </div>
                                 <div class="col-lg-3">
                                     <p>ID del pedido:</p>
@@ -78,13 +78,26 @@
                                         <p class="col-lg-4">Tipo de env&iacute;o: <strong>Normal</strong></p>
                                     {% endif %}
 
-                                    <p class="col-lg-5">Dirección de envío: <strong>{{ pedido.address }}</strong></p>
-                                </div>
+
                                 
                                 {% if pedido.transportista.name == "SEUR" %}
+                                        <p class="col-lg-5">D&iacute;a de entrega: {{ pedido.arrival_date }}</strong></p>
+                                    </div>
                                     <div class="row">
-                                        <p class="col-lg-6">D&iacute;a de entrega: {{ pedido.arrival_date }}</p>
+                                        <p class="col-lg-12">Peso pedido (gramos): <strong>{{ pedido.total_weight }}</strong></p>
+                                    </div>
+                                {% elif pedido.transportista.name == "DHL" %}
+                                        <p class="col-lg-5">Fecha del pedido: <strong>{{ pedido.date_order }}</strong></p>
+                                    </div>
+                                {% else %}
+                                        <p class="col-lg-5">Fecha del pedido: <strong>{{ pedido.date_order }}</strong></p>
+                                    </div>
+                                    <div class="row">
                                         <p class="col-lg-6">Peso pedido (gramos): <strong>{{ pedido.total_weight }}</strong></p>
+                                        <p class="col-lg-6">Cantidad de unidades: {{ pedido.total_products }}</p>
+                                    </div>
+                                    <div class="row">
+                                        <p class="col-lg-12">C&oacute;digo postal de la entrega: {{ pedido.address }}</p>
                                     </div>
                                 {% endif %}
                                 
