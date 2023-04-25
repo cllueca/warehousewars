@@ -83,7 +83,7 @@
         <select class="form-control selectForms" id="product-proveedor">
           <option value='0'>No seleccionado</option>
           {% for proveedor in conectProveedor %}
-          <option value="{{ proveedor.user_id }}">{{ proveedor.name }}</option>
+          <option value="{{ proveedor.id }}">{{ proveedor.email }}</option>
           {% endfor %}
         </select>
       </div>

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
-from ecommerce.models import User, Albaranes, Pedidos, Estados
+from ecommerce.models import User, Albaranes, Pedidos, Estados, Tipos
 from .funciones import *
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -197,25 +197,16 @@ def paginaPrincipal(request):
         return render(request, 'ecommerce/vistaAlmacen.html', context)
     else:
         try:
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM "Usuarios";')
-            user= dictfetchall(cursor)
-            cursor.execute(f'SELECT * FROM "Productos" LIMIT 6;')
-            product = dictfetchall(cursor)
-            cursor.execute('SELECT * FROM "Productos" LIMIT 5;')
-            productCarrousel = dictfetchall(cursor)
-            cursor.execute('SELECT * FROM "Tipos";')
-            tipos = dictfetchall(cursor)
-            cursor.execute('SELECT * FROM "Usuarios" WHERE role_id = 2;')
-            proveedor = dictfetchall(cursor)
-
-           
-
+            user = User.objects.all()
+            product = Productos.objects.all()[:6]
+            productCarrousel = Productos.objects.all()[:5]
+            tipos = Tipos.objects.all()
+            proveedor = User.objects.filter(role_id=2)
+            print(proveedor)
         except Exception as e:
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-        finally:
-            cursor.close()
-        context = {'datos': user, 'producto' : product, 'productoCarrousel' : productCarrousel, 'conectTipo' : tipos,'conectProveedor' : proveedor}
+
+        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor}
         return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
@@ -298,22 +289,14 @@ def showmoreView(request):
 
 
 def filtroProveedor(request, selectedProveedor):
-    try:
-        cursor = connection.cursor()
-        if(selectedProveedor == 0):
-            cursor.execute('SELECT * FROM "Productos";')
-            queryType = dictfetchall(cursor)
-        else:
-            cursor.execute('SELECT * FROM "Proveedor-Producto" JOIN "Usuarios" ON "Usuarios".user_id = "Proveedor-Producto".user_id JOIN "Productos" ON "Productos".id = "Proveedor-Producto".id WHERE "Usuarios".user_id = %s', [selectedProveedor])        
-            queryType = dictfetchall(cursor)
+    if selectedProveedor == 0:
+        productos = Productos.objects.all().values()
+    else:
+        productos = Productos.objects.filter(id=selectedProveedor).values()
 
-    except Exception as e:
-        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-    finally:
-        cursor.close()
+    productos_list = list(productos)
+    return JsonResponse(productos_list, safe=False)
 
-    data = json.dumps(queryType)
-    return HttpResponse(data, content_type='application/json')
 
 
 def iniciarSesion(request):

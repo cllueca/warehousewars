@@ -73,7 +73,6 @@ class Productos(models.Model):
     product_description = models.CharField(max_length=25, blank=True, null=True)
     type = models.ForeignKey('Tipos', models.DO_NOTHING)
     fecha_llegada = models.DateField(blank=True, null=True)
-    arrayphotos = ArrayField(models.CharField(max_length=200), blank=True, null=True)
 
     class Meta:
         managed = False

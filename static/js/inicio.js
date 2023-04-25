@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
                   <h5 class="card-title">${productos[i].name}</h5>
                 </div>
                 <div class="text-right">
-                  <p class="card-text borderPrize">${productos[i].price}</p>
+                  <p class="card-text borderPrize">${productos[i].price} €</p>
                 </div>
               </div>
             </div>
