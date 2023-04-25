@@ -296,7 +296,8 @@ def filtroProveedor(request, selectedProveedor):
     if selectedProveedor == 0:
         productos = Productos.objects.all().values()
     else:
-        productos = Productos.objects.filter(id=selectedProveedor).values()
+        productos_proveedor = ProveedorProducto.objects.filter(user_id=selectedProveedor).values_list('product_id', flat=True)
+        productos = Productos.objects.filter(id__in=productos_proveedor).values()
 
     productos_list = list(productos)
     return JsonResponse(productos_list, safe=False)
