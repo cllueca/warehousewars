@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
-from ecommerce.models import User, Albaranes
+from ecommerce.models import User, Albaranes, Pedidos, Estados
 from .funciones import *
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -83,11 +83,11 @@ def vistaAlmacen(request):
 
     if columnaPedido and directionPedido:
         cursor = connection.cursor()
-        cursor.execute(f'SELECT * FROM "Pedidos" ORDER BY {columnaPedido} {directionPedido}')
+        cursor.execute(f'SELECT p.*, s.name as status_name, s.status_id as status_status_id FROM "Pedidos" p JOIN "Estados" s ON p.status_id = s.status_id ORDER BY {columnaPedido} {directionPedido}')
         order = dictfetchall(cursor)
     else:
         cursor = connection.cursor()
-        cursor.execute(f'SELECT * FROM "Pedidos"')
+        cursor.execute(f'SELECT p.*, s.name as status_name, s.status_id as status_status_id FROM "Pedidos" p JOIN "Estados" s ON p.status_id = s.status_id')
         order = dictfetchall(cursor)
     
     if columnaPedidoProv and directionPedidoProv:
@@ -184,8 +184,9 @@ def vistaAlmacen(request):
     
     if query_orderProv_productId: #chars
         orderProv = [p for p in orderProv if p['product_id'] == int(query_orderProv_productId)]
-     
-    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv}
+
+    estados = Estados.objects.all()
+    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv, 'estados': estados}
     return context
 
 
@@ -617,3 +618,19 @@ def generate_albaran_pdf(request, pedido_id):
     response = FileResponse(buffer, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="albaran{pedido_id}.pdf"'
     return response
+
+@csrf_exempt
+def update_order_status(request, order_id, status_id):
+    if request.method == "POST":
+        try:
+            order = Pedidos.objects.get(pedido_id=order_id)
+            new_status = Estados.objects.get(status_id=status_id)
+            # Asegúrate de convertir el valor de `total_cost` en un float antes de guardarlo
+            order.total_cost = float(order.total_cost.replace('$', ''))
+            order.status = new_status
+            order.save()
+            return JsonResponse({"status": "success"}, status=200)
+        except (Pedidos.DoesNotExist, Estados.DoesNotExist, ValueError):
+            return JsonResponse({"status": "error"}, status=404)
+    else:
+        return JsonResponse({"status": "error"}, status=400)

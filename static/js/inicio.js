@@ -189,7 +189,7 @@ $(document).ready(function() {
                 <h5 class="card-title">${productos[i].name}</h5>
               </div>
               <div class="text-right">
-                <p class="card-text">${productos[i].price}</p>
+                <p class="card-text borderPrize">${productos[i].price} €</p>
               </div>
             </div>
           </div>
@@ -739,3 +739,30 @@ $(document).ready(function() {
     }
   });
 });
+
+function updateOrderStatus(orderId, statusId) {
+  const url = `/update_order_status/${orderId}/${statusId}/`;
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    }
+  })
+  .then(response => {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error("Error al actualizar el estado del pedido");
+    }
+  })
+  .then(data => {
+    if (data.status === "success") {
+      console.log("Estado del pedido actualizado con éxito");
+    } else {
+      console.error("Error al actualizar el estado del pedido");
+    }
+  })
+  .catch(error => console.error(error));
+}
