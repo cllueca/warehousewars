@@ -600,7 +600,7 @@ def mandarPedido(request,tipo_envio, transportista ):
             if producto.stock <= producto.min_stock:
                 # Send stock alert email
                 email_subject_stock = "Stock Alert: {} (ID: {})".format(producto.name, producto.id)
-                email_body_stock = "Hola,\n\nEl stock del producto'{}' (ID: {}) esta por debajo de nuestro stock minimo. Porfavor envianos un restock lo antes posible \n\nCurrent stock: {}\nMinimum stock: {}".format(producto.name, producto.id, producto.stock, producto.min_stock)
+                email_body_stock = "Hola,\n\nEl stock del producto '{}' (ID: {}) esta por debajo de nuestro stock minimo. Porfavor envianos un restock lo antes posible \n\nCurrent stock: {}\nMinimum stock: {}".format(producto.name, producto.id, producto.stock, producto.min_stock)
                 # Replace the 'product_id' variable with the actual product ID you want to check
                 user_products = ProveedorProducto.objects.filter(product_id=product_id)
                 # Get the list of user IDs
