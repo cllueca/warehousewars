@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-from .models import Estados, PedidoProductos, Pedidos, Productos, Transportistas, Usuarios
+from .models import Estados, PedidoProductos, Pedidos, Productos, ProveedorProducto, Transportistas, Usuarios
 
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -598,6 +598,29 @@ def mandarPedido(request,tipo_envio, transportista ):
             producto = Productos.objects.get(pk=product_id)
             producto.stock -= quantity
             producto.save()
+            if producto.stock <= producto.min_stock:
+                # Send stock alert email
+                email_subject_stock = "Stock Alert: {} (ID: {})".format(producto.name, producto.id)
+                email_body_stock = "Hola,\n\nEl stock del producto'{}' (ID: {}) esta por debajo de nuestro stock minimo. Porfavor envianos un restock lo antes posible \n\nCurrent stock: {}\nMinimum stock: {}".format(producto.name, producto.id, producto.stock, producto.min_stock)
+                # Replace the 'product_id' variable with the actual product ID you want to check
+                user_products = ProveedorProducto.objects.filter(product_id=product_id)
+                # Get the list of user IDs
+                user_ids = [user_product.user_id for user_product in user_products]
+                # Get the first User instance from user_ids
+                proveedor = User.objects.filter(id__in=user_ids).first()
+                email_stock = EmailMessage(
+                    email_subject_stock,
+                    email_body_stock,
+                     "d38df7490e64e7@inbox.mailtrap.com",  # Replace with your store's email address
+                    [proveedor.email],  # Replace with the admin's email address who should receive the stock alert
+                )
+                try:
+                    email_stock.send()
+                    producto.isRestock = True
+                    producto.save()
+                    print('Exitoso cabron')
+                except Exception as e:
+                    print("Error sending stock alert email:", e)
 
         # Clear the user's cart
         cart.clear()
