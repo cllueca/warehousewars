@@ -3,6 +3,7 @@ from django.contrib import messages
 from urllib.parse import unquote
 from django import template
 from urllib.parse import unquote
+import re
 
 # Funcion que convierte las querys a la BBDD en diccionarios, para acceder de manera mas facil al valor de cada campo en las templates
 def dictfetchall(cursor):
@@ -25,10 +26,14 @@ def comprobarContraseña(request, pwd, pwdConf):
     
     return True # true
 
-def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo):
+def camposObligatoriosRellenos(request, nombre, apellidos, telefono, correo, adress):
 
     if len(nombre) == 0:
         messages.error(request, "Se debe dar un nombre")
+        return False
+    
+    if len(adress) == 0:
+        messages.error(request, "Se debe dar una direccion")
         return False
 
     if len(apellidos) == 0:

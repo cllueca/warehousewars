@@ -67,6 +67,27 @@
                             </div>
                             <div id="detallePedido{{ pedido.pedido_id }}" class="pedidos-detail perfilHide">                                
                                 <!-- Información de los productos del pedido -->
+                                <h5 class="pl-3">Detalles adicionales:</h5>
+                                
+                                <div class="row">
+                                    <p class="col-lg-3">Transportista: <strong>{{ pedido.transportista.name }}</strong></p>
+
+                                    {% if pedido.isUrgent %}
+                                        <p class="col-lg-4">Tipo de env&iacute;o: <strong>Urgente</strong></p>
+                                    {% else %}
+                                        <p class="col-lg-4">Tipo de env&iacute;o: <strong>Normal</strong></p>
+                                    {% endif %}
+
+                                    <p class="col-lg-5">Dirección de envío: <strong>{{ pedido.address }}</strong></p>
+                                </div>
+                                
+                                {% if pedido.transportista.name == "SEUR" %}
+                                    <div class="row">
+                                        <p class="col-lg-6">D&iacute;a de entrega: </p>
+                                        <p class="col-lg-6">Peso pedido (gramos): <strong>{{ pedido.total_weight }}</strong></p>
+                                    </div>
+                                {% endif %}
+                                
                                 <h5 class="pl-3">Productos del pedido:</h5>
                                 {%  for item in pedido.pedidoproductos_set.all %}
                                     <div class="row p-3">
@@ -76,7 +97,6 @@
                                         <div class="col-lg-6 col-sm-12">
                                             <p style="font-weight: bold;"> {{ item.product_id.name }}</p>
                                             <p style="margin-top: -10px;">{{ item.quantity }} x {{ item.product_id.price }} € = {{ item.total_cost }}€</p>
-                                            <p>Dirección de envío: {{ pedido.address }}</p>
                                         </div>
                                         <div class="col-lg-1 col-sm-12">
                                             <button class="btn btn-danger">Cancelar</button>
