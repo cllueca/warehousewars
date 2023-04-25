@@ -407,17 +407,16 @@ def perfilUsuario(request):
             Prefetch('pedidoproductos_set', queryset=PedidoProductos.objects.select_related('product_id'))
         )
 
-        fechasEntrega = {}
         for pedido in pedidos:
             if pedido.transportista.name == "SEUR":
                 if pedido.isUrgent:
-                    fechasEntrega[pedido.pedido_id] = pedido.date_order + timedelta(days=1)
+                    pedido.arrival_date = pedido.date_order + timedelta(days=1)
                 else:
-                    fechasEntrega[pedido.pedido_id] = pedido.date_order + timedelta(days=3)
+                    pedido.arrival_date = pedido.date_order + timedelta(days=3)
     except Exception as e:
         print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
 
-    return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos, "fechasEntrega": fechasEntrega})
+    return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos})
 
 
 @csrf_exempt
