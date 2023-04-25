@@ -44,6 +44,11 @@
 					{{ form.email.errors }}
 					<li class="nav-item"><input class="textfields" type="text" name="correo" placeholder="Correo"></input></li>
 				</li>
+				<li class="nav-item distancia"><b>DIRECCION</b></li>
+				<li>
+					{{ form.adress.errors }}
+					<li class="nav-item"><input class="textfields" type="text" name="adress" placeholder="Direccion"></input></li>
+				</li>
 				<li class="nav-item"><b>CONTRASEÑA</b></li>
 				<li>
 					{{ form.password.errors }}
@@ -51,7 +56,7 @@
 				</li>
 				<li class="nav-item"><input class="textfields distancia" type="password" name="password2" placeholder="Repita la contraseña"></input></li>
 				<li class="nav-item distancia"><input type="submit" class="botoniniciar" value="Registarse"/></li>
-				<li><p class="textoregistro imagen">Ya tienes cuenta?<a href="{% url 'login' %}">Inicia sesión aqui</a></p></li>
+				<li style="color:white"><p class="textoregistro imagen">Ya tienes cuenta?<a style="margin-left: 10px; color:white" href="{% url 'login' %}">Inicia sesión aqui</a></p></li>
 			</ul>
 		</form>
 	</div>

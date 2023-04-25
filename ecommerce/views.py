@@ -27,6 +27,11 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from django.db.models import F, Prefetch, Subquery, OuterRef
+from django.core.mail import EmailMessage
+
+from datetime import datetime, timedelta
+
 
 def vistaAlmacen(request):
     columnaProduct = request.GET.get('columna')
@@ -339,7 +344,8 @@ def registrarse(request):
                                               request.POST.get('username'),
                                               request.POST.get('apellidos'),
                                               request.POST.get('telefono'),
-                                              request.POST.get('correo')
+                                              request.POST.get('correo'),
+                                              request.POST.get('adress')
                                               )
         
         correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else False
@@ -350,6 +356,7 @@ def registrarse(request):
                 password=request.POST.get('password'),
                 first_name=request.POST.get('username'),
                 last_name=request.POST.get('apellidos'),
+                adress=request.POST.get('adress'),
                 email=request.POST.get('correo'),
                 telefono=request.POST.get('telefono'),
                 role_id=2,
@@ -390,8 +397,7 @@ def cambiarPwd(request):
                 return redirect('login')
         
     return render(request, 'ecommerce/cambiarPwd.html')
-from django.db.models import F
-from django.db.models import Prefetch
+
 @login_required(login_url='login')
 def perfilUsuario(request):
     idUser = request.user.id
@@ -401,10 +407,17 @@ def perfilUsuario(request):
             Prefetch('pedidoproductos_set', queryset=PedidoProductos.objects.select_related('product_id'))
         )
 
+        fechasEntrega = {}
+        for pedido in pedidos:
+            if pedido.transportista.name == "SEUR":
+                if pedido.isUrgent:
+                    fechasEntrega[pedido.pedido_id] = pedido.date_order + timedelta(days=1)
+                else:
+                    fechasEntrega[pedido.pedido_id] = pedido.date_order + timedelta(days=3)
     except Exception as e:
         print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
 
-    return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos})
+    return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos, "fechasEntrega": fechasEntrega})
 
 
 @csrf_exempt
@@ -491,6 +504,7 @@ def edit_user(request, user_id):
         user.username = request.POST.get('username')
         user.first_name = request.POST.get('nombre')
         user.last_name = request.POST.get('apellidos')
+        user.adress = request.POST.get('direccion')
         user.email = request.POST.get('correo')
         user.telefono = request.POST.get('telefono')
         user.role_id = int(request.POST.get('roleId'))
@@ -556,7 +570,6 @@ def mandarPedido(request,tipo_envio, transportista ):
     else:
         total = 0
 
-    print(total)
     for item in cart.cart:
         product_id = item
         quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
@@ -607,7 +620,7 @@ def mandarPedido(request,tipo_envio, transportista ):
         # Redirect to a success page
         is_authenticated = request.user.is_authenticated
         context = {'is_pedido': True}
-        return render(request,"ecommerce/inicio.html", context)
+        return render(request, "ecommerce/inicio.html", context)
     else:
         return redirect("carrito")
 
@@ -618,7 +631,6 @@ def cart_add(request, id):
     product = Productos.objects.get(id=id)
     cart.add(product=product)
     return redirect("home")
-
 
 @login_required(login_url="login")
 def item_clear(request, id):
@@ -694,7 +706,7 @@ def delete_order(request, order_id):
 def success_page(request):
     return render(request, 'ecommerce/inicio.html')
 
-from django.core.mail import EmailMessage
+
 
 def paginaContacto(request):
     idUser = request.user.id

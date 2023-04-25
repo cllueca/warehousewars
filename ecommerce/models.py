@@ -16,7 +16,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-### PRUEBAS NAZIS EN HARVARD 
 
 class Transportistas(models.Model):
     id_trans = models.AutoField(primary_key=True)
