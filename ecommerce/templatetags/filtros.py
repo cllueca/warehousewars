@@ -10,14 +10,17 @@ def urldecode(value):
     return unquote(value)
 
 @register.filter
-def total_price(cart_items):
+def total_price(cart_items , value):
     total = Decimal(0)
-
     if len(cart_items) != 0:
         for item in cart_items.values():
             price = Decimal(item['price'])
             quantity = item['quantity']
             total += price * quantity
-        return total
+
+        if(value):
+            return total + Decimal(5.75)
+        else:
+            return total
     else:
         return 0
