@@ -436,8 +436,7 @@ def update_product(request, product_id):
         cost_per_unit = float(request.POST.get('product_cost'))
         location = request.POST.get('product_location')
         type_id = int(request.POST.get('product_type_id'))
-        fecha_llegada = datetime.datetime.strptime(request.POST.get('product_fecha'), '%Y-%m-%d').date()
-        print(fecha_llegada)
+        fecha_llegada = datetime.strptime(request.POST.get('product_fecha'), '%Y-%m-%d').date()
         try:
             cursor = connection.cursor()
           
@@ -468,8 +467,7 @@ def create_product(request):
         image_url = request.POST.get('image_url')
         product_description = request.POST.get('product_description')
         type_id = int(request.POST.get('type_id'))
-        fecha_llegada = datetime.datetime.strptime(request.POST.get('fecha_llegada'), '%Y-%m-%d').date()
-        print(fecha_llegada)
+        fecha_llegada = datetime.strptime(request.POST.get('fecha_llegada'), '%Y-%m-%d').date()
         try:
             cursor = connection.cursor()
             
@@ -520,7 +518,6 @@ def edit_user(request, user_id):
 def delete_product(request, id):
     if request.method == "POST":
         id = request.POST.get('productId')
-        print(id)
         try:
             cursor = connection.cursor()
             
@@ -540,7 +537,6 @@ def delete_product(request, id):
 
 def delete_user(request, user_id):
     if request.method == "POST":
-        print(user_id)
         try:
             cursor = connection.cursor()
             
