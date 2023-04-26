@@ -836,3 +836,12 @@ def update_order_status(request, order_id, status_id):
             return JsonResponse({"status": "error"}, status=404)
     else:
         return JsonResponse({"status": "error"}, status=400)
+    
+def createRelation(request, proveedor , producto):
+    proveedor = User.objects.get(pk=proveedor)
+    if(not ProveedorProducto.objects.filter(product_id = producto).exists() and Productos.objects.filter(id = producto).exists()):
+        provprod = ProveedorProducto(user=proveedor , product_id = producto)
+        provprod.save()
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=400)

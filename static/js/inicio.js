@@ -662,6 +662,37 @@ $('#editUserButton').click(function() {
   $('#deleteUserButton').data('user-id', userId);
 });
 
+function createRelation(proveedor , producto){
+  const url = `/createRelation/${proveedor}/${producto}/`;
+  console.log("url: "+ url);
+  fetch(url, {
+    method: "POST",
+    body: `proveedor=${proveedor} , producto=${producto}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-CSRFToken": getCookie("csrftoken")
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error en la respuesta, estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message + "id:" + userId);
+    })
+    .catch(data => {
+      console.error("men: "+ data.message);
+    });
+    
+    // Cierra el modal
+    $("#deleteUserModal").modal("hide");
+    
+    // Recarga la página
+    location.reload();
+}
+
 function deleteUser() {
   const userId = $('#userId').val();
   console.log(userId);
