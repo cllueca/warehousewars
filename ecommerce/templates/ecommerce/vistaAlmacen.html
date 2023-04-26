@@ -499,6 +499,7 @@
       {% endfor %}
     </tbody>
   </table>
+
   <table id="CRUDpedidoProv" class="tab-pane fade table-striped table-bordered ">
     <thead id="resultsOrderProv">
       <tr class="text-center">      
@@ -541,15 +542,37 @@
         <td>{{ orderProv.user_id }}</td>
         <td>{{ orderProv.product_id }}</td>
         <td >
-          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePedidoProvModal" data-order-id="{{ orderProv.provprod_id }}">
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteProductProveedorModal" data-prodprov-id="{{ orderProv.product_id }}" onclick="deleteProductProveedor(this)">
             <i class="fas fa-trash-alt"></i>
-          </button>
+          </button>          
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
+<!-- Modal para eliminar un proveedor-producto -->
+<div class="modal fade" id="deleteProductProveedorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Está seguro de que desea eliminar este producto?
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="deleteProductProveedor(this)" data-product-id="" class="btn btn-danger" id="deleteProductProveedorButton">Sí</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Modal para eliminar un pedido -->
 <div class="modal fade" id="deletePedidoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

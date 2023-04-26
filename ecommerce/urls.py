@@ -47,4 +47,5 @@ urlpatterns = [
     path("delete_order/<int:order_id>/", views.delete_order, name="delete_order"),
     path('update_order_status/<int:order_id>/<int:status_id>/', views.update_order_status, name='update_order_status'),
     path('createRelation/<str:proveedor>/<str:producto>/', views.createRelation, name='createRelation'),
+    path('eliminar_producto_pedido/<int:product_id>/', views.delete_product_proveedor, name='eliminar_producto_pedido'),
     ]
