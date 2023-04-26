@@ -249,7 +249,6 @@ def vistaAlmacen(request):
 
 def paginaPrincipal(request):
     exitoPedido = False
-    isAuth = False
     if request.user.is_authenticated and request.user.role_id == 1:
         context = vistaAlmacen(request)
         return render(request, 'ecommerce/vistaAlmacen.html', context)
@@ -264,16 +263,11 @@ def paginaPrincipal(request):
                 if request.session['pedidoExitoso']:
                     exitoPedido = True
                     request.session['pedidoExitoso'] = False
-            
-            if request.session['is_authenticated'] is not None:
-                if request.session['is_authenticated']:
-                    isAuth = True
-                    request.session['is_authenticated'] = False
 
         except Exception as e:
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
 
-        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor, 'exitoPedido': exitoPedido, 'isAuth': isAuth}
+        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor, 'exitoPedido': exitoPedido}
         return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
@@ -422,9 +416,7 @@ def registrarse(request):
 
             user.save()
             login(request, user)
-            is_authenticated = request.user.is_authenticated
-            request.session['is_authenticated'] = True
-            return redirect('home')#render(request,"ecommerce/inicio.html", context)
+            return redirect('home')
 
 
     return render(request, 'ecommerce/register.html')

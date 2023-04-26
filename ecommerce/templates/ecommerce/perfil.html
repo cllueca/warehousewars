@@ -16,7 +16,7 @@
             <!-- Parte superior -->
             <div class="row py-5">
                 <div class="col-12 text-center">
-                    <h1>{{ user.username }}</h1>
+                    <h1>{{ user.first_name }}</h1>
                     <hr>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     <!-- Información de datos -->
                     <div id="infoDatos">
                         <h2>Datos del perfil</h2>
-                        <p>Nombre: {{ user.username }}</p>
+                        <p>Nombre: {{ user.first_name }}</p>
                         <p>Correo electrónico: {{ user.email }}</p>
                         <p>Teléfono: {{ user.telefono }}</p>
                         <p>Dirección: {{ user.address }}</p>

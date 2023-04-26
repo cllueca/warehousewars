@@ -160,7 +160,6 @@ $(document).ready(function() {
 
 
  $(document).ready(function() {
-  console.log("SS")
   var button = $('#show-more');
   console.log(button);
   button.click(function() {
@@ -280,28 +279,6 @@ $(document).ready(function () {
     createProduct();
   });
 });
-
-// $(document).on("click", "#botonEditProductos", function (event) {
-//   var boton = document.getElementById('botonEditProductos');
-//   var cosas = boton.dataset;
-//   // for (var i = 0; i < cosas.length; i++){
-//   //   console.log(i + " ---> " + cosas[i]);
-//   // }
-//   var modalNombre = document.getElementById('NEWproductName');
-//   var modalStock = document.getElementById('NEWproductStock');
-//   var modalMinStock = document.getElementById('NEWproductMinStock');
-//   var modalCost = document.getElementById('NEWproductCost');
-//   var modalLocation = document.getElementById('NEWproductLocation');
-//   var modalTypeId = document.getElementById('NEWproductTypeid');
-//   var modalFecha = document.getElementById('NEWproductFecha');
-//   modalNombre.value = cosas[0];
-//   modalStock.value = int(cosas[1]);
-//   modalMinStock.value = int(cosas[2]);
-//   modalCost.value = float(cosas[3]);
-//   modalLocation.value = cosas[4];
-//   modalTypeId.value = cosas[5];
-//   modalFecha.value = cosas[6];
-// });
 
 function createProduct() {
 
@@ -532,8 +509,8 @@ function updateProduct() {
     $("#editProductForm")[0].reset();
     const dataTarget = document.getElementsByClassName('nav-link active');
     // Recarga la página
-    window.location.reload(Object.values(dataTarget)[0].href);
-    //$(Object.values(dataTarget)[0].href).tab('show');
+    location.assign(Object.values(dataTarget)[0].href);
+    location.reload();
 };
 
 function editUser() {
@@ -621,13 +598,26 @@ function editUser() {
     // Limpia los parámetros
     $("#editUserForm")[0].reset();
     const dataTarget = document.getElementsByClassName('nav-link active');
-
+    
     location.assign(Object.values(dataTarget)[0].href);
     location.reload();
-
-    //window.location.href(Object.values(dataTarget)[0].href);
 };
 
+document.addEventListener("DOMContentLoaded", function() {
+  const hash = window.location.hash;
+  // Si hay un ancla en la URL
+  if (hash) {
+    // Obtener el elemento correspondiente
+    const dataTarget = document.getElementsByClassName('nav-link');
+    for(let i=0; i < Object.values(dataTarget).length; i++)
+    {
+      if(Object.values(dataTarget)[i].href.split("#")[1] == hash.split("#")[1])
+      {
+        $(Object.values(dataTarget)[i]).tab('show');
+      }
+    }
+  }
+})
 
 function deleteProduct() {
   const productId = $('#productId').val();
@@ -658,10 +648,13 @@ function deleteProduct() {
     // Cierra el modal
     $("#deleteProductModal").modal("hide");
   
-    // Recarga la página
+    const dataTarget = document.getElementsByClassName('nav-link active');
+    
+    location.assign(Object.values(dataTarget)[0].href);
     location.reload();
     
 };
+
 $('#editUserButton').click(function() {
   const userId = $(this).data('user-id');
   $('#deleteUserButton').data('user-id', userId);
@@ -727,7 +720,9 @@ function deleteUser() {
     // Cierra el modal
     $("#deleteUserModal").modal("hide");
     
-    // Recarga la página
+    const dataTarget = document.getElementsByClassName('nav-link active');
+    
+    location.assign(Object.values(dataTarget)[0].href);
     location.reload();
     
 };
@@ -790,6 +785,11 @@ function deleteOrder(button) {
   .catch((error) => {
       console.error("Error al eliminar el pedido:", error);
   });
+
+  const dataTarget = document.getElementsByClassName('nav-link active');
+    
+  location.assign(Object.values(dataTarget)[0].href);
+  location.reload();
 }
 
 function updateOrderStatus(orderId, statusId) {
@@ -817,6 +817,11 @@ function updateOrderStatus(orderId, statusId) {
     }
   })
   .catch(error => console.error(error));
+
+  const dataTarget = document.getElementsByClassName('nav-link active');
+    
+  location.assign(Object.values(dataTarget)[0].href);
+  location.reload();
 }
 
 function redirectToPedido() {
@@ -857,5 +862,10 @@ function deleteProductProveedor(button) {
   .catch((error) => {
       console.error("Error al eliminar el producto:", error);
   });
+
+  const dataTarget = document.getElementsByClassName('nav-link active');
+    
+  location.assign(Object.values(dataTarget)[0].href);
+  location.reload();
 }
 
