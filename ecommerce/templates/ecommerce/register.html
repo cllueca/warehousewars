@@ -44,11 +44,22 @@
 					{{ form.email.errors }}
 					<li class="nav-item"><input class="textfields" type="text" name="correo" placeholder="Correo"></input></li>
 				</li>
-				<li class="nav-item distancia"><b>DIRECCION</b></li>
-				<li>
-					{{ form.adress.errors }}
-					<li class="nav-item"><input class="textfields" type="text" name="adress" placeholder="Direccion"></input></li>
-				</li>
+				<div class="row" style="margin-left:4%;">
+					<div class="col-lg-6 col-sm-12">
+						<li class="nav-item distancia"><b>DIRECCION</b></li>
+						<li>
+							{{ form.adress.errors }}
+							<li class="nav-item"><input class="textfields" type="text" name="adress" placeholder="Direccion"></input></li>
+						</li>
+					</div>
+					<div class="col-lg-5 col-sm-12">
+						<li class="nav-item distancia"><b>C.POSTAL</b></li>
+						<li>
+							{{ form.cpostal.errors }}
+							<li class="nav-item"><input class="textfields" type="text" name="cpostal" placeholder="C.Postal"></input></li>
+						</li>
+					</div>
+				</div>
 				<li class="nav-item"><b>CONTRASEÑA</b></li>
 				<li>
 					{{ form.password.errors }}

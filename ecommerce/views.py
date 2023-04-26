@@ -346,7 +346,8 @@ def registrarse(request):
                                               request.POST.get('apellidos'),
                                               request.POST.get('telefono'),
                                               request.POST.get('correo'),
-                                              request.POST.get('adress')
+                                              request.POST.get('adress'),
+                                              request.POST.get('cpostal')
                                               )
         
         correcto = comprobarContraseña(request, request.POST.get('password'), request.POST.get('password2')) if correcto else False
@@ -360,6 +361,7 @@ def registrarse(request):
                 adress=request.POST.get('adress'),
                 email=request.POST.get('correo'),
                 telefono=request.POST.get('telefono'),
+                cpostal=request.POST.get('cpostal'),
                 role_id=3,
             )
 
@@ -584,7 +586,7 @@ def mandarPedido(request,tipo_envio, transportista ):
         total_weight = total_weight  + (float(weight) * float(quantity))
         cantidadTotal += quantity
 
-    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress , total_weight=total_weight  , isUrgent=tipo_envio , transportista= transportista, total_products=cantidadTotal)
+    pedido = Pedidos(date_order=today, status =estado, total_cost=total, user=user, address=user.adress, cpostal=user.cpostal, total_weight=total_weight  , isUrgent=tipo_envio , transportista= transportista, total_products=cantidadTotal)
     # Save the Pedido instance to the database
     if len(cart.cart) != 0:
         pedido.save()

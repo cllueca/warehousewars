@@ -11,6 +11,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True) # con esto se indica que el login sea con email, ya no se pueden repetir
     telefono = models.CharField(max_length=15, validators=[ValidationError], null=True, blank=True)#PhoneField(blank=True, null=True)
     adress = models.CharField(max_length=250, null=True, blank=True)
+    cpostal = models.CharField(max_length=10, null=True, blank=True)
     role_id = models.IntegerField(blank=True, null=True)
 
     USERNAME_FIELD = 'email'
@@ -52,6 +53,7 @@ class Pedidos(models.Model):
     total_cost = models.FloatField()
     user= models.ForeignKey('User',on_delete=models.CASCADE)
     address = models.CharField(max_length=25)
+    cpostal = models.CharField(max_length=10)
     total_weight =  models.FloatField()
     isUrgent = models.BooleanField()
     transportista = models.ForeignKey(Transportistas,on_delete=models.CASCADE)
