@@ -3,11 +3,11 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <title>Albarán</title>
+  <title>Albarán {{ albaran.albaran_id }}</title>
   <style>
     @page {
       size: A5;
-      margin: 2cm;
+      margin: 1cm;
     }
 
     body {
@@ -53,6 +53,10 @@
       background-color: #f2f2f2;
     }
 
+    .text-center {
+      text-align: center;
+    }
+
     .signature {
       display: flex;
       justify-content: space-between;
@@ -60,19 +64,19 @@
       flex-wrap: wrap;
     }
 
-    .signature div {
-      text-align: center;
+    .signature_item {
+      flex-basis: calc(50% - 10px);
       border: 2px solid black;
       padding: 10px;
-      width: 100%;
       height: 100px;
       margin-bottom: 20px;
     }
 
-    .signature p {
+    .signature_item p {
       font-weight: bold;
       margin-bottom: 10px;
     }
+
 
   </style>
 </head>
@@ -80,18 +84,17 @@
   <div class="content">
     <div class="header">
       <div class="logo">
-        <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo de la empresa SlotsSolutions" style="width: 150px;">
+        <img src="{{ image_path }}" alt="Logo de la empresa SlotsSolutions" style="width: 150px;">
       </div>
       <div class="company-info">
-        <strong>SlotsSolutions</strong><br>
+        <br>
         Teléfono: 660 142 089<br>
         Dirección: C/ Doctor García Tapia, 13 Madrid<br>
-        Email: suport@slotsolutions.com
+        Correo: suport@slotsolutions.com
       </div>
     </div>
 
-    <h1>Albarán</h1>
-    <h4>Albarán id:{{ albaran.albaran_id }}</h4>
+    <h3>Albarán id: {{ albaran.albaran_id }}</h3>
     <table>
       <tr>
         <th>Pedido Id</th>
@@ -99,25 +102,26 @@
         <th>ID de seguimiento</th>
         <th>Dirección de entrega</th>
       </tr>
-      <tr>
-        <td>{{ albaran.pedido.pedido_id }}</td>
-        <td>{{ albaran.data }}</td>
-        <td>{{ albaran.id_seguimiento }}</td>
+      <tr class="text-center">
+        <td style="margin-left: 35px;">{{ albaran.pedido.pedido_id }}</td>
+        <td style="margin-left: 10px;">{{ albaran.date }}</td>
+        <td style="margin-left: 25px;">{{ albaran.id_seguimiento }}</td>
         <td>{{ albaran.pedido.address }}</td>
       </tr>
     </table>
 
-    <div class="row">
-      <div class="col-md-6">
-        <p>Firma del transportista:</p>
-        <br>
-        <br>
-        <br>
-    </div>
-    <div class="col-md-6">
-        <p>Sello de la empresa:</p>
-        <div style="border: 2px solid black; width: 200px; height: 100px;"></div>
-        </div>
+    <div class="signature-container">
+      <div class="signature-item">
+          <p style="margin-top: 40px;">Firma del transportista: <strong>{{ albaran.pedido.transportista.name }}</strong> </p>
+          <br>
+          <br>
+          <br>
+          <br>
+      </div>
+      <div class="signature-item">
+          <p>Firma del operario de SlotsSolutions:</p>
+          <div class="signature-sello"></div>
+      </div>
     </div>
     
     </div>

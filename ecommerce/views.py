@@ -760,8 +760,9 @@ def generate_etiqueta_pdf(request, pedido_id):
 
 def generate_albaran_pdf(request, pedido_id):
     albaran = Albaranes.objects.get(pedido_id=pedido_id)
+    image_path = '../static/images/SlotsSolutions-bw.png'
     template = get_template('ecommerce/albaranPedido.html')
-    context = {'albaran': albaran}
+    context = {'albaran': albaran, 'image_path': image_path}
     html = template.render(context)
     buffer = BytesIO()
     pisa.CreatePDF(html, dest=buffer)

@@ -3,7 +3,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <title>Albarán</title>
+  <title>Etiqueta Pedido {{ pedido.pedido_id }}</title>
   <style>
     @page {
       size: A6;
@@ -25,16 +25,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .header .logo {
-      width: 150px;
-      height: auto;
-      background-image: none;
-    }
-
-    .header .company-info {
-      text-align: right;
+      margin-bottom: 20px;
     }
 
     table {
@@ -52,61 +43,80 @@
       font-weight: bold;
       background-color: #f2f2f2;
     }
-
-    .signature {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 30px;
-      flex-wrap: wrap;
-    }
-
-    .signature div {
-      text-align: center;
-      border: 2px solid black;
-      padding: 10px;
-      width: 100%;
-      height: 100px;
-      margin-bottom: 20px;
-    }
-
-    .signature p {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
   </style>
 </head>
 <body>
   <div class="content">
-    <div class="header">
-        <p>ID pedido: {{ pedido.pedido_id }}</p>
-        <p>Agencia de transporte: {{ pedido.transportista.name }}</p>
-        <p>Nombre: {{ usuario.username }}</p>
-        <p>Dirección: {{ usuario.adress }}</p>
-    </div>
-    <div>
-      {% if pedido.isUrgent %}
-          <p class="col-lg-4">Tipo de env&iacute;o: <strong>Urgente</strong></p>
-      {% else %}
-          <p class="col-lg-4">Tipo de env&iacute;o: <strong>Normal</strong></p>
-      {% endif %}
-
-      {% if pedido.transportista.name == "SEUR" %}
-        <p>Día de entrega: {{ pedido.arrival_date }}</p>
-        <p>Peso del pedido (gramos): {{ pedido.total_weight }}</p>
-      {% elif pedido.transportista.name == "DHL" %}
-        <p>Fecha del pedido: {{ pedido.date_order }}</p>
-        <p>Productos:</p>
-        {% for producto in productos %}
-          <p> - {{ producto.product_id.name }}</p>
-        {% endfor %}
-      {% else %}
-        <p>Fecha pedido: {{ pedido.date_order }}</p>
-        <p>Peso pedido (gramos): {{ pedido.total_weight }}</p>
-        <p>Cantidad unidades: {{ pedido.total_products }}</p>
-        <p>Código postal: {{ usuario.cpostal }}</p>
-      {% endif %}
-    </div>
-    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td> ID pedido: </td>
+          <td> {{ pedido.pedido_id }} </td>
+        </tr>
+        <tr>
+          <td> Agencia de transporte: </td>
+          <td> <strong>{{ pedido.transportista.name }}</strong> </td>
+        </tr>
+        <tr>
+          <td> Nombre: </td>
+          <td> {{ usuario.username }} </td>
+        </tr>
+        <tr>
+          <td> Dirección: </td>
+          <td> {{ usuario.adress }} </td>
+        </tr>
+        {% if pedido.isUrgent %}
+          <tr>
+            <td> Tipo de envío: </td>
+            <td> <strong>Urgente</strong> </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td> Tipo de envío: </td>
+            <td> <strong>Normal</strong> </td>
+          </tr>
+        {% endif %}
+        {% if pedido.transportista.name == "SEUR" %}
+          <tr>
+            <td> Día de entrega: </td>
+            <td> {{ pedido.arrival_date }} </td>
+          </tr>
+          <tr>
+            <td> Peso del pedido (gramos): </td>
+            <td> {{ pedido.total_weight }} </td>
+          </tr>
+        {% elif pedido.transportista.name == "DHL" %}
+          <tr>
+            <td> Fecha del pedido: </td>
+            <td> {{ pedido.date_order }} </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-weight: bold;"> Productos: </td>
+          </tr>
+          {% for producto in productos %}
+            <tr>
+              <td colspan="2" style="margin-left: 20px;"> - {{ producto.product_id.name }} </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td> Fecha pedido: </td>
+            <td> {{ pedido.date_order }} </td>
+          </tr>
+          <tr>
+            <td> Peso pedido (gramos): </td>
+            <td> {{ pedido.total_weight }} </td>
+          </tr>
+          <tr>
+            <td> Cantidad unidades: </td>
+            <td> {{ pedido.total_products }} </td>
+          </tr>
+          <tr>
+            <td> Código postal: </td>
+            <td> {{ usuario.cpostal }} </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
     </body>
 </html>
