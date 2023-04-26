@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 {% load static %}
-
+{% load filtros %}
 {% block content %}
 <nav class="navbar navbar-expand-md bg-light navbar-light">
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -408,11 +408,13 @@
               <i class="fas fa-file-alt"></i>
             </a>
           </abbr>
+          {% if order.pedido_id|get_albaran %}
           <abbr title="Albaran">
             <a href="{% url 'generate_albaran_pdf' order.pedido_id %}" class="btn btn-info" target="_blank">
               <i class="fas fa-file-pdf"></i>
             </a>
-          </abbr> 
+          </abbr>
+          {% endif %}
           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePedidoModal" data-order-id="{{ order.pedido_id }}" onclick="showDeleteOrderModal(this)">
             <i class="fas fa-trash-alt"></i>
           </button>

@@ -2,7 +2,7 @@ from django.template import Library
 from django import template
 from urllib.parse import unquote
 from decimal import Decimal
-from ecommerce.models import Productos
+from ecommerce.models import Albaranes, Productos
 
 register=Library()
 
@@ -31,3 +31,7 @@ def total_price(cart_items , value):
 def get_stock(product_id):
     product = Productos.objects.get(pk=product_id)
     return product.stock
+
+@register.filter
+def get_albaran(pedido_id):
+    return Albaranes.objects.filter(pedido_id=pedido_id).exists()
