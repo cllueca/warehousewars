@@ -350,9 +350,21 @@
             </form>
           </div>
         </th>
-        <th >Acciones  <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#createPedidoModal">
-          <i class="fas fa-plus"></i>
-        </button></th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Transportista
+              <a href="{% url 'home' %}?columnaPedido=transport&transportPedido=asc#resultsOrder"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedido=transport&transportPedido=desc#resultsOrder">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_pedido_transport">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th >Acciones</th>
       </tr>
     </thead>
     <tbody class="text-center">
@@ -372,10 +384,18 @@
         <td>{{ order.total_cost }}</td>
         <td>{{ order.user_id }}</td>
         <td>{{ order.address }}</td>
+        <td>{{ order.transportista_name }}</td>
         <td >
-          <a href="{% url 'generate_albaran_pdf' order.pedido_id %}" class="btn btn-info" target="_blank">
-            <i class="fas fa-file-pdf"></i>
-          </a> 
+          <abbr title="Etiqueta">
+            <a href="{% url 'generate_etiqueta_pdf' order.pedido_id %}" class="btn btn-info"  target="_blank">
+              <i class="fas fa-file-alt"></i>
+            </a>
+          </abbr>
+          <abbr title="Albaran">
+            <a href="{% url 'generate_albaran_pdf' order.pedido_id %}" class="btn btn-info" target="_blank">
+              <i class="fas fa-file-pdf"></i>
+            </a>
+          </abbr> 
           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePedidoModal" data-order-id="{{ order.pedido_id }}" onclick="showDeleteOrderModal(this)">
             <i class="fas fa-trash-alt"></i>
           </button>

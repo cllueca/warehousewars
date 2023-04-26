@@ -65,6 +65,7 @@ def vistaAlmacen(request):
     query_pedido_price_max = request.GET.get('query_pedido_price_max')
     query_pedido_userId = request.GET.get('query_pedido_userId')
     query_pedido_address = request.GET.get('query_pedido_address')
+    query_pedido_transport = request.GET.get('query_pedido_transport')
 
     columnaPedidoProv = request.GET.get('columnaPedidoProv')
     directionPedidoProv  = request.GET.get('directionPedidoProv')
@@ -93,11 +94,11 @@ def vistaAlmacen(request):
 
     if columnaPedido and directionPedido:
         cursor = connection.cursor()
-        cursor.execute(f'SELECT p.*, s.name as status_name, s.status_id as status_status_id FROM "Pedidos" p JOIN "Estados" s ON p.status_id = s.status_id ORDER BY {columnaPedido} {directionPedido}')
+        cursor.execute(f'SELECT p.*, s.name as status_name, s.status_id as status_status_id, t.name as transportista_name FROM "Pedidos" p JOIN "Estados" s ON p.status_id = s.status_id JOIN "Transportistas" t ON p.transportista_id = t.id_trans ORDER BY {columnaPedido} {directionPedido}')
         order = dictfetchall(cursor)
     else:
         cursor = connection.cursor()
-        cursor.execute(f'SELECT p.*, s.name as status_name, s.status_id as status_status_id FROM "Pedidos" p JOIN "Estados" s ON p.status_id = s.status_id')
+        cursor.execute(f'SELECT p.*, s.name as status_name, s.status_id as status_status_id, t.name as transportista_name FROM "Pedidos" p JOIN "Estados" s ON p.status_id = s.status_id JOIN "Transportistas" t ON p.transportista_id = t.id_trans')
         order = dictfetchall(cursor)
     
     if columnaPedidoProv and directionPedidoProv:
@@ -177,6 +178,9 @@ def vistaAlmacen(request):
     if query_pedido_address: #chars
         order = [p for p in order if query_pedido_address in p['address']]
     
+    if query_pedido_transport: #chars
+        order = [p for p in order if p['transportista_id'] == int(query_pedido_transport)]
+
     if query_pedido_price_min and query_pedido_price_max:
         order = [p for p in order if float(p['total_cost'].replace("$", "")) >= float(query_pedido_price_min) and float((p['total_cost']).replace("$","")) <= float(query_pedido_price_max)]
 
@@ -240,11 +244,9 @@ def descripcionProducto(request, productId):
     context = {'productosDesc': [productosDesc], 'proveedor_name': proveedor_name}  # Convierte productosDesc en una lista
     return render(request, 'ecommerce/descProducto.html', context)
 
-
 def pagincaCarrito(request):
 
     return render(request, 'ecommerce/carrito.html')
-
 
 def filtroInicio(request, selectedValue):
     queryType = []
@@ -263,7 +265,6 @@ def filtroInicio(request, selectedValue):
 
     data = json.dumps(queryType)
     return HttpResponse(data, content_type='application/json')
-
 
 def filtroPrecio(request, selectedPrize):
     try:
@@ -298,7 +299,6 @@ def showmoreView(request):
     data = json.dumps(product)
     return HttpResponse(data, content_type='application/json')
 
-
 def filtroProveedor(request, selectedProveedor):
     if selectedProveedor == 0:
         productos = Productos.objects.all().values()
@@ -308,8 +308,6 @@ def filtroProveedor(request, selectedProveedor):
 
     productos_list = list(productos)
     return JsonResponse(productos_list, safe=False)
-
-
 
 def iniciarSesion(request):
 
@@ -339,7 +337,6 @@ def iniciarSesion(request):
             else:
                 messages.error(request, 'Contraseña incorrecta')
     return render(request, 'ecommerce/login.html')
-
 
 def registrarse(request):
 
@@ -380,8 +377,6 @@ def registrarse(request):
 
 
     return render(request, 'ecommerce/register.html')
-
-
 
 def logoutUser(request):
     logout(request)
@@ -431,7 +426,6 @@ def perfilUsuario(request):
 
     return render(request, 'ecommerce/perfil.html', {"pedidos": pedidos})
 
-
 @csrf_exempt
 def update_product(request, product_id):
 
@@ -458,7 +452,6 @@ def update_product(request, product_id):
     
         return JsonResponse({"message": "Producto actualizado"})
     return HttpResponse("Metodo no permitido")
-
 
 @csrf_exempt
 def create_product(request):
@@ -538,8 +531,6 @@ def delete_product(request, id):
         return JsonResponse({"message": "Producto eliminado"})
     return HttpResponse("Metodo no permitido")
 
-
-
 def delete_user(request, user_id):
     if request.method == "POST":
         try:
@@ -606,7 +597,7 @@ def mandarPedido(request,tipo_envio, transportista ):
             producto = Productos.objects.get(pk=product_id)
             producto.stock -= quantity
             producto.save()
-            if producto.stock <= producto.min_stock:
+            if producto.stock <= producto.min_stock and not producto.isRestock:
                 # Send stock alert email
                 email_subject_stock = "Stock Alert: {} (ID: {})".format(producto.name, producto.id)
                 email_body_stock = "Hola,\n\nEl stock del producto '{}' (ID: {}) esta por debajo de nuestro stock minimo. Porfavor envianos un restock lo antes posible \n\nCurrent stock: {}\nMinimum stock: {}".format(producto.name, producto.id, producto.stock, producto.min_stock)
@@ -657,7 +648,6 @@ def mandarPedido(request,tipo_envio, transportista ):
     else:
         return redirect("carrito")
 
-
 @login_required(login_url="login")
 def cart_add(request, id):
     cart = Cart(request)
@@ -700,7 +690,35 @@ def cart_clear(request):
 def cart_detail(request):
     return render(request, '/carrito')
 
+def generate_etiqueta_pdf(request, pedido_id):
 
+    idUser = request.user.id
+
+    try:
+        pedido = Pedidos.objects.get(pedido_id=pedido_id)
+        productos = PedidoProductos.objects.filter(pedido_id=pedido_id)
+        user = User.objects.get(id=pedido.user_id)
+        template = get_template('ecommerce/etiquetaPedido.html')
+
+        if pedido.transportista.name == "SEUR":
+            if pedido.isUrgent:
+                pedido.arrival_date = pedido.date_order + timedelta(days=1)
+            else:
+                pedido.arrival_date = pedido.date_order + timedelta(days=3)
+
+        context = {'pedido': pedido, 'productos': productos, 'usuario': user}
+        html = template.render(context)
+        buffer = BytesIO()
+        pisa.CreatePDF(html, dest=buffer)
+
+        buffer.seek(0)
+        response = FileResponse(buffer, content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="etiqueta{pedido_id}.pdf"'
+        return response
+    except Exception as e:
+        print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
+
+    return HttpResponse('ERROR')
 
 def generate_albaran_pdf(request, pedido_id):
     albaran = Albaranes.objects.get(pedido_id=pedido_id)
@@ -738,8 +756,6 @@ def delete_order(request, order_id):
 
 def success_page(request):
     return render(request, 'ecommerce/inicio.html')
-
-
 
 def paginaContacto(request):
     if request.method == 'POST':

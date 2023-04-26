@@ -1,8 +1,2 @@
 
 $('.navbar-toggler').collapse();
-
-
-
-
-
-

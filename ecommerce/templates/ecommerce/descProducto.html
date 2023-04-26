@@ -29,8 +29,13 @@
         <p class="title-2">Peso Neto: </p>
         <p class="ml-1">{{ productosDesc.weight }} g</p>
           <div class="text-center mt-4" style="width: 100%; margin: 0 auto;">
-            <a href="{% url 'cart_add' productosDesc.id %}"><button class="button-21 m-3" role="button" >Añadir al Carrito</button></a>
-          </div>
+            {% if productosDesc.stock == 0 %}
+              <a href="{% url 'cart_add' productosDesc.id %}"><button class="btn button-21 m-3" role="button" disabled>Añadir al Carrito</button></a>
+              <p>Producto sin stock</p>
+            {% else %}
+              <a href="{% url 'cart_add' productosDesc.id %}"><button class="button-21 m-3" role="button" >Añadir al Carrito</button></a>
+            {% endif %}
+            </div>
       </div>
     </div>
   </div>

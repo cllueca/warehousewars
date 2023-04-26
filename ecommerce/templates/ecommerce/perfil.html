@@ -38,7 +38,7 @@
                         <p>Nombre: {{ user.username }}</p>
                         <p>Correo electrónico: {{ user.email }}</p>
                         <p>Teléfono: {{ user.telefono }}</p>
-                        <p>Dirección: {{ user.adress }}</p>
+                        <p>Dirección: {{ user.address }}</p>
                         <p>Código postal: {{ user.cpostal }}</p>
                     </div>
                     <!-- Información de pedidos -->
@@ -99,7 +99,7 @@
                                         <p class="col-lg-6">Cantidad de unidades: {{ pedido.total_products }}</p>
                                     </div>
                                     <div class="row">
-                                        <p class="col-lg-12">C&oacute;digo postal de la entrega: {{ pedido.cpostal }}</p>
+                                        <p class="col-lg-12">C&oacute;digo postal de la entrega: {{ user.cpostal }}</p>
                                     </div>
                                 {% endif %}
                                 
