@@ -1,3 +1,4 @@
+import random
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.db import connection, transaction
@@ -787,6 +788,11 @@ def update_order_status(request, order_id, status_id):
             order.total_cost = float(order.total_cost.replace('$', ''))
             order.status = new_status
             order.save()
+            
+            if status_id != 5 and not Albaranes.objects.filter(pedido_id=order_id).exists():               
+                today = timezone.now().astimezone(timezone.get_current_timezone()).date()
+                albaran = Albaranes(pedido = order , date = today , id_seguimiento=random.randint(10000, 99999))
+                albaran.save()
             return JsonResponse({"status": "success"}, status=200)
         except (Pedidos.DoesNotExist, Estados.DoesNotExist, ValueError):
             return JsonResponse({"status": "error"}, status=404)

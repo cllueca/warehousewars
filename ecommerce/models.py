@@ -29,7 +29,7 @@ class Transportistas(models.Model):
 class Albaranes(models.Model):
     albaran_id = models.AutoField(primary_key=True)
     pedido = models.ForeignKey('Pedidos', on_delete=models.CASCADE)
-    data = models.DateField()
+    date = models.DateField()
     id_seguimiento = models.CharField(max_length=25)
 
     class Meta:
