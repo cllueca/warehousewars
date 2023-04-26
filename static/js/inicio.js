@@ -712,50 +712,18 @@ function getCookie(name) {
   return cookieValue;
 }
 
-/*CRUD*/
-$(document).ready(function() {
-  const product_checkbox = $('#producto-checkbox');
-  const CRUDproduct = $('#CRUDproduct');
+// Get all table tabs
+var tableTabs = document.querySelectorAll('.table-tab');
 
-  const user_checkbox = $('#user-checkbox');
-  const CRUDuser = $('#CRUDuser');
-
-  const pedido_checkbox = $('#pedido-checkbox');
-  const CRUDpedido = $('#CRUDpedido');
-
-  const pedidoProv_checkbox = $('#pedidoProv-checkbox');
-  const CRUDpedidoProv = $('#CRUDpedidoProv');
-  
-  product_checkbox.change(function(){
-    if ($(this).is(':checked')) {
-      CRUDproduct.show();
-    } else {
-      CRUDproduct.hide();
-    }
-  });
-
-  user_checkbox.change(function(){
-    if ($(this).is(':checked')) {
-      CRUDuser.show();
-    } else {
-      CRUDuser.hide();
-    }
-  });
-
-  pedido_checkbox.change(function(){
-    if ($(this).is(':checked')) {
-      CRUDpedido.show();
-    } else {
-      CRUDpedido.hide();
-    }
-  });
-
-  pedidoProv_checkbox.change(function(){
-    if ($(this).is(':checked')) {
-      CRUDpedidoProv.show();
-    } else {
-      CRUDpedidoProv.hide();
-    }
+// Attach event listener to each link
+tableTabs.forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    // Remove active class from all tabs
+    tableTabs.forEach(function(tab) {
+      tab.classList.remove('active');
+    });
+    // Add active class to clicked tab
+    this.classList.add('active');
   });
 });
 

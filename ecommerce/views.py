@@ -74,6 +74,14 @@ def vistaAlmacen(request):
     query_orderProv_userId = request.GET.get('query_orderProv_userId')
     query_orderProv_productId = request.GET.get('query_orderProv_productId')
 
+    columnaPedidoProd = request.GET.get('columnaPedidoProd')
+    directionPedidoProd  = request.GET.get('directionPedidoProd')
+    query_PedProd_product = request.GET.get('query_PedProd_product')
+    query_PedProd_pedido = request.GET.get('query_PedProd_pedido')
+    query_PedProd_quantity = request.GET.get('query_PedProd_quantity')
+    query_PedProd_total_cost_min = request.GET.get('query_PedProd_total_cost_min')
+    query_PedProd_total_cost_max = request.GET.get('query_PedProd_total_cost_max')
+
     
     if columnaProduct and directionProduct:
         cursor = connection.cursor()
@@ -110,6 +118,15 @@ def vistaAlmacen(request):
         cursor = connection.cursor()
         cursor.execute(f'SELECT * FROM "Proveedor-Producto"')
         orderProv = dictfetchall(cursor)
+
+    if columnaPedidoProd and directionPedidoProd:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "PedidoProductos" ORDER BY {columnaPedidoProd} {directionPedidoProd}')
+        pedidoProd = dictfetchall(cursor)
+    else:
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM "PedidoProductos"')
+        pedidoProd = dictfetchall(cursor)
 
     if query_product_name: #chars
         product = [p for p in product if query_product_name in p['name']]
@@ -199,8 +216,28 @@ def vistaAlmacen(request):
     
     if query_orderProv_productId: #chars
         orderProv = [p for p in orderProv if p['product_id'] == int(query_orderProv_productId)]
+
+    if query_PedProd_product:
+        pedidoProd = [p for p in pedidoProd if p['product_id'] == int(query_PedProd_product)]
+
+    if query_PedProd_pedido: 
+        pedidoProd = [p for p in pedidoProd if p['pedido_id'] == int(query_PedProd_pedido)]
+
+    if query_PedProd_quantity: 
+        pedidoProd = [p for p in pedidoProd if p['quantity'] == int(query_PedProd_quantity)]
+
+
+    if query_PedProd_total_cost_min and query_PedProd_total_cost_max:
+        pedidoProd = [p for p in pedidoProd if float(p['total_cost'].replace("$", "")) >= float(query_PedProd_total_cost_min) and float((p['total_cost']).replace("$","")) <= float(query_PedProd_total_cost_max)]
+
+    if query_PedProd_total_cost_min:
+        pedidoProd = [p for p in pedidoProd if float(p['total_cost'].replace("$","")) >= float(query_PedProd_total_cost_min)]
+
+    if query_PedProd_total_cost_max:
+        pedidoProd = [p for p in pedidoProd if float(p['total_cost'].replace("$","")) <= float(query_PedProd_total_cost_max)]
+
     estados = Estados.objects.all()
-    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv, 'estados': estados}
+    context = {'producto' : product, 'usuario' : user, 'pedido' : order, 'pedidoProv' : orderProv, 'estados': estados, 'pedidoProd' : pedidoProd}
     return context
 
 

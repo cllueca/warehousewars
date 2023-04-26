@@ -2,11 +2,30 @@
 {% load static %}
 
 {% block content %}
+<nav class="navbar navbar-expand-md bg-light navbar-light">
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="nav nav-tabs mx-auto">
+      <li class="nav-item active">
+        <a class="nav-link" id="CRUDproduct-tab" data-toggle="tab" data-target="#CRUDproduct" href="#CRUDproduct" role="tab" aria-controls="CRUDproduct" aria-selected="true">Productos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="CRUDuser-tab" data-toggle="tab"  data-target="#CRUDuser" href="#CRUDuser" role="tab" aria-controls="CRUDuser" aria-selected="false">Usuarios</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="CRUDpedido-tab"data-toggle="tab"  data-target="#CRUDpedido" href="#CRUDpedido" role="tab" aria-controls="CRUDpedido" aria-selected="false">Pedidos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="CRUDpedidoProductos-tab"data-toggle="tab"  data-target="#CRUDpedidoProductos" href="#CRUDpedidoProductos" role="tab" aria-controls="CRUDpedidoProductos" aria-selected="false">Productos por pedido</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="CRUDpedidoProv-tab" data-toggle="tab"  data-target="#CRUDpedidoProv" href="#CRUDpedidoProv" role="tab" aria-controls="CRUDpedidoProv" aria-selected="false">Proveedores y productos</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-<div class="container mt-5" style="max-width: 1700px!important;"> 
-  <input type="checkbox" id="producto-checkbox">Productos
- 
-  <table id="CRUDproduct" class="table-striped table-bordered">
+<div class="tab-content container mt-5" id="myTabContent" style="max-width: 1700px!important;">  
+  <table id="CRUDproduct" class="tab-pane fade show active table-striped table-bordered">
       <thead id="results">
         <tr class="text-center">
           <th>
@@ -137,8 +156,7 @@
       </tbody>
   </table>
  
-  <table id="CRUDuser" class="table-striped table-bordered ">
-    <input type="checkbox" class="mt-5" id="user-checkbox">Usuarios
+  <table id="CRUDuser"  class="tab-pane fade table-striped table-bordered ">
     <thead id="results">
       <tr class="text-center">
         <th>
@@ -271,8 +289,7 @@
     </tbody>
   </table>    
    
-  <table id="CRUDpedido" class="table-striped table-bordered ">
-    <input type="checkbox" class="mt-5" id="pedido-checkbox">Pedidos
+  <table id="CRUDpedido" class="tab-pane fade table-striped table-bordered ">
     <thead id="resultsOrder">
       <tr class="text-center">
         <th>
@@ -404,26 +421,85 @@
       {% endfor %}
     </tbody>
   </table>
-
-  <table id="CRUDpedidoProv" class="table-striped table-bordered ">
-    <input type="checkbox" class="mt-5" id="pedidoProv-checkbox">Proveedor-Producto
-    <thead id="resultsOrderProv">
+  <table id="CRUDpedidoProductos" class="tab-pane fade table-striped table-bordered ">
+    <thead id="resultsOrderPedidoProd">
       <tr class="text-center">
         <th>
           <div >
             <div style="margin-bottom: 10px; background-color: #F4F5F6;">
-              Proveedor Id 
-              <a href="{% url 'home' %}?columnaPedidoProv=provprod_id&directionPedidoProv=asc#resultsOrderProv"> &#x25B2; </a>
-              <a href="{% url 'home' %}?columnaPedidoProv=provprod_id&directionPedidoProv=desc#resultsOrderProv">&#x25BC;</a>
+              Producto Id 
+              <a href="{% url 'home' %}?columnaPedidoProd=product_id&directionPedidoProd=asc#resultsOrderPedidoProd"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProd=product_id&directionPedidoProd=desc#resultsOrderPedidoProd">&#x25BC;</a>
             </div>
             <form >
               {% csrf_token %}
-              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_orderProv_provProdId">
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_PedProd_product">
               <input style="width: 90%"  type="submit" value="Filtrar">
             </form>
           </div>
         </th>
         
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Pedido Id
+              <a href="{% url 'home' %}?columnaPedidoProd=pedido_id&directionPedidoProd=asc#resultsOrderPedidoProd"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProd=pedido_id&directionPedidoProd=desc#resultsOrderPedidoProd">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_PedProd_pedido">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Cantidad
+              <a href="{% url 'home' %}?columnaPedidoProd=quantity&directionPedidoProd=asc#resultsOrderPedidoProd"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProd=quantity&directionPedidoProd=desc#resultsOrderPedidoProd">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <input style="width: 25%; margin-bottom: 10px;" type="number" name="query_PedProd_quantity">
+              <input style="width: 90%"  type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+        <th>
+          <div >
+            <div style="margin-bottom: 10px; background-color: #F4F5F6;">
+              Precio Total
+              <a href="{% url 'home' %}?columnaPedidoProd=total_cost&directionPedidoProd=asc#resultsOrderPedidoProd"> &#x25B2; </a>
+              <a href="{% url 'home' %}?columnaPedidoProd=total_cost&directionPedidoProd=desc#resultsOrderPedidoProd">&#x25BC;</a>
+            </div>
+            <form >
+              {% csrf_token %}
+              <label for="query_price_min">min:</label>
+              <input style="width: 25%;" type="number" id="query_product_price_min" name="query_PedProd_total_cost_min">
+              <label for="query_price_max">max:</label>
+              <input style="width: 25%;" type="number" id="query_product_price_max" name="query_PedProd_total_cost_max">
+              <input style="width: 90%;" type="submit" value="Filtrar">
+            </form>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      {% for pedidoProd in pedidoProd %}
+      <tr >
+        <td>{{ pedidoProd.product_id }}</td>
+        <td>{{ pedidoProd.pedido_id }}</td>
+        <td>{{ pedidoProd.quantity }}</td>
+        <td>{{ pedidoProd.total_cost }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table id="CRUDpedidoProv" class="tab-pane fade table-striped table-bordered ">
+    <thead id="resultsOrderProv">
+      <tr class="text-center">      
         <th>
           <div >
             <div style="margin-bottom: 10px; background-color: #F4F5F6;">
@@ -459,8 +535,7 @@
     </thead>
     <tbody class="text-center">
       {% for orderProv in pedidoProv %}
-      <tr >
-        <td>{{ orderProv.provprod_id }}</td>
+      <tr>
         <td>{{ orderProv.user_id }}</td>
         <td>{{ orderProv.product_id }}</td>
         <td >
