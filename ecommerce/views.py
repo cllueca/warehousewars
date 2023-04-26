@@ -249,6 +249,7 @@ def vistaAlmacen(request):
 
 def paginaPrincipal(request):
     exitoPedido = False
+    isAuth = False
     if request.user.is_authenticated and request.user.role_id == 1:
         context = vistaAlmacen(request)
         return render(request, 'ecommerce/vistaAlmacen.html', context)
@@ -259,14 +260,20 @@ def paginaPrincipal(request):
             productCarrousel = Productos.objects.all()[:5]
             tipos = Tipos.objects.all()
             proveedor = User.objects.filter(role_id=2)
-            if request.session['pedidoExitoso']:
-                exitoPedido = True
-                request.session['pedidoExitoso'] = False
+            if request.session['pedidoExitoso'] is not None:
+                if request.session['pedidoExitoso']:
+                    exitoPedido = True
+                    request.session['pedidoExitoso'] = False
+            
+            if request.session['is_authenticated'] is not None:
+                if request.session['is_authenticated']:
+                    isAuth = True
+                    request.session['is_authenticated'] = False
 
         except Exception as e:
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
 
-        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor, 'exitoPedido': exitoPedido}
+        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor, 'exitoPedido': exitoPedido, 'isAuth': isAuth}
         return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
@@ -416,8 +423,8 @@ def registrarse(request):
             user.save()
             login(request, user)
             is_authenticated = request.user.is_authenticated
-            context = {'is_authenticated': is_authenticated}
-            return render(request,"ecommerce/inicio.html", context)
+            request.session['is_authenticated'] = True
+            return redirect('home')#render(request,"ecommerce/inicio.html", context)
 
 
     return render(request, 'ecommerce/register.html')

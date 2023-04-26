@@ -530,9 +530,10 @@ function updateProduct() {
 
     // Limpia los parámetros
     $("#editProductForm")[0].reset();
-    
+    const dataTarget = document.getElementsByClassName('nav-link active');
     // Recarga la página
-    window.location.reload();
+    window.location.reload(Object.values(dataTarget)[0].href);
+    //$(Object.values(dataTarget)[0].href).tab('show');
 };
 
 function editUser() {
@@ -619,8 +620,12 @@ function editUser() {
 
     // Limpia los parámetros
     $("#editUserForm")[0].reset();
+    const dataTarget = document.getElementsByClassName('nav-link active');
 
-    window.location.reload();
+    location.assign(Object.values(dataTarget)[0].href);
+    location.reload();
+
+    //window.location.href(Object.values(dataTarget)[0].href);
 };
 
 

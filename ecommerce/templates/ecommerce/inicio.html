@@ -7,7 +7,8 @@
   {% if exitoPedido %}
     <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
     <h1 class="mt-5">Peido realizado con exito <i class="fas fa-check-circle text-success"></i></h1>
-  {% elif user.is_authenticated %}
+  {% endif %}
+  {% if isAuth %}
     <img src="{% static 'images/SlotsSolutions.jpg' %}" alt="Logo" class="navbar-brand logo-img mt-5">
     <h1 class="pt-5">Gracias por formar parte de nuestra tienda</h1>
     <h4 class="mb-4">Esperemos que te guste</h4>
@@ -93,7 +94,7 @@
         <select class="form-control selectForms" id="product-proveedor">
           <option value='0'>No seleccionado</option>
           {% for proveedor in conectProveedor %}
-          <option value="{{ proveedor.id }}">{{ proveedor.email }}</option>
+          <option value="{{ proveedor.id }}">{{ proveedor.username }}</option>
           {% endfor %}
         </select>
       </div>
