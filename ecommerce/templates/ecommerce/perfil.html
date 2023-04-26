@@ -27,7 +27,9 @@
                 <div class="col-lg-3 col-sm-12 bg-light">
                     <div class="list-group mt-3">
                         <a href="#" id="selectDatos" class="list-group-item list-group-item-action active">Datos</a>
+                        {%if request.user.role_id == 3%}
                         <a href="#" id="selectPedidos" class="list-group-item list-group-item-action">Pedidos</a>
+                        {%endif%}
                     </div>
                 </div>
                 <!-- Parte derecha -->
@@ -41,6 +43,7 @@
                         <p>Dirección: {{ user.address }}</p>
                         <p>Código postal: {{ user.cpostal }}</p>
                     </div>
+                    {%if request.user.role_id == 3%}
                     <!-- Información de pedidos -->
                     <div id="infoPedidos" class="perfilHide">
                         <h2>Información de pedidos</h2>
@@ -126,7 +129,8 @@
                         </div>
                         {% endfor %}
                    
-                    </div>                                   
+                    </div>   
+                    {%endif%}                                
                 </div>
             </div>
         </div>

@@ -444,7 +444,7 @@ def cambiarPwd(request):
 @login_required(login_url='login')
 def perfilUsuario(request):
     idUser = request.user.id
-
+    print(request.user.role_id)
     try:
         pedidos = Pedidos.objects.filter(user_id=idUser).prefetch_related(
             Prefetch('pedidoproductos_set', queryset=PedidoProductos.objects.select_related('product_id'))
