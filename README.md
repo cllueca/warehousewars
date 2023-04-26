@@ -1,11 +1,17 @@
-# warehousewars
+# Warehousewars
 proyecto para pgpi
 
-Librerias a instalarse: 
-    - django-phonenumber-field => pip install django-phone-field
-    - phonenumbers (esta creo que no hace falta)
-    - carrito => pip install django-shopping-cart
-    - python -m pip install Pillow (no se que hace pero me lo ha pedido)
-    - pip install xhtml2pdf (para el albaran)
-    - pip install djangorestframework (para llamadas de CORS headers)
+## Dependencias
+### Comandos para instalar las librerías necesarias
+    - pip install django
+    - pip install django-phone-field
+    - pip install phonenumbers
+    - pip install django-shopping-cart
+    - python -m pip install Pillow
+    - pip install xhtml2pdf
+    - pip install djangorestframework
     - pip install django-cors-headers
+
+## Guía para iniciar la aplicación
+    - Ir a la raíz del proyecto
+    - comando: python manage.py runserver
