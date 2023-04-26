@@ -800,3 +800,26 @@ function redirectToPedido() {
   window.location.href = url.replace('tipo_envio', tipo_envio).replace('transportista', transportista);
 }
   
+function deleteProductProveedor(button) {
+  var productId = button.getAttribute("data-product-id2");
+  var url = `/eliminar_producto_pedido/${productId}/`;
+
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+      },
+  })
+  .then((response) => {
+      if (response.status === 200) {
+          location.reload();
+      } else {
+          console.error("Error al eliminar el producto");
+      }
+  })
+  .catch((error) => {
+      console.error("Error al eliminar el producto:", error);
+  });
+}
+

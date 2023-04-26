@@ -36,6 +36,12 @@ from django.shortcuts import get_object_or_404
 
 
 def vistaAlmacen(request):
+    if 'active_tab' not in request.session:
+        request.session['active_tab'] = 'CRUDproduct'
+
+    if request.GET.get('active_tab'):
+        request.session['active_tab'] = request.GET.get('active_tab')
+
     columnaProduct = request.GET.get('columna')
     directionProduct = request.GET.get('direction')
     query_product_name = request.GET.get("query_product_name")
@@ -638,7 +644,7 @@ def mandarPedido(request,tipo_envio, transportista ):
             if producto.stock <= producto.min_stock and not producto.isRestock:
                 # Send stock alert email
                 email_subject_stock = "Stock Alert: {} (ID: {})".format(producto.name, producto.id)
-                email_body_stock = "Hola,\n\nEl stock del producto '{}' (ID: {}) esta por debajo de nuestro stock minimo. Porfavor envianos un restock lo antes posible \n\nCurrent stock: {}\nMinimum stock: {}".format(producto.name, producto.id, producto.stock, producto.min_stock)
+                email_body_stock = "Hola,\n\nEl stock del producto '{}' (ID: {}) esta por debajo de nuestro stock minimo. Porfavor envíanos un restock de 20 productos lo antes posible \n\nCurrent stock: {}\nMinimum stock: {}".format(producto.name, producto.id, producto.stock, producto.min_stock)
                 # Replace the 'product_id' variable with the actual product ID you want to check
                 user_products = ProveedorProducto.objects.filter(product_id=product_id)
                 # Get the list of user IDs
@@ -664,7 +670,7 @@ def mandarPedido(request,tipo_envio, transportista ):
         # Clear the user's cart
         cart.clear()
 
-            # Send email
+        # Send email
         email_subject = "Pedido recibido"
         email_body = "Hola {},\n\nTu pedido con ID {} ha sido recibido. Estamos procesando tu pedido y te notificaremos cuando esté listo para ser enviado.\n\nGracias por comprar con nosotros.".format(user.username, idPedido)
         email = EmailMessage(
@@ -803,7 +809,7 @@ def paginaContacto(request):
 
         email = EmailMessage(
             'Incidencias web SlotsSolutions',
-            "Mesaje enviado por: <{}>: \n\n {}".format(sender_email, message),
+            "Mesaje enviado por {}: \n\n Mensaje: \n{}".format(sender_email, message),
             from_email=sender_email,  # Reemplaza esto con la dirección de correo electrónico de tu tienda
             to=['d38df7490e64e7@inbox.mailtrap.com'],  # Asegúrate de utilizar tu correo personalizado aquí
         )
@@ -836,3 +842,15 @@ def update_order_status(request, order_id, status_id):
             return JsonResponse({"status": "error"}, status=404)
     else:
         return JsonResponse({"status": "error"}, status=400)
+
+@csrf_exempt
+def delete_product_proveedor(request, product_id):
+    if request.method == "POST":
+        try:
+            provprod = ProveedorProducto.objects.get(product_id=product_id)
+            provprod.delete()
+            return JsonResponse({"status": "success"}, status=200)
+        except ProveedorProducto.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Proveedor-Producto no encontrado."}, status=404)
+    else:
+        return JsonResponse({"status": "error", "message": "Solicitud no válida."}, status=400)
