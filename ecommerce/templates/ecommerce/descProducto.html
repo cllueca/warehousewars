@@ -13,7 +13,7 @@
     </div>
     <div class="row mb-3">
       <div class="col-12">
-        <p>Brand</p>
+        <p>Proveedor: {{ proveedor_name }}</p>
       </div>
     </div>
     
@@ -23,19 +23,11 @@
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 pt-4" style="background-color: #e1e1e6; border-radius: 10px;">
         <p class="title-2">Descripción: </p>
-        <p>{{ productosDesc.product_description }}</p>
-        <div class="form-group">
-            <label class="title-2" for="units">Unidades: </label>
-            <div class="input-group mb-3" style="width: 35%;">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="button" id="minus">-</button>
-              </div>
-              <input type="number" class="form-control" id="units" value="1">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="plus">+</button>
-              </div>
-            </div>
-          </div>
+        <p class="ml-1">{{ productosDesc.product_description }}</p>
+        <p class="title-2">Tipo Id: </p>
+        <p class="ml-1" >{{ productosDesc.type.name }}</p>
+        <p class="title-2">Peso Neto: </p>
+        <p class="ml-1">{{ productosDesc.weight }} g</p>
           <div class="text-center mt-4" style="width: 100%; margin: 0 auto;">
             <a href="{% url 'cart_add' productosDesc.id %}"><button class="button-21 m-3" role="button" >Añadir al Carrito</button></a>
           </div>

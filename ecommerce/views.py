@@ -27,10 +27,11 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from django.db.models import F, Prefetch, Subquery, OuterRef
+from django.db.models import F, Prefetch
 from django.core.mail import EmailMessage
 
 from datetime import datetime, timedelta
+from django.shortcuts import get_object_or_404
 
 
 def vistaAlmacen(request):
@@ -199,7 +200,7 @@ def vistaAlmacen(request):
 
 
 def paginaPrincipal(request):
-
+    exitoPedido = False
     if request.user.is_authenticated and request.user.role_id == 1:
         context = vistaAlmacen(request)
         return render(request, 'ecommerce/vistaAlmacen.html', context)
@@ -210,27 +211,33 @@ def paginaPrincipal(request):
             productCarrousel = Productos.objects.all()[:5]
             tipos = Tipos.objects.all()
             proveedor = User.objects.filter(role_id=2)
-            print(proveedor)
+            if request.session['pedidoExitoso']:
+                exitoPedido = True
+                request.session['pedidoExitoso'] = False
+
         except Exception as e:
             print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
 
-        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor}
+        context = {'datos': user, 'producto': product, 'productoCarrousel': productCarrousel, 'conectTipo': tipos, 'conectProveedor': proveedor, 'exitoPedido': exitoPedido}
         return render(request, 'ecommerce/inicio.html', context)
 
 def descripcionProducto(request, productId):
-
     try:
-        cursor = connection.cursor()
-        cursor.execute('SELECT * FROM "Productos" WHERE id = %s ',[productId])
-        productosDesc = dictfetchall(cursor)
-        print(productosDesc)
-
+        # Utiliza el ORM de Django para obtener el objeto Productos
+        productosDesc = get_object_or_404(Productos, id=productId)
     except Exception as e:
         print("Ha ocurrido un error en la consulta a la BBDD {}".format(e))
-    finally:
-        cursor.close()
 
-    context = {'productosDesc' : productosDesc}
+    try:
+        # Obtén el objeto ProveedorProducto relacionado con el producto
+        prov_prod = ProveedorProducto.objects.get(product_id=productId)
+        proveedor = User.objects.get(id=prov_prod.user_id)
+        proveedor_name = proveedor.username
+    except (ProveedorProducto.DoesNotExist, User.DoesNotExist) as e:
+        print("Error al obtener el proveedor o el usuario: {}".format(e))
+        proveedor_name = None
+
+    context = {'productosDesc': [productosDesc], 'proveedor_name': proveedor_name}  # Convierte productosDesc en una lista
     return render(request, 'ecommerce/descProducto.html', context)
 
 
@@ -442,8 +449,6 @@ def update_product(request, product_id):
           
             query = 'UPDATE "Productos" SET name = %s, stock = %s, min_stock = %s, price = %s, location = %s, type_id = %s, fecha_llegada = %s WHERE id = %s'
             values = [name, stock, min_stock, cost_per_unit, location, type_id, fecha_llegada, product_id]
-            #print(cursor.mogrify(query, values))
-            #print("Types: ", [type(v) for v in values])
             cursor.execute(query, values)
        
         except Exception as e:
@@ -609,9 +614,10 @@ def mandarPedido(request,tipo_envio, transportista ):
                 user_products = ProveedorProducto.objects.filter(product_id=product_id)
                 # Get the list of user IDs
                 user_ids = [user_product.user_id for user_product in user_products]
-                # Get the first User instance from user_ids
-                proveedor = User.objects.filter(id__in=user_ids).first()
-                if proveedor is not None:
+                # Get the User instances with matching user_ids
+                proveedores = User.objects.filter(id__in=user_ids)
+
+                for proveedor in proveedores:
                     email_stock = EmailMessage(
                         email_subject_stock,
                         email_body_stock,
@@ -646,8 +652,8 @@ def mandarPedido(request,tipo_envio, transportista ):
 
         # Redirect to a success page
         is_authenticated = request.user.is_authenticated
-        context = {'is_pedido': True}
-        return render(request, "ecommerce/inicio.html", context)
+        request.session['pedidoExitoso'] = True
+        return redirect("home")
     else:
         return redirect("carrito")
 
@@ -736,8 +742,6 @@ def success_page(request):
 
 
 def paginaContacto(request):
-    idUser = request.user.id
-    user = User.objects.get(pk=idUser)
     if request.method == 'POST':
         sender_email = request.POST['email']
         message = request.POST['message']
@@ -745,7 +749,7 @@ def paginaContacto(request):
         email = EmailMessage(
             'Incidencias web SlotsSolutions',
             "Mesaje enviado por: <{}>: \n\n {}".format(sender_email, message),
-            from_email=user.email,  # Reemplaza esto con la dirección de correo electrónico de tu tienda
+            from_email=sender_email,  # Reemplaza esto con la dirección de correo electrónico de tu tienda
             to=['d38df7490e64e7@inbox.mailtrap.com'],  # Asegúrate de utilizar tu correo personalizado aquí
         )
         try:
